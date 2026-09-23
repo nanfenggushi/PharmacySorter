@@ -1,4 +1,4 @@
-﻿namespace PharmacySorter
+namespace PharmacySorter
 {
     partial class FrmQuantityVerify
     {
@@ -28,159 +28,202 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.lblDrug = new System.Windows.Forms.Label();
+            this.lblRequiredQty = new System.Windows.Forms.Label();
+            this.lblActualQty = new System.Windows.Forms.Label();
+            this.nudActualQty = new System.Windows.Forms.NumericUpDown();
+            this.lblMatchIcon = new System.Windows.Forms.Label();
+            this.btnConfirm = new System.Windows.Forms.Button();
+            this.lblMatch = new System.Windows.Forms.Label();
+            this.lblShortageIcon = new System.Windows.Forms.Label();
+            this.lblShortage = new System.Windows.Forms.Label();
+            this.btnRefill = new System.Windows.Forms.Button();
+            this.lblExcess = new System.Windows.Forms.Label();
+            this.btnCommitQty = new System.Windows.Forms.Button();
+            this.btnReset = new System.Windows.Forms.Button();
+            this.chkExcessCleared = new System.Windows.Forms.CheckBox();
+            this.pnlAlert = new System.Windows.Forms.Panel();
+            ((System.ComponentModel.ISupportInitialize)(this.nudActualQty)).BeginInit();
+            this.pnlAlert.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label1
+            // lblDrug
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("宋体", 13F);
-            this.label1.Location = new System.Drawing.Point(31, 18);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(329, 22);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "请清点分拣槽内的 【阿莫西林】";
+            this.lblDrug.Font = new System.Drawing.Font("Microsoft YaHei UI", 16F, System.Drawing.FontStyle.Bold);
+            this.lblDrug.Location = new System.Drawing.Point(24, 58);
+            this.lblDrug.Name = "lblDrug";
+            this.lblDrug.Size = new System.Drawing.Size(620, 36);
+            this.lblDrug.TabIndex = 0;
+            this.lblDrug.Text = "请清点分拣槽内的药品";
             // 
-            // label2
+            // lblRequiredQty
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(32, 63);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(175, 15);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "处方应发数量：[ 3 ] 盒";
+            this.lblRequiredQty.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
+            this.lblRequiredQty.Location = new System.Drawing.Point(28, 108);
+            this.lblRequiredQty.Name = "lblRequiredQty";
+            this.lblRequiredQty.Size = new System.Drawing.Size(360, 28);
+            this.lblRequiredQty.TabIndex = 1;
+            this.lblRequiredQty.Text = "处方应发数量：[ 0 ] 盒";
             // 
-            // label3
+            // lblActualQty
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(35, 121);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(82, 15);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "实收数量：";
+            this.lblActualQty.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F);
+            this.lblActualQty.Location = new System.Drawing.Point(28, 162);
+            this.lblActualQty.Name = "lblActualQty";
+            this.lblActualQty.Size = new System.Drawing.Size(110, 28);
+            this.lblActualQty.TabIndex = 2;
+            this.lblActualQty.Text = "实收数量：";
             // 
-            // numericUpDown1
+            // nudActualQty
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(123, 111);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 25);
-            this.numericUpDown1.TabIndex = 4;
+            this.nudActualQty.Font = new System.Drawing.Font("Microsoft YaHei UI", 16F);
+            this.nudActualQty.Location = new System.Drawing.Point(150, 154);
+            this.nudActualQty.Maximum = new decimal(new int[] { 99, 0, 0, 0 });
+            this.nudActualQty.Name = "nudActualQty";
+            this.nudActualQty.Size = new System.Drawing.Size(120, 42);
+            this.nudActualQty.TabIndex = 3;
+            this.nudActualQty.ValueChanged += new System.EventHandler(this.nudActualQty_ValueChanged);
             // 
-            // button1
+            // lblMatchIcon
             // 
-            this.button1.Location = new System.Drawing.Point(38, 174);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(50, 23);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "✅";
-            this.button1.UseVisualStyleBackColor = true;
+            this.lblMatchIcon.Font = new System.Drawing.Font("Microsoft YaHei UI", 16F, System.Drawing.FontStyle.Bold);
+            this.lblMatchIcon.ForeColor = System.Drawing.Color.SeaGreen;
+            this.lblMatchIcon.Location = new System.Drawing.Point(16, 12);
+            this.lblMatchIcon.Name = "lblMatchIcon";
+            this.lblMatchIcon.Size = new System.Drawing.Size(36, 32);
+            this.lblMatchIcon.TabIndex = 4;
+            this.lblMatchIcon.Text = "√";
             // 
-            // button2
+            // btnConfirm
             // 
-            this.button2.Location = new System.Drawing.Point(249, 169);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(132, 32);
-            this.button2.TabIndex = 6;
-            this.button2.Text = "确认并继续";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnConfirm.BackColor = System.Drawing.Color.SeaGreen;
+            this.btnConfirm.ForeColor = System.Drawing.Color.White;
+            this.btnConfirm.Location = new System.Drawing.Point(430, 400);
+            this.btnConfirm.Name = "btnConfirm";
+            this.btnConfirm.Size = new System.Drawing.Size(210, 42);
+            this.btnConfirm.TabIndex = 8;
+            this.btnConfirm.Text = "确认并继续";
+            this.btnConfirm.UseVisualStyleBackColor = false;
+            this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
             // 
-            // label4
+            // lblMatch
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(135, 178);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(67, 15);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "数量一致";
+            this.lblMatch.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblMatch.ForeColor = System.Drawing.Color.SeaGreen;
+            this.lblMatch.Location = new System.Drawing.Point(58, 14);
+            this.lblMatch.Name = "lblMatch";
+            this.lblMatch.Size = new System.Drawing.Size(520, 28);
+            this.lblMatch.TabIndex = 5;
+            this.lblMatch.Text = "数量一致";
             // 
-            // button3
+            // lblShortageIcon
             // 
-            this.button3.Location = new System.Drawing.Point(38, 226);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(50, 23);
-            this.button3.TabIndex = 8;
-            this.button3.Text = "！";
-            this.button3.UseVisualStyleBackColor = true;
+            this.lblShortageIcon.Font = new System.Drawing.Font("Microsoft YaHei UI", 16F, System.Drawing.FontStyle.Bold);
+            this.lblShortageIcon.ForeColor = System.Drawing.Color.DarkOrange;
+            this.lblShortageIcon.Location = new System.Drawing.Point(16, 12);
+            this.lblShortageIcon.Name = "lblShortageIcon";
+            this.lblShortageIcon.Size = new System.Drawing.Size(36, 32);
+            this.lblShortageIcon.TabIndex = 6;
+            this.lblShortageIcon.Text = "!";
             // 
-            // label5
+            // lblShortage
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(135, 230);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(211, 15);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "数量短缺！系统计算还差 1 盒";
+            this.lblShortage.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblShortage.ForeColor = System.Drawing.Color.DarkOrange;
+            this.lblShortage.Location = new System.Drawing.Point(58, 14);
+            this.lblShortage.Name = "lblShortage";
+            this.lblShortage.Size = new System.Drawing.Size(520, 28);
+            this.lblShortage.TabIndex = 7;
+            this.lblShortage.Text = "数量短缺";
             // 
-            // button4
+            // btnRefill
             // 
-            this.button4.Location = new System.Drawing.Point(426, 221);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(184, 32);
-            this.button4.TabIndex = 10;
-            this.button4.Text = "让机械臂自动补抓一盒";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnRefill.BackColor = System.Drawing.Color.DarkOrange;
+            this.btnRefill.ForeColor = System.Drawing.Color.White;
+            this.btnRefill.Location = new System.Drawing.Point(430, 400);
+            this.btnRefill.Name = "btnRefill";
+            this.btnRefill.Size = new System.Drawing.Size(210, 42);
+            this.btnRefill.TabIndex = 9;
+            this.btnRefill.Text = "让机械臂自动补抓";
+            this.btnRefill.UseVisualStyleBackColor = false;
+            this.btnRefill.Click += new System.EventHandler(this.btnRefill_Click);
             // 
-            // label6
+            // lblExcess
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(38, 287);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(157, 15);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "超量抓取！请物理剔除";
+            this.lblExcess.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblExcess.ForeColor = System.Drawing.Color.Firebrick;
+            this.lblExcess.Location = new System.Drawing.Point(16, 12);
+            this.lblExcess.Name = "lblExcess";
+            this.lblExcess.Size = new System.Drawing.Size(560, 28);
+            this.lblExcess.TabIndex = 10;
+            this.lblExcess.Text = "超量抓取！请物理剔除";
             // 
-            // button5
+            // btnCommitQty
             // 
-            this.button5.Location = new System.Drawing.Point(335, 105);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(86, 31);
-            this.button5.TabIndex = 12;
-            this.button5.Text = "确认";
-            this.button5.UseVisualStyleBackColor = true;
+            this.btnCommitQty.Location = new System.Drawing.Point(290, 158);
+            this.btnCommitQty.Name = "btnCommitQty";
+            this.btnCommitQty.Size = new System.Drawing.Size(90, 36);
+            this.btnCommitQty.TabIndex = 4;
+            this.btnCommitQty.Text = "清点完成";
+            this.btnCommitQty.UseVisualStyleBackColor = true;
+            this.btnCommitQty.Visible = false;
             // 
-            // button6
+            // btnReset
             // 
-            this.button6.Location = new System.Drawing.Point(41, 413);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(202, 35);
-            this.button6.TabIndex = 13;
-            this.button6.Text = "该明细作废，重新抓取";
-            this.button6.UseVisualStyleBackColor = true;
+            this.btnReset.Location = new System.Drawing.Point(24, 400);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(210, 42);
+            this.btnReset.TabIndex = 11;
+            this.btnReset.Text = "该明细作废，重新抓取";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            //
+            // chkExcessCleared
+            //
+            this.chkExcessCleared.Font = new System.Drawing.Font("Microsoft YaHei UI", 10F);
+            this.chkExcessCleared.Location = new System.Drawing.Point(16, 52);
+            this.chkExcessCleared.Name = "chkExcessCleared";
+            this.chkExcessCleared.Size = new System.Drawing.Size(600, 48);
+            this.chkExcessCleared.TabIndex = 12;
+            this.chkExcessCleared.Text = "我已手动从分拣槽拿走多余药品并放回原处";
+            this.chkExcessCleared.CheckedChanged += new System.EventHandler(this.chkExcessCleared_CheckedChanged);
+            //
+            // pnlAlert
+            //
+            this.pnlAlert.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlAlert.Controls.Add(this.lblMatchIcon);
+            this.pnlAlert.Controls.Add(this.lblMatch);
+            this.pnlAlert.Controls.Add(this.lblShortageIcon);
+            this.pnlAlert.Controls.Add(this.lblShortage);
+            this.pnlAlert.Controls.Add(this.lblExcess);
+            this.pnlAlert.Controls.Add(this.chkExcessCleared);
+            this.pnlAlert.Location = new System.Drawing.Point(24, 230);
+            this.pnlAlert.Name = "pnlAlert";
+            this.pnlAlert.Size = new System.Drawing.Size(640, 140);
+            this.pnlAlert.TabIndex = 13;
             // 
             // FrmQuantityVerify
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(886, 518);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.numericUpDown1);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.BackColor = System.Drawing.Color.LightYellow;
+            this.ClientSize = new System.Drawing.Size(690, 470);
+            this.ControlBox = false;
+            this.Controls.Add(this.pnlAlert);
+            this.Controls.Add(this.btnReset);
+            this.Controls.Add(this.btnRefill);
+            this.Controls.Add(this.btnConfirm);
+            this.Controls.Add(this.btnCommitQty);
+            this.Controls.Add(this.nudActualQty);
+            this.Controls.Add(this.lblActualQty);
+            this.Controls.Add(this.lblRequiredQty);
+            this.Controls.Add(this.lblDrug);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "FrmQuantityVerify";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "人工数量复核";
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            this.pnlAlert.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nudActualQty)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -188,18 +231,20 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Label lblDrug;
+        private System.Windows.Forms.Label lblRequiredQty;
+        private System.Windows.Forms.Label lblActualQty;
+        private System.Windows.Forms.NumericUpDown nudActualQty;
+        private System.Windows.Forms.Label lblMatchIcon;
+        private System.Windows.Forms.Button btnConfirm;
+        private System.Windows.Forms.Label lblMatch;
+        private System.Windows.Forms.Label lblShortageIcon;
+        private System.Windows.Forms.Label lblShortage;
+        private System.Windows.Forms.Button btnRefill;
+        private System.Windows.Forms.Label lblExcess;
+        private System.Windows.Forms.Button btnCommitQty;
+        private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.CheckBox chkExcessCleared;
+        private System.Windows.Forms.Panel pnlAlert;
     }
 }

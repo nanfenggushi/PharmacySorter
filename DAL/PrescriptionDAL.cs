@@ -148,6 +148,69 @@ ORDER BY i.ItemId";
             return MapItems(DbHelper.Find(sql, new SqlParameter("@PrescriptionId", prescriptionId)));
         }
 
+        /// <summary>
+        /// 把处方改成配药中。只有待配药或已经在配药中的处方可以进入。
+        /// </summary>
+        public int MarkDispensing(int prescriptionId)
+        {
+            string sql = @"UPDATE Prescription
+SET Status = N'配药中', CompleteTime = NULL
+WHERE PrescriptionId = @PrescriptionId AND Status IN (N'待配药', N'配药中')";
+            return DbHelper.Update(sql, new SqlParameter("@PrescriptionId", prescriptionId));
+        }
+
+        /// <summary>
+        /// 更新一条明细的抓取次数和状态。
+        /// </summary>
+        public int UpdateItemProgress(int itemId, int grabCount, string status)
+        {
+            string sql = @"UPDATE PrescriptionItem
+SET GrabCount = @GrabCount, Status = @Status
+WHERE ItemId = @ItemId";
+            return DbHelper.Update(sql,
+                new SqlParameter("@GrabCount", grabCount),
+                new SqlParameter("@Status", status),
+                new SqlParameter("@ItemId", itemId));
+        }
+
+        /// <summary>
+        /// 核对通过。实收数量按应发数量保存，避免把操作员清点前的临时值写进去。
+        /// </summary>
+        public int PassItem(int itemId, int actualQty)
+        {
+            string sql = @"UPDATE PrescriptionItem
+SET ActualQty = @ActualQty, Status = N'核对通过'
+WHERE ItemId = @ItemId";
+            return DbHelper.Update(sql,
+                new SqlParameter("@ActualQty", actualQty),
+                new SqlParameter("@ItemId", itemId));
+        }
+
+        /// <summary>
+        /// 作废当前明细。抓取次数和实收数量都清零，状态回到待取药。
+        /// </summary>
+        public int ResetItem(int itemId)
+        {
+            string sql = @"UPDATE PrescriptionItem
+SET GrabCount = 0, ActualQty = 0, Status = N'待取药'
+WHERE ItemId = @ItemId";
+            return DbHelper.Update(sql, new SqlParameter("@ItemId", itemId));
+        }
+
+        /// <summary>
+        /// 全部明细都核对通过后，把处方置为已完成并记录完成时间。
+        /// </summary>
+        public int CompleteIfAllPassed(int prescriptionId)
+        {
+            string sql = @"UPDATE Prescription
+SET Status = N'已完成', CompleteTime = GETDATE()
+WHERE PrescriptionId = @PrescriptionId
+  AND NOT EXISTS (
+      SELECT 1 FROM PrescriptionItem
+      WHERE PrescriptionId = @PrescriptionId AND Status <> N'核对通过')";
+            return DbHelper.Update(sql, new SqlParameter("@PrescriptionId", prescriptionId));
+        }
+
         private static SqlConnection OpenConnection()
         {
             SqlConnection connection = new SqlConnection(DbHelper.ConnectionString);

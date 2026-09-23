@@ -51,5 +51,20 @@ namespace PharmacySorter
         {
             PageHelper.SwitchPage<UcSystemAuditLog>(pnlPageContainer, ref ucSystemAuditLog);
         }
+
+        /// <summary>
+        /// 急停。如果看板已经打开，立即停止它的抓取循环并复位。
+        /// </summary>
+        private void button6_Click(object sender, EventArgs e)
+        {
+            UcDashboard dashboard = ucDashboard as UcDashboard;
+            if (dashboard == null)
+            {
+                MessageBox.Show("请先打开配药监控看板后再急停。", "急停", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            dashboard.EmergencyStop();
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BLL;
+using Common;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace PharmacySorter
 {
     /// <summary>
     /// 配药监控看板。展示当前处方、明细进度和机械臂作业方向。
-    /// 启动前只做工位和药品绑定检查，真正的抓取循环由核对流程继续。
+    /// 启动后按明细循环抓取，次数达到应发数量时弹出数量核对。
     /// </summary>
     public partial class UcDashboard : UserControl
     {
@@ -17,6 +18,16 @@ namespace PharmacySorter
         /// 看板业务。界面不直接查询数据库。
         /// </summary>
         private readonly DispenseBLL dispenseBll = new DispenseBLL();
+
+        /// <summary>
+        /// 机械臂指令发送。没有串口时只按延时演示动作。
+        /// </summary>
+        private readonly ArmCommandService arm = new ArmCommandService();
+
+        /// <summary>
+        /// 急停后置为 true，当前抓取循环会在下一次动作前停下来。
+        /// </summary>
+        private bool stopRequested;
 
         /// <summary>
         /// 当前展示的处方。没有待处理处方时为空。
@@ -49,7 +60,7 @@ namespace PharmacySorter
         }
 
         /// <summary>
-        /// 检查当前处方能否启动。条件不满足时说明原因，不改变处方状态。
+        /// 检查通过后启动当前处方。抓取过程中按钮不可再次点击。
         /// </summary>
         private void btnStart_Click(object sender, EventArgs e)
         {
@@ -61,8 +72,153 @@ namespace PharmacySorter
                 return;
             }
 
-            AppendLog("处方 " + currentPrescription.PrescriptionId + " 检查通过，可以开始配药");
-            MessageBox.Show("工位和药品绑定检查通过。抓取循环将在数量核对流程中执行。", "可以启动", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            try
+            {
+                btnStart.Enabled = false;
+                stopRequested = false;
+                dispenseBll.Start(currentPrescription);
+                AppendLog("下发复位指令 " + ArmCommandService.ResetCommand);
+                arm.Send(ArmCommandService.ResetCommand, 1000);
+                BindSummary();
+                RunPrescription();
+            }
+            catch (Exception ex)
+            {
+                AppendLog("配药中断：" + ex.Message);
+                MessageBox.Show(ex.Message, "配药失败", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            finally
+            {
+                ShowActiveStation(null);
+                BindSummary();
+                BindItems();
+            }
+        }
+
+        /// <summary>
+        /// 急停。当前循环会在下一次动作前停止，并下发复位指令。
+        /// </summary>
+        public void EmergencyStop()
+        {
+            stopRequested = true;
+            try
+            {
+                arm.Send(ArmCommandService.ResetCommand, 0);
+                AppendLog("急停，已下发复位指令 " + ArmCommandService.ResetCommand);
+            }
+            catch (Exception ex)
+            {
+                AppendLog("急停复位失败：" + ex.Message);
+            }
+
+            ShowActiveStation(null);
+        }
+
+        /// <summary>
+        /// 逐条处理未完成的明细。每条抓满后必须人工核对。
+        /// </summary>
+        private void RunPrescription()
+        {
+            while (!stopRequested)
+            {
+                PrescriptionItem item = dispenseBll.FindNextItem(currentItems);
+                if (item == null)
+                {
+                    if (dispenseBll.TryComplete(currentPrescription))
+                    {
+                        AppendLog("处方 " + currentPrescription.PrescriptionId + " 已完成");
+                    }
+                    return;
+                }
+
+                int count = item.Status == "待核对" ? 0 : Math.Max(item.RequiredQty - item.GrabCount, 0);
+                if (count > 0)
+                {
+                    GrabTimes(item, count);
+                }
+
+                if (stopRequested)
+                {
+                    return;
+                }
+
+                dispenseBll.MarkWaitingCheck(item);
+                BindItems();
+                if (!VerifyItem(item))
+                {
+                    return;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 对一条明细连续抓取指定次数。每次都是先抓药位，再投到分拣槽。
+        /// </summary>
+        private void GrabTimes(PrescriptionItem item, int count)
+        {
+            Station grabStation = dispenseBll.GetGrabStation(item);
+            Station dropStation = dispenseBll.GetDropStation();
+            for (int i = 0; i < count; i++)
+            {
+                if (stopRequested)
+                {
+                    AppendLog("已急停，剩余抓取不再执行");
+                    return;
+                }
+
+                ShowActiveStation(grabStation.StationId);
+                AppendLog("下发抓取指令 " + grabStation.GrabCommand);
+                arm.Send(grabStation.GrabCommand, grabStation.EstTimeMs);
+                Application.DoEvents();
+
+                ShowActiveStation(dropStation.StationId);
+                AppendLog("下发投递指令 " + dropStation.DropCommand);
+                arm.Send(dropStation.DropCommand, dropStation.EstTimeMs);
+                dispenseBll.RecordGrab(item, grabStation.GrabCommand, dropStation.DropCommand);
+                BindItems();
+                Application.DoEvents();
+            }
+
+            ShowActiveStation(null);
+        }
+
+        /// <summary>
+        /// 弹出数量核对。补抓和作废都会回到抓取流程，通过后才处理下一条。
+        /// </summary>
+        private bool VerifyItem(PrescriptionItem item)
+        {
+            using (FrmQuantityVerify dialog = new FrmQuantityVerify(item))
+            {
+                if (dialog.ShowDialog(FindForm()) != DialogResult.OK)
+                {
+                    AppendLog("数量核对已取消");
+                    return false;
+                }
+
+                int nextCount = dispenseBll.ApplyDecision(item, dialog.ActualQty, dialog.Decision);
+                BindItems();
+                if (nextCount <= 0)
+                {
+                    return true;
+                }
+
+                if (dialog.Decision == VerifyDecision.Reset)
+                {
+                    AppendLog("【" + item.DrugName + "】已作废，重新抓取");
+                }
+                else
+                {
+                    AppendLog("【" + item.DrugName + "】补抓 " + nextCount + " 盒");
+                }
+
+                GrabTimes(item, nextCount);
+                if (stopRequested)
+                {
+                    return false;
+                }
+
+                return VerifyItem(item);
+            }
         }
 
         /// <summary>
