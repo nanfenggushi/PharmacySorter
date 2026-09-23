@@ -1,0 +1,45 @@
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# 编译输出
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Ll]og/
+[Ll]ogs/
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# 测试与覆盖率
+[Tt]est[Rr]esult*/
+*.trx
+*.coverage
+*.coveragexml
+
+# 其他生成文件
+*.cache
+*.pdb
+*.dll
+*.exe
+*.tmp
+*.log
+_ReSharper*/
+*.[Rr]e[Ss]harper
+.idea/
+*.rsuser

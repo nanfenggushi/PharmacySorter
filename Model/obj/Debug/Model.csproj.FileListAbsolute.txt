@@ -1,6 +1,0 @@
-C:\Users\29811\Desktop\PharmacySorter\Model\bin\Debug\Model.dll
-C:\Users\29811\Desktop\PharmacySorter\Model\bin\Debug\Model.pdb
-C:\Users\29811\Desktop\PharmacySorter\Model\obj\Debug\Model.csproj.AssemblyReference.cache
-C:\Users\29811\Desktop\PharmacySorter\Model\obj\Debug\Model.csproj.CoreCompileInputs.cache
-C:\Users\29811\Desktop\PharmacySorter\Model\obj\Debug\Model.dll
-C:\Users\29811\Desktop\PharmacySorter\Model\obj\Debug\Model.pdb
