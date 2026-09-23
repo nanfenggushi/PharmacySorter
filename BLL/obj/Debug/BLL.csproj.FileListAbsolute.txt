@@ -1,0 +1,13 @@
+C:\Users\29811\Desktop\PharmacySorter\BLL\bin\Debug\BLL.dll
+C:\Users\29811\Desktop\PharmacySorter\BLL\bin\Debug\BLL.pdb
+C:\Users\29811\Desktop\PharmacySorter\BLL\bin\Debug\Common.dll
+C:\Users\29811\Desktop\PharmacySorter\BLL\bin\Debug\DAL.dll
+C:\Users\29811\Desktop\PharmacySorter\BLL\bin\Debug\Model.dll
+C:\Users\29811\Desktop\PharmacySorter\BLL\bin\Debug\Common.pdb
+C:\Users\29811\Desktop\PharmacySorter\BLL\bin\Debug\DAL.pdb
+C:\Users\29811\Desktop\PharmacySorter\BLL\bin\Debug\Model.pdb
+C:\Users\29811\Desktop\PharmacySorter\BLL\obj\Debug\BLL.csproj.AssemblyReference.cache
+C:\Users\29811\Desktop\PharmacySorter\BLL\obj\Debug\BLL.csproj.CoreCompileInputs.cache
+C:\Users\29811\Desktop\PharmacySorter\BLL\obj\Debug\BLL.csproj.Up2Date
+C:\Users\29811\Desktop\PharmacySorter\BLL\obj\Debug\BLL.dll
+C:\Users\29811\Desktop\PharmacySorter\BLL\obj\Debug\BLL.pdb

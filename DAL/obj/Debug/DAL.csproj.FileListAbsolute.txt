@@ -1,0 +1,11 @@
+C:\Users\29811\Desktop\PharmacySorter\DAL\bin\Debug\DAL.dll
+C:\Users\29811\Desktop\PharmacySorter\DAL\bin\Debug\DAL.pdb
+C:\Users\29811\Desktop\PharmacySorter\DAL\bin\Debug\Common.dll
+C:\Users\29811\Desktop\PharmacySorter\DAL\bin\Debug\Model.dll
+C:\Users\29811\Desktop\PharmacySorter\DAL\bin\Debug\Common.pdb
+C:\Users\29811\Desktop\PharmacySorter\DAL\bin\Debug\Model.pdb
+C:\Users\29811\Desktop\PharmacySorter\DAL\obj\Debug\DAL.csproj.AssemblyReference.cache
+C:\Users\29811\Desktop\PharmacySorter\DAL\obj\Debug\DAL.csproj.CoreCompileInputs.cache
+C:\Users\29811\Desktop\PharmacySorter\DAL\obj\Debug\DAL.csproj.Up2Date
+C:\Users\29811\Desktop\PharmacySorter\DAL\obj\Debug\DAL.dll
+C:\Users\29811\Desktop\PharmacySorter\DAL\obj\Debug\DAL.pdb
