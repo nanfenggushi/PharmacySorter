@@ -116,6 +116,25 @@ WHERE p.PrescriptionId = @PrescriptionId";
         }
 
         /// <summary>
+        /// 按处方号和时间范围查询历史处方。空条件不参与过滤，结果按接收时间倒序。
+        /// </summary>
+        public List<Prescription> SearchHistory(int? prescriptionId, DateTime? startTime, DateTime? endTime)
+        {
+            string sql = @"
+SELECT p.PrescriptionId, p.PatientNo, p.Status, p.CreateTime, p.CompleteTime, p.SortNo,
+       (SELECT COUNT(1) FROM PrescriptionItem i WHERE i.PrescriptionId = p.PrescriptionId) AS ItemCount
+FROM Prescription p
+WHERE (@PrescriptionId IS NULL OR p.PrescriptionId = @PrescriptionId)
+  AND (@StartTime IS NULL OR p.CreateTime >= @StartTime)
+  AND (@EndTime IS NULL OR p.CreateTime < @EndTime)
+ORDER BY p.CreateTime DESC, p.PrescriptionId DESC";
+            return MapPrescriptions(DbHelper.Find(sql,
+                new SqlParameter("@PrescriptionId", (object)prescriptionId ?? DBNull.Value),
+                new SqlParameter("@StartTime", (object)startTime ?? DBNull.Value),
+                new SqlParameter("@EndTime", (object)endTime ?? DBNull.Value)));
+        }
+
+        /// <summary>
         /// 看板当前处方：正在配药的优先，否则取待配队列第一张。
         /// </summary>
         public Prescription GetCurrent()

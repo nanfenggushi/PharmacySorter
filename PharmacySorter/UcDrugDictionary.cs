@@ -33,8 +33,8 @@ namespace PharmacySorter
         public UcDrugDictionary()
         {
             InitializeComponent();
-            dgvMedicineInfo.CellFormatting += dataGridView1_CellFormatting;
-            dgvMedicineInfo.SelectionChanged += dataGridView1_SelectionChanged;
+            dgvMedicineInfo.CellFormatting += dgvMedicineInfo_CellFormatting;
+            dgvMedicineInfo.SelectionChanged += dgvMedicineInfo_SelectionChanged;
             Load += UcDrugDictionary_Load;
         }
 
@@ -73,7 +73,7 @@ namespace PharmacySorter
         /// <summary>
         /// 清空上方输入区，准备录入一条新药品。
         /// </summary>
-        private void button1_Click(object sender, EventArgs e)
+        private void btnAdd_Click(object sender, EventArgs e)
         {
             ClearEditor();
             txtDrugName.Focus();
@@ -147,7 +147,7 @@ namespace PharmacySorter
         /// 表格选中行变化时，把该行的编号、名称、规格回填到上方输入区。
         /// 工位同步选中下拉项。编号文本框只读，用户不能改成其他药品。
         /// </summary>
-        private void dataGridView1_SelectionChanged(object sender, EventArgs e)
+        private void dgvMedicineInfo_SelectionChanged(object sender, EventArgs e)
         {
             Drug drug = CurrentDrug();
             if (drug == null)
@@ -167,7 +167,7 @@ namespace PharmacySorter
         /// <summary>
         /// 停用药品整行显示为灰色，便于和启用药品区分。
         /// </summary>
-        private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void dgvMedicineInfo_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0 || e.RowIndex >= dgvMedicineInfo.Rows.Count)
             {
@@ -205,7 +205,7 @@ namespace PharmacySorter
                 }
                 else
                 {
-                    dataGridView1_SelectionChanged(null, EventArgs.Empty);
+                    dgvMedicineInfo_SelectionChanged(null, EventArgs.Empty);
                 }
             }
             catch (Exception ex)

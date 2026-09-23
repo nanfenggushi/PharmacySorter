@@ -42,6 +42,17 @@ namespace PharmacySorter
         }
 
         /// <summary>
+        /// 打开历史处方查询。待配队列仍只显示未开始的处方。
+        /// </summary>
+        private void btnHistory_Click(object sender, EventArgs e)
+        {
+            using (FrmPrescriptionHistory dialog = new FrmPrescriptionHistory())
+            {
+                dialog.ShowDialog(FindForm());
+            }
+        }
+
+        /// <summary>
         /// 刷新自动生成的处方号。该编号只是预览，正式编号以提交时数据库生成的为准。
         /// </summary>
         private void btnGenerateId_Click(object sender, EventArgs e)

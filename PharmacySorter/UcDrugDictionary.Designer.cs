@@ -32,17 +32,17 @@ namespace PharmacySorter
             this.btnSave = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
             this.dgvMedicineInfo = new System.Windows.Forms.DataGridView();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblDrugList = new System.Windows.Forms.Label();
+            this.lblDrugId = new System.Windows.Forms.Label();
             this.txtMedicineId = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.lblDrugName = new System.Windows.Forms.Label();
             this.txtDrugName = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.lblSpec = new System.Windows.Forms.Label();
             this.txtSpec = new System.Windows.Forms.TextBox();
             this.lblKeyword = new System.Windows.Forms.Label();
             this.txtKeyword = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
+            this.lblStation = new System.Windows.Forms.Label();
             this.cmbCurrentWorkstation = new System.Windows.Forms.ComboBox();
             this.colDrugId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDrugName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -60,7 +60,7 @@ namespace PharmacySorter
             this.btnAdd.TabIndex = 0;
             this.btnAdd.Text = "新增";
             this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.button1_Click);
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnSave
             // 
@@ -106,23 +106,23 @@ namespace PharmacySorter
             this.dgvMedicineInfo.Size = new System.Drawing.Size(962, 397);
             this.dgvMedicineInfo.TabIndex = 3;
             // 
-            // label1
+            // lblDrugList
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(48, 231);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(97, 15);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "所有药品信息";
+            this.lblDrugList.AutoSize = true;
+            this.lblDrugList.Location = new System.Drawing.Point(48, 231);
+            this.lblDrugList.Name = "lblDrugList";
+            this.lblDrugList.Size = new System.Drawing.Size(97, 15);
+            this.lblDrugList.TabIndex = 4;
+            this.lblDrugList.Text = "所有药品信息";
             // 
-            // label2
+            // lblDrugId
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(49, 51);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(67, 15);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "药品编号";
+            this.lblDrugId.AutoSize = true;
+            this.lblDrugId.Location = new System.Drawing.Point(49, 51);
+            this.lblDrugId.Name = "lblDrugId";
+            this.lblDrugId.Size = new System.Drawing.Size(67, 15);
+            this.lblDrugId.TabIndex = 5;
+            this.lblDrugId.Text = "药品编号";
             // 
             // txtMedicineId
             // 
@@ -132,14 +132,14 @@ namespace PharmacySorter
             this.txtMedicineId.Size = new System.Drawing.Size(165, 25);
             this.txtMedicineId.TabIndex = 6;
             // 
-            // label3
+            // lblDrugName
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(49, 116);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(67, 15);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "药品名称";
+            this.lblDrugName.AutoSize = true;
+            this.lblDrugName.Location = new System.Drawing.Point(49, 116);
+            this.lblDrugName.Name = "lblDrugName";
+            this.lblDrugName.Size = new System.Drawing.Size(67, 15);
+            this.lblDrugName.TabIndex = 7;
+            this.lblDrugName.Text = "药品名称";
             // 
             // txtDrugName
             // 
@@ -149,14 +149,14 @@ namespace PharmacySorter
             this.txtDrugName.Size = new System.Drawing.Size(165, 25);
             this.txtDrugName.TabIndex = 8;
             // 
-            // label4
+            // lblSpec
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(356, 117);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(37, 15);
-            this.label4.TabIndex = 9;
-            this.label4.Text = "规格";
+            this.lblSpec.AutoSize = true;
+            this.lblSpec.Location = new System.Drawing.Point(356, 117);
+            this.lblSpec.Name = "lblSpec";
+            this.lblSpec.Size = new System.Drawing.Size(37, 15);
+            this.lblSpec.TabIndex = 9;
+            this.lblSpec.Text = "规格";
             // 
             // txtSpec
             // 
@@ -192,14 +192,14 @@ namespace PharmacySorter
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
-            // label5
+            // lblStation
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(356, 51);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(97, 15);
-            this.label5.TabIndex = 15;
-            this.label5.Text = "当前绑定工位";
+            this.lblStation.AutoSize = true;
+            this.lblStation.Location = new System.Drawing.Point(356, 51);
+            this.lblStation.Name = "lblStation";
+            this.lblStation.Size = new System.Drawing.Size(97, 15);
+            this.lblStation.TabIndex = 15;
+            this.lblStation.Text = "当前绑定工位";
             // 
             // cmbCurrentWorkstation
             // 
@@ -255,17 +255,17 @@ namespace PharmacySorter
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.cmbCurrentWorkstation);
-            this.Controls.Add(this.label5);
+            this.Controls.Add(this.lblStation);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.txtKeyword);
             this.Controls.Add(this.lblKeyword);
             this.Controls.Add(this.txtSpec);
-            this.Controls.Add(this.label4);
+            this.Controls.Add(this.lblSpec);
             this.Controls.Add(this.txtDrugName);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.lblDrugName);
             this.Controls.Add(this.txtMedicineId);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lblDrugId);
+            this.Controls.Add(this.lblDrugList);
             this.Controls.Add(this.dgvMedicineInfo);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnSave);
@@ -284,17 +284,17 @@ namespace PharmacySorter
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.DataGridView dgvMedicineInfo;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblDrugList;
+        private System.Windows.Forms.Label lblDrugId;
         private System.Windows.Forms.TextBox txtMedicineId;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblDrugName;
         private System.Windows.Forms.TextBox txtDrugName;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblSpec;
         private System.Windows.Forms.TextBox txtSpec;
         private System.Windows.Forms.Label lblKeyword;
         private System.Windows.Forms.TextBox txtKeyword;
         private System.Windows.Forms.Button btnSearch;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblStation;
         private System.Windows.Forms.ComboBox cmbCurrentWorkstation;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDrugId;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDrugName;

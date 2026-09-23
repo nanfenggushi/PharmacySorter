@@ -20,9 +20,9 @@ namespace PharmacySorter
         private readonly DispenseBLL dispenseBll = new DispenseBLL();
 
         /// <summary>
-        /// 机械臂指令发送。没有串口时只按延时演示动作。
+        /// 机械臂指令发送。由主窗体传入，急停和抓取使用同一条串口。
         /// </summary>
-        private readonly ArmCommandService arm = new ArmCommandService();
+        private ArmCommandService arm = new ArmCommandService();
 
         /// <summary>
         /// 急停后置为 true，当前抓取循环会在下一次动作前停下来。
@@ -49,6 +49,27 @@ namespace PharmacySorter
             InitializeComponent();
             dgvItems.CellFormatting += dgvItems_CellFormatting;
             Load += UcDashboard_Load;
+        }
+
+        /// <summary>
+        /// 绑定主窗体已经打开的串口。未传入时保留本地对象，仍可按延时演示。
+        /// </summary>
+        public void BindArm(ArmCommandService commandService)
+        {
+            if (commandService != null)
+            {
+                arm = commandService;
+            }
+        }
+
+        /// <summary>
+        /// 请求停止当前抓取循环。复位指令由主窗体统一下发。
+        /// </summary>
+        public void RequestStop()
+        {
+            stopRequested = true;
+            AppendLog("急停，当前抓取循环已中断");
+            ShowActiveStation(null);
         }
 
         /// <summary>
@@ -93,25 +114,6 @@ namespace PharmacySorter
                 BindSummary();
                 BindItems();
             }
-        }
-
-        /// <summary>
-        /// 急停。当前循环会在下一次动作前停止，并下发复位指令。
-        /// </summary>
-        public void EmergencyStop()
-        {
-            stopRequested = true;
-            try
-            {
-                arm.Send(ArmCommandService.ResetCommand, 0);
-                AppendLog("急停，已下发复位指令 " + ArmCommandService.ResetCommand);
-            }
-            catch (Exception ex)
-            {
-                AppendLog("急停复位失败：" + ex.Message);
-            }
-
-            ShowActiveStation(null);
         }
 
         /// <summary>

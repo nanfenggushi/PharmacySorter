@@ -40,6 +40,21 @@ namespace BLL
         }
 
         /// <summary>
+        /// 按处方号和接收日期查询历史处方。日期按整天计算，结束日期当天也包含在内。
+        /// </summary>
+        public List<Prescription> SearchHistory(string prescriptionIdText, DateTime? startDate, DateTime? endDate)
+        {
+            if (startDate.HasValue && endDate.HasValue && startDate.Value.Date > endDate.Value.Date)
+            {
+                throw new ArgumentException("开始日期不能晚于结束日期");
+            }
+
+            DateTime? startTime = startDate.HasValue ? startDate.Value.Date : (DateTime?)null;
+            DateTime? endTime = endDate.HasValue ? endDate.Value.Date.AddDays(1) : (DateTime?)null;
+            return dal.SearchHistory(ParsePrescriptionId(prescriptionIdText), startTime, endTime);
+        }
+
+        /// <summary>
         /// 预览下一个自动生成的处方号。真正编号仍在提交时由数据库生成。
         /// </summary>
         public int PreviewNextId()
@@ -104,6 +119,21 @@ namespace BLL
                 throw new ArgumentException("只有待配药的处方可以操作");
             }
             return prescription;
+        }
+
+        private static int? ParsePrescriptionId(string prescriptionIdText)
+        {
+            if (string.IsNullOrWhiteSpace(prescriptionIdText))
+            {
+                return null;
+            }
+
+            int prescriptionId;
+            if (!int.TryParse(prescriptionIdText.Trim(), out prescriptionId) || prescriptionId <= 0)
+            {
+                throw new ArgumentException("处方编号必须是正整数");
+            }
+            return prescriptionId;
         }
 
         private static string NormalizePatientNo(string patientNo)

@@ -52,6 +52,7 @@ namespace PharmacySorter
             this.grpQueue = new System.Windows.Forms.GroupBox();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnMoveTop = new System.Windows.Forms.Button();
+            this.btnHistory = new System.Windows.Forms.Button();
             this.dgvQueue = new System.Windows.Forms.DataGridView();
             this.colQueueId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colQueuePatientNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -305,6 +306,7 @@ namespace PharmacySorter
             // 
             this.grpQueue.Controls.Add(this.btnCancel);
             this.grpQueue.Controls.Add(this.btnMoveTop);
+            this.grpQueue.Controls.Add(this.btnHistory);
             this.grpQueue.Controls.Add(this.dgvQueue);
             this.grpQueue.Location = new System.Drawing.Point(18, 19);
             this.grpQueue.Name = "grpQueue";
@@ -332,6 +334,16 @@ namespace PharmacySorter
             this.btnMoveTop.Text = "优先处理(置顶)";
             this.btnMoveTop.UseVisualStyleBackColor = true;
             this.btnMoveTop.Click += new System.EventHandler(this.btnMoveTop_Click);
+            //
+            // btnHistory
+            //
+            this.btnHistory.Location = new System.Drawing.Point(400, 610);
+            this.btnHistory.Name = "btnHistory";
+            this.btnHistory.Size = new System.Drawing.Size(140, 35);
+            this.btnHistory.TabIndex = 3;
+            this.btnHistory.Text = "历史处方";
+            this.btnHistory.UseVisualStyleBackColor = true;
+            this.btnHistory.Click += new System.EventHandler(this.btnHistory_Click);
             // 
             // dgvQueue
             // 
@@ -454,5 +466,6 @@ namespace PharmacySorter
         private System.Windows.Forms.DataGridViewTextBoxColumn colQueueStatus;
         private System.Windows.Forms.Button btnMoveTop;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnHistory;
     }
 }

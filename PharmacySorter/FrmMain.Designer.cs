@@ -1,4 +1,4 @@
-﻿namespace PharmacySorter
+namespace PharmacySorter
 {
     partial class FrmMain
     {
@@ -28,144 +28,144 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.pnlHeader = new System.Windows.Forms.Panel();
+            this.lblConnection = new System.Windows.Forms.Label();
+            this.lblClock = new System.Windows.Forms.Label();
+            this.lblOperator = new System.Windows.Forms.Label();
+            this.lblTitle = new System.Windows.Forms.Label();
+            this.pnlNav = new System.Windows.Forms.Panel();
+            this.btnEmergencyStop = new System.Windows.Forms.Button();
+            this.btnAuditLog = new System.Windows.Forms.Button();
+            this.btnPrescription = new System.Windows.Forms.Button();
+            this.btnDrugDictionary = new System.Windows.Forms.Button();
+            this.btnStationMapping = new System.Windows.Forms.Button();
+            this.btnDashboard = new System.Windows.Forms.Button();
             this.pnlPageContainer = new System.Windows.Forms.Panel();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.pnlHeader.SuspendLayout();
+            this.pnlNav.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panel1
+            // pnlHeader
             // 
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1439, 57);
-            this.panel1.TabIndex = 0;
+            this.pnlHeader.Controls.Add(this.lblConnection);
+            this.pnlHeader.Controls.Add(this.lblClock);
+            this.pnlHeader.Controls.Add(this.lblOperator);
+            this.pnlHeader.Controls.Add(this.lblTitle);
+            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
+            this.pnlHeader.Name = "pnlHeader";
+            this.pnlHeader.Size = new System.Drawing.Size(1439, 57);
+            this.pnlHeader.TabIndex = 0;
             // 
-            // label4
+            // lblConnection
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(1158, 19);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(269, 15);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "已连接 COM3 (绿灯) / 未连接 (红灯)";
+            this.lblConnection.AutoSize = true;
+            this.lblConnection.Location = new System.Drawing.Point(1158, 19);
+            this.lblConnection.Name = "lblConnection";
+            this.lblConnection.Size = new System.Drawing.Size(269, 15);
+            this.lblConnection.TabIndex = 3;
+            this.lblConnection.Text = "已连接 COM3 (绿灯) / 未连接 (红灯)";
             // 
-            // label3
+            // lblClock
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(357, 19);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(67, 15);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "系统时间";
+            this.lblClock.AutoSize = true;
+            this.lblClock.Location = new System.Drawing.Point(357, 19);
+            this.lblClock.Name = "lblClock";
+            this.lblClock.Size = new System.Drawing.Size(67, 15);
+            this.lblClock.TabIndex = 2;
+            this.lblClock.Text = "系统时间";
             // 
-            // label2
+            // lblOperator
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(233, 20);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(82, 15);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "操作员姓名";
+            this.lblOperator.AutoSize = true;
+            this.lblOperator.Location = new System.Drawing.Point(233, 20);
+            this.lblOperator.Name = "lblOperator";
+            this.lblOperator.Size = new System.Drawing.Size(82, 15);
+            this.lblOperator.TabIndex = 1;
+            this.lblOperator.Text = "操作员姓名";
             // 
-            // label1
+            // lblTitle
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 20);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(127, 15);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "医院药品分拣系统";
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Location = new System.Drawing.Point(12, 20);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(127, 15);
+            this.lblTitle.TabIndex = 0;
+            this.lblTitle.Text = "医院药品分拣系统";
             // 
-            // panel2
+            // pnlNav
             // 
-            this.panel2.Controls.Add(this.button6);
-            this.panel2.Controls.Add(this.button5);
-            this.panel2.Controls.Add(this.button4);
-            this.panel2.Controls.Add(this.button3);
-            this.panel2.Controls.Add(this.button2);
-            this.panel2.Controls.Add(this.button1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel2.Location = new System.Drawing.Point(0, 57);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(156, 721);
-            this.panel2.TabIndex = 1;
+            this.pnlNav.Controls.Add(this.btnEmergencyStop);
+            this.pnlNav.Controls.Add(this.btnAuditLog);
+            this.pnlNav.Controls.Add(this.btnPrescription);
+            this.pnlNav.Controls.Add(this.btnDrugDictionary);
+            this.pnlNav.Controls.Add(this.btnStationMapping);
+            this.pnlNav.Controls.Add(this.btnDashboard);
+            this.pnlNav.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlNav.Location = new System.Drawing.Point(0, 57);
+            this.pnlNav.Name = "pnlNav";
+            this.pnlNav.Size = new System.Drawing.Size(156, 721);
+            this.pnlNav.TabIndex = 1;
             // 
-            // button6
+            // btnEmergencyStop
             // 
-            this.button6.Location = new System.Drawing.Point(15, 564);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(124, 50);
-            this.button6.TabIndex = 5;
-            this.button6.Text = "急停 / 软件复位 (G0002)";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.btnEmergencyStop.Location = new System.Drawing.Point(15, 564);
+            this.btnEmergencyStop.Name = "btnEmergencyStop";
+            this.btnEmergencyStop.Size = new System.Drawing.Size(124, 50);
+            this.btnEmergencyStop.TabIndex = 5;
+            this.btnEmergencyStop.Text = "急停 / 软件复位 (G0002)";
+            this.btnEmergencyStop.UseVisualStyleBackColor = true;
+            this.btnEmergencyStop.Click += new System.EventHandler(this.btnEmergencyStop_Click);
             // 
-            // button5
+            // btnAuditLog
             // 
-            this.button5.Location = new System.Drawing.Point(3, 304);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(153, 35);
-            this.button5.TabIndex = 4;
-            this.button5.Text = "系统操作日志审计";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.btnAuditLog.Location = new System.Drawing.Point(3, 304);
+            this.btnAuditLog.Name = "btnAuditLog";
+            this.btnAuditLog.Size = new System.Drawing.Size(153, 35);
+            this.btnAuditLog.TabIndex = 4;
+            this.btnAuditLog.Text = "系统操作日志审计";
+            this.btnAuditLog.UseVisualStyleBackColor = true;
+            this.btnAuditLog.Click += new System.EventHandler(this.btnAuditLog_Click);
             // 
-            // button4
+            // btnPrescription
             // 
-            this.button4.Location = new System.Drawing.Point(6, 236);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(150, 31);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "处方录入与队列管理";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.btnPrescription.Location = new System.Drawing.Point(6, 236);
+            this.btnPrescription.Name = "btnPrescription";
+            this.btnPrescription.Size = new System.Drawing.Size(150, 31);
+            this.btnPrescription.TabIndex = 3;
+            this.btnPrescription.Text = "处方录入与队列管理";
+            this.btnPrescription.UseVisualStyleBackColor = true;
+            this.btnPrescription.Click += new System.EventHandler(this.btnPrescription_Click);
             // 
-            // button3
+            // btnDrugDictionary
             // 
-            this.button3.Location = new System.Drawing.Point(15, 170);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(124, 31);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "药品字典管理";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btnDrugDictionary.Location = new System.Drawing.Point(15, 170);
+            this.btnDrugDictionary.Name = "btnDrugDictionary";
+            this.btnDrugDictionary.Size = new System.Drawing.Size(124, 31);
+            this.btnDrugDictionary.TabIndex = 2;
+            this.btnDrugDictionary.Text = "药品字典管理";
+            this.btnDrugDictionary.UseVisualStyleBackColor = true;
+            this.btnDrugDictionary.Click += new System.EventHandler(this.btnDrugDictionary_Click);
             // 
-            // button2
+            // btnStationMapping
             // 
-            this.button2.Location = new System.Drawing.Point(15, 100);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(124, 31);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "工位与药品配置";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnStationMapping.Location = new System.Drawing.Point(15, 100);
+            this.btnStationMapping.Name = "btnStationMapping";
+            this.btnStationMapping.Size = new System.Drawing.Size(124, 31);
+            this.btnStationMapping.TabIndex = 1;
+            this.btnStationMapping.Text = "工位与药品配置";
+            this.btnStationMapping.UseVisualStyleBackColor = true;
+            this.btnStationMapping.Click += new System.EventHandler(this.btnStationMapping_Click);
             // 
-            // button1
+            // btnDashboard
             // 
-            this.button1.Location = new System.Drawing.Point(15, 33);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(124, 31);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "配药监控看板";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnDashboard.Location = new System.Drawing.Point(15, 33);
+            this.btnDashboard.Name = "btnDashboard";
+            this.btnDashboard.Size = new System.Drawing.Size(124, 31);
+            this.btnDashboard.TabIndex = 0;
+            this.btnDashboard.Text = "配药监控看板";
+            this.btnDashboard.UseVisualStyleBackColor = true;
+            this.btnDashboard.Click += new System.EventHandler(this.btnDashboard_Click);
             // 
             // pnlPageContainer
             // 
@@ -181,31 +181,31 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1439, 778);
             this.Controls.Add(this.pnlPageContainer);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pnlNav);
+            this.Controls.Add(this.pnlHeader);
             this.Name = "FrmMain";
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
+            this.pnlHeader.ResumeLayout(false);
+            this.pnlHeader.PerformLayout();
+            this.pnlNav.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel pnlHeader;
+        private System.Windows.Forms.Label lblConnection;
+        private System.Windows.Forms.Label lblClock;
+        private System.Windows.Forms.Label lblOperator;
+        private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Panel pnlNav;
         private System.Windows.Forms.Panel pnlPageContainer;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnEmergencyStop;
+        private System.Windows.Forms.Button btnAuditLog;
+        private System.Windows.Forms.Button btnPrescription;
+        private System.Windows.Forms.Button btnDrugDictionary;
+        private System.Windows.Forms.Button btnStationMapping;
+        private System.Windows.Forms.Button btnDashboard;
     }
 }
 
