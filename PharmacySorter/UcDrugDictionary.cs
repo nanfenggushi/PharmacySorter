@@ -33,8 +33,8 @@ namespace PharmacySorter
         public UcDrugDictionary()
         {
             InitializeComponent();
-            dgvMedicineInfo.CellFormatting += dgvMedicineInfo_CellFormatting;
-            dgvMedicineInfo.SelectionChanged += dgvMedicineInfo_SelectionChanged;
+            dgvMedicineInfo.CellFormatting += DgvMedicineInfo_CellFormatting;
+            dgvMedicineInfo.SelectionChanged += DgvMedicineInfo_SelectionChanged;
             Load += UcDrugDictionary_Load;
         }
 
@@ -65,7 +65,7 @@ namespace PharmacySorter
         /// <summary>
         /// 按关键字查询。关键字可匹配药品编号、药品名称或规格，留空则查询全部。
         /// </summary>
-        private void btnSearch_Click(object sender, EventArgs e)
+        private void BtnSearch_Click(object sender, EventArgs e)
         {
             BindDrugList(null);
         }
@@ -73,7 +73,7 @@ namespace PharmacySorter
         /// <summary>
         /// 清空上方输入区，准备录入一条新药品。
         /// </summary>
-        private void btnAdd_Click(object sender, EventArgs e)
+        private void BtnAdd_Click(object sender, EventArgs e)
         {
             ClearEditor();
             txtDrugName.Focus();
@@ -83,7 +83,7 @@ namespace PharmacySorter
         /// 保存上方输入区。
         /// 编号为空时新增，编号有值时按该编号修改名称、规格和工位。
         /// </summary>
-        private void button2_Click(object sender, EventArgs e)
+        private void Button2_Click(object sender, EventArgs e)
         {
             try
             {
@@ -111,7 +111,7 @@ namespace PharmacySorter
         /// 停用或重新启用当前选中药品。
         /// 只修改 IsActive，不删除记录，历史处方仍能关联到该药品。
         /// </summary>
-        private void button3_Click(object sender, EventArgs e)
+        private void Button3_Click(object sender, EventArgs e)
         {
             Drug drug = CurrentDrug();
             if (drug == null)
@@ -147,7 +147,7 @@ namespace PharmacySorter
         /// 表格选中行变化时，把该行的编号、名称、规格回填到上方输入区。
         /// 工位同步选中下拉项。编号文本框只读，用户不能改成其他药品。
         /// </summary>
-        private void dgvMedicineInfo_SelectionChanged(object sender, EventArgs e)
+        private void DgvMedicineInfo_SelectionChanged(object sender, EventArgs e)
         {
             Drug drug = CurrentDrug();
             if (drug == null)
@@ -167,7 +167,7 @@ namespace PharmacySorter
         /// <summary>
         /// 停用药品整行显示为灰色，便于和启用药品区分。
         /// </summary>
-        private void dgvMedicineInfo_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void DgvMedicineInfo_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0 || e.RowIndex >= dgvMedicineInfo.Rows.Count)
             {
@@ -205,7 +205,7 @@ namespace PharmacySorter
                 }
                 else
                 {
-                    dgvMedicineInfo_SelectionChanged(null, EventArgs.Empty);
+                    DgvMedicineInfo_SelectionChanged(null, EventArgs.Empty);
                 }
             }
             catch (Exception ex)

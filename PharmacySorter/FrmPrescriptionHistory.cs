@@ -35,7 +35,7 @@ namespace PharmacySorter
         /// <summary>
         /// 按当前条件重新查询。
         /// </summary>
-        private void btnSearch_Click(object sender, EventArgs e)
+        private void BtnSearch_Click(object sender, EventArgs e)
         {
             Search();
         }
@@ -61,7 +61,7 @@ namespace PharmacySorter
         /// <summary>
         /// 按选中的历史处方再生成一张待配处方。原处方不会被修改。
         /// </summary>
-        private void btnRequeue_Click(object sender, EventArgs e)
+        private void BtnRequeue_Click(object sender, EventArgs e)
         {
             Prescription prescription = dgvHistory.CurrentRow == null ? null : dgvHistory.CurrentRow.DataBoundItem as Prescription;
             if (prescription == null)

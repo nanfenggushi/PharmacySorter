@@ -111,7 +111,7 @@ namespace PharmacySorter
             this.btnEmergencyStop.TabIndex = 5;
             this.btnEmergencyStop.Text = "急停 / 软件复位 (G0002)";
             this.btnEmergencyStop.UseVisualStyleBackColor = true;
-            this.btnEmergencyStop.Click += new System.EventHandler(this.btnEmergencyStop_Click);
+            this.btnEmergencyStop.Click += new System.EventHandler(this.BtnEmergencyStop_Click);
             // 
             // btnAuditLog
             // 
@@ -121,7 +121,7 @@ namespace PharmacySorter
             this.btnAuditLog.TabIndex = 4;
             this.btnAuditLog.Text = "系统操作日志审计";
             this.btnAuditLog.UseVisualStyleBackColor = true;
-            this.btnAuditLog.Click += new System.EventHandler(this.btnAuditLog_Click);
+            this.btnAuditLog.Click += new System.EventHandler(this.BtnAuditLog_Click);
             // 
             // btnUserAdmin
             // 
@@ -131,7 +131,7 @@ namespace PharmacySorter
             this.btnUserAdmin.TabIndex = 6;
             this.btnUserAdmin.Text = "账号与权限管理";
             this.btnUserAdmin.UseVisualStyleBackColor = true;
-            this.btnUserAdmin.Click += new System.EventHandler(this.btnUserAdmin_Click);
+            this.btnUserAdmin.Click += new System.EventHandler(this.BtnUserAdmin_Click);
             // 
             // btnPrescription
             // 
@@ -141,7 +141,7 @@ namespace PharmacySorter
             this.btnPrescription.TabIndex = 3;
             this.btnPrescription.Text = "处方录入与队列管理";
             this.btnPrescription.UseVisualStyleBackColor = true;
-            this.btnPrescription.Click += new System.EventHandler(this.btnPrescription_Click);
+            this.btnPrescription.Click += new System.EventHandler(this.BtnPrescription_Click);
             // 
             // btnDrugDictionary
             // 
@@ -151,7 +151,7 @@ namespace PharmacySorter
             this.btnDrugDictionary.TabIndex = 2;
             this.btnDrugDictionary.Text = "药品字典管理";
             this.btnDrugDictionary.UseVisualStyleBackColor = true;
-            this.btnDrugDictionary.Click += new System.EventHandler(this.btnDrugDictionary_Click);
+            this.btnDrugDictionary.Click += new System.EventHandler(this.BtnDrugDictionary_Click);
             // 
             // btnStationMapping
             // 
@@ -161,7 +161,7 @@ namespace PharmacySorter
             this.btnStationMapping.TabIndex = 1;
             this.btnStationMapping.Text = "工位与药品配置";
             this.btnStationMapping.UseVisualStyleBackColor = true;
-            this.btnStationMapping.Click += new System.EventHandler(this.btnStationMapping_Click);
+            this.btnStationMapping.Click += new System.EventHandler(this.BtnStationMapping_Click);
             // 
             // btnDashboard
             // 
@@ -171,7 +171,7 @@ namespace PharmacySorter
             this.btnDashboard.TabIndex = 0;
             this.btnDashboard.Text = "配药监控看板";
             this.btnDashboard.UseVisualStyleBackColor = true;
-            this.btnDashboard.Click += new System.EventHandler(this.btnDashboard_Click);
+            this.btnDashboard.Click += new System.EventHandler(this.BtnDashboard_Click);
             // 
             // pnlPageContainer
             // 

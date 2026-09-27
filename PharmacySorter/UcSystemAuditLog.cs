@@ -52,7 +52,7 @@ namespace PharmacySorter
         /// <summary>
         /// 按当前筛选条件重新查询。
         /// </summary>
-        private void btnSearch_Click(object sender, EventArgs e)
+        private void BtnSearch_Click(object sender, EventArgs e)
         {
             SearchLogs();
         }
@@ -60,7 +60,7 @@ namespace PharmacySorter
         /// <summary>
         /// 把当前查询结果导出为 Excel 可打开的 XML 文件。
         /// </summary>
-        private void btnExport_Click(object sender, EventArgs e)
+        private void BtnExport_Click(object sender, EventArgs e)
         {
             if (currentLogs.Count == 0)
             {

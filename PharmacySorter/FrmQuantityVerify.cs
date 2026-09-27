@@ -46,7 +46,7 @@ namespace PharmacySorter
         /// <summary>
         /// 数量变化时立即切换一致、短缺和超量三种提示。
         /// </summary>
-        private void nudActualQty_ValueChanged(object sender, EventArgs e)
+        private void NudActualQty_ValueChanged(object sender, EventArgs e)
         {
             RefreshHint();
         }
@@ -54,7 +54,7 @@ namespace PharmacySorter
         /// <summary>
         /// 超量时只有勾选“已拿走多余药品”才能放行。
         /// </summary>
-        private void chkExcessCleared_CheckedChanged(object sender, EventArgs e)
+        private void ChkExcessCleared_CheckedChanged(object sender, EventArgs e)
         {
             RefreshHint();
         }
@@ -62,7 +62,7 @@ namespace PharmacySorter
         /// <summary>
         /// 数量一致时直接通过。超量时这个按钮表示已经剔除多余药品。
         /// </summary>
-        private void btnConfirm_Click(object sender, EventArgs e)
+        private void BtnConfirm_Click(object sender, EventArgs e)
         {
             if (ActualQty == item.RequiredQty)
             {
@@ -83,7 +83,7 @@ namespace PharmacySorter
         /// <summary>
         /// 数量不足，返回补抓决定。补抓次数由业务层按差额计算。
         /// </summary>
-        private void btnRefill_Click(object sender, EventArgs e)
+        private void BtnRefill_Click(object sender, EventArgs e)
         {
             if (ActualQty >= item.RequiredQty)
             {
@@ -97,7 +97,7 @@ namespace PharmacySorter
         /// <summary>
         /// 严重异常。抓取次数清零后由看板重新抓取这一条。
         /// </summary>
-        private void btnReset_Click(object sender, EventArgs e)
+        private void BtnReset_Click(object sender, EventArgs e)
         {
             DialogResult answer = MessageBox.Show(
                 "确定作废【" + item.DrugName + "】的当前进度吗？请先清空分拣槽。",

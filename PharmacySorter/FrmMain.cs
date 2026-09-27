@@ -48,7 +48,7 @@ namespace PharmacySorter
             btnEmergencyStop.BackColor = Color.Firebrick;
             btnEmergencyStop.ForeColor = Color.White;
             clockTimer.Interval = 1000;
-            clockTimer.Tick += clockTimer_Tick;
+            clockTimer.Tick += ClockTimer_Tick;
             Load += FrmMain_Load;
             FormClosed += FrmMain_FormClosed;
         }
@@ -60,9 +60,9 @@ namespace PharmacySorter
         {
             clockTimer.Start();
             ApplyPermissions();
-            clockTimer_Tick(this, EventArgs.Empty);
+            ClockTimer_Tick(this, EventArgs.Empty);
             ShowConnection(false, ConfigurationManager.AppSettings["ArmPortName"]);
-            btnDashboard_Click(this, EventArgs.Empty);
+            BtnDashboard_Click(this, EventArgs.Empty);
             BeginInvoke(new Action(ConnectArm));
         }
 
@@ -79,7 +79,7 @@ namespace PharmacySorter
         /// <summary>
         /// 刷新右上角系统时间。
         /// </summary>
-        private void clockTimer_Tick(object sender, EventArgs e)
+        private void ClockTimer_Tick(object sender, EventArgs e)
         {
             lblClock.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         }
@@ -137,7 +137,7 @@ namespace PharmacySorter
             btnEmergencyStop.Visible = true;
         }
 
-        private void btnUserAdmin_Click(object sender, EventArgs e)
+        private void BtnUserAdmin_Click(object sender, EventArgs e)
         {
             if (currentUser.RoleName != UserRole.Admin)
             {
@@ -148,7 +148,7 @@ namespace PharmacySorter
         }
 
         // 跳转到配药监控看板
-        private void btnDashboard_Click(object sender, EventArgs e)
+        private void BtnDashboard_Click(object sender, EventArgs e)
         {
             PageHelper.SwitchPage<UcDashboard>(pnlPageContainer, ref ucDashboard);
             UcDashboard dashboard = ucDashboard as UcDashboard;
@@ -159,25 +159,25 @@ namespace PharmacySorter
         }
 
         // 跳转到工位与药品配置
-        private void btnStationMapping_Click(object sender, EventArgs e)
+        private void BtnStationMapping_Click(object sender, EventArgs e)
         {
             PageHelper.SwitchPage<UcDrugStationMapping>(pnlPageContainer, ref ucDrugStationMapping);
         }
 
         // 跳转到药品字典管理
-        private void btnDrugDictionary_Click(object sender, EventArgs e)
+        private void BtnDrugDictionary_Click(object sender, EventArgs e)
         {
             PageHelper.SwitchPage<UcDrugDictionary>(pnlPageContainer, ref ucDrugDictionary);
         }
 
         // 跳转到处方录入与队列管理
-        private void btnPrescription_Click(object sender, EventArgs e)
+        private void BtnPrescription_Click(object sender, EventArgs e)
         {
             PageHelper.SwitchPage<UcPrescriptionQueue>(pnlPageContainer, ref ucPrescriptionQueue);
         }
 
         // 跳转到系统操作日志审计
-        private void btnAuditLog_Click(object sender, EventArgs e)
+        private void BtnAuditLog_Click(object sender, EventArgs e)
         {
             PageHelper.SwitchPage<UcSystemAuditLog>(pnlPageContainer, ref ucSystemAuditLog);
         }
@@ -185,7 +185,7 @@ namespace PharmacySorter
         /// <summary>
         /// 急停。先打断正在等待的动作，再下发 G0002，让机械臂抬起并张开夹爪。
         /// </summary>
-        private void btnEmergencyStop_Click(object sender, EventArgs e)
+        private void BtnEmergencyStop_Click(object sender, EventArgs e)
         {
             arm.RequestStop();
             UcDashboard dashboard = ucDashboard as UcDashboard;

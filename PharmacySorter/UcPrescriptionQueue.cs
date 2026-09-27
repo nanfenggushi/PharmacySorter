@@ -44,7 +44,7 @@ namespace PharmacySorter
         /// <summary>
         /// 打开历史处方查询。待配队列仍只显示未开始的处方。
         /// </summary>
-        private void btnHistory_Click(object sender, EventArgs e)
+        private void BtnHistory_Click(object sender, EventArgs e)
         {
             using (FrmPrescriptionHistory dialog = new FrmPrescriptionHistory())
             {
@@ -58,7 +58,7 @@ namespace PharmacySorter
         /// <summary>
         /// 刷新自动生成的处方号。该编号只是预览，正式编号以提交时数据库生成的为准。
         /// </summary>
-        private void btnGenerateId_Click(object sender, EventArgs e)
+        private void BtnGenerateId_Click(object sender, EventArgs e)
         {
             PreviewPrescriptionId();
         }
@@ -66,7 +66,7 @@ namespace PharmacySorter
         /// <summary>
         /// 把当前选择的药品和数量加入左侧临时清单。同一种药不能重复加入。
         /// </summary>
-        private void btnAddItem_Click(object sender, EventArgs e)
+        private void BtnAddItem_Click(object sender, EventArgs e)
         {
             Drug drug = cmbDrug.SelectedItem as Drug;
             if (drug == null)
@@ -97,7 +97,7 @@ namespace PharmacySorter
         /// <summary>
         /// 从临时清单移除当前选中的药品。
         /// </summary>
-        private void btnRemoveItem_Click(object sender, EventArgs e)
+        private void BtnRemoveItem_Click(object sender, EventArgs e)
         {
             PrescriptionItem item = CurrentDraftItem();
             if (item == null)
@@ -113,7 +113,7 @@ namespace PharmacySorter
         /// <summary>
         /// 校验患者和清单后正式提交，并刷新右侧队列。
         /// </summary>
-        private void btnSubmit_Click(object sender, EventArgs e)
+        private void BtnSubmit_Click(object sender, EventArgs e)
         {
             try
             {
@@ -135,7 +135,7 @@ namespace PharmacySorter
         /// <summary>
         /// 把右侧选中的待配处方移到队列第一行。
         /// </summary>
-        private void btnMoveTop_Click(object sender, EventArgs e)
+        private void BtnMoveTop_Click(object sender, EventArgs e)
         {
             Prescription prescription = CurrentPrescription();
             if (prescription == null)
@@ -159,7 +159,7 @@ namespace PharmacySorter
         /// <summary>
         /// 撤销右侧选中的待配处方。已经开始配药的处方不允许撤销。
         /// </summary>
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             Prescription prescription = CurrentPrescription();
             if (prescription == null)

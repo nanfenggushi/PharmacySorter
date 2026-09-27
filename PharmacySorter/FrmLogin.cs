@@ -20,7 +20,7 @@ namespace PharmacySorter
             AcceptButton = btnLogin;
         }
 
-        private void btnLogin_Click(object sender, EventArgs e)
+        private void BtnLogin_Click(object sender, EventArgs e)
         {
             try
             {

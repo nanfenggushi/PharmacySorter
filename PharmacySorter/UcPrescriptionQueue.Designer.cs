@@ -124,7 +124,7 @@ namespace PharmacySorter
             this.btnSubmit.TabIndex = 13;
             this.btnSubmit.Text = "正式提交处方";
             this.btnSubmit.UseVisualStyleBackColor = true;
-            this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
+            this.btnSubmit.Click += new System.EventHandler(this.BtnSubmit_Click);
             // 
             // btnRemoveItem
             // 
@@ -134,7 +134,7 @@ namespace PharmacySorter
             this.btnRemoveItem.TabIndex = 14;
             this.btnRemoveItem.Text = "移除选中";
             this.btnRemoveItem.UseVisualStyleBackColor = true;
-            this.btnRemoveItem.Click += new System.EventHandler(this.btnRemoveItem_Click);
+            this.btnRemoveItem.Click += new System.EventHandler(this.BtnRemoveItem_Click);
             // 
             // btnAddItem
             // 
@@ -144,7 +144,7 @@ namespace PharmacySorter
             this.btnAddItem.TabIndex = 12;
             this.btnAddItem.Text = "加入清单";
             this.btnAddItem.UseVisualStyleBackColor = true;
-            this.btnAddItem.Click += new System.EventHandler(this.btnAddItem_Click);
+            this.btnAddItem.Click += new System.EventHandler(this.BtnAddItem_Click);
             // 
             // dgvDraft
             // 
@@ -323,7 +323,7 @@ namespace PharmacySorter
             this.btnCancel.TabIndex = 2;
             this.btnCancel.Text = "撤销处方";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // btnMoveTop
             // 
@@ -333,7 +333,7 @@ namespace PharmacySorter
             this.btnMoveTop.TabIndex = 1;
             this.btnMoveTop.Text = "优先处理(置顶)";
             this.btnMoveTop.UseVisualStyleBackColor = true;
-            this.btnMoveTop.Click += new System.EventHandler(this.btnMoveTop_Click);
+            this.btnMoveTop.Click += new System.EventHandler(this.BtnMoveTop_Click);
             // 
             // btnHistory
             // 
@@ -343,7 +343,7 @@ namespace PharmacySorter
             this.btnHistory.TabIndex = 3;
             this.btnHistory.Text = "历史处方";
             this.btnHistory.UseVisualStyleBackColor = true;
-            this.btnHistory.Click += new System.EventHandler(this.btnHistory_Click);
+            this.btnHistory.Click += new System.EventHandler(this.BtnHistory_Click);
             // 
             // dgvQueue
             // 

@@ -91,7 +91,7 @@ namespace PharmacySorter
             this.btnSearch.TabIndex = 2;
             this.btnSearch.Text = "查询";
             this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            this.btnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
             // 
             // btnRequeue
             // 
@@ -101,7 +101,7 @@ namespace PharmacySorter
             this.btnRequeue.TabIndex = 9;
             this.btnRequeue.Text = "再次配药";
             this.btnRequeue.UseVisualStyleBackColor = true;
-            this.btnRequeue.Click += new System.EventHandler(this.btnRequeue_Click);
+            this.btnRequeue.Click += new System.EventHandler(this.BtnRequeue_Click);
             // 
             // lblCount
             // 

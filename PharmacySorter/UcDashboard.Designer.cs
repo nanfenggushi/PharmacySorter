@@ -121,7 +121,7 @@ namespace PharmacySorter
             this.btnStart.TabIndex = 0;
             this.btnStart.Text = "启动连续配药";
             this.btnStart.UseVisualStyleBackColor = true;
-            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            this.btnStart.Click += new System.EventHandler(this.BtnStart_Click);
             // 
             // tlpBody
             // 

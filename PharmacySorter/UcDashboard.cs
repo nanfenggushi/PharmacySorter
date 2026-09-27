@@ -53,8 +53,8 @@ namespace PharmacySorter
         public UcDashboard()
         {
             InitializeComponent();
-            dgvItems.CellFormatting += dgvItems_CellFormatting;
-            dgvItems.SelectionChanged += dgvItems_SelectionChanged;
+            dgvItems.CellFormatting += DgvItems_CellFormatting;
+            dgvItems.SelectionChanged += DgvItems_SelectionChanged;
             VisibleChanged += UcDashboard_VisibleChanged;
         }
 
@@ -93,7 +93,7 @@ namespace PharmacySorter
         /// <summary>
         /// 启动后持续处理队列。当前处方完成后自动读取下一张，没有处方时等待新处方。
         /// </summary>
-        private async void btnStart_Click(object sender, EventArgs e)
+        private async void BtnStart_Click(object sender, EventArgs e)
         {
             btnStart.Enabled = false;
             stopRequested = false;
@@ -373,7 +373,7 @@ namespace PharmacySorter
         /// <summary>
         /// 正在处理的行用黄色，核对通过的行用绿色，异常行用红色。
         /// </summary>
-        private void dgvItems_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void DgvItems_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0 || e.RowIndex >= dgvItems.Rows.Count)
             {
@@ -412,7 +412,7 @@ namespace PharmacySorter
         /// <summary>
         /// 明细表只展示进度，不允许选中，避免选中色盖住行颜色。
         /// </summary>
-        private void dgvItems_SelectionChanged(object sender, EventArgs e)
+        private void DgvItems_SelectionChanged(object sender, EventArgs e)
         {
             if (dgvItems.CurrentCell != null || dgvItems.SelectedCells.Count > 0)
             {

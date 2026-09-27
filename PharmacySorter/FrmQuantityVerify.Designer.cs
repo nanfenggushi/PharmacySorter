@@ -86,7 +86,7 @@ namespace PharmacySorter
             this.nudActualQty.Name = "nudActualQty";
             this.nudActualQty.Size = new System.Drawing.Size(120, 41);
             this.nudActualQty.TabIndex = 3;
-            this.nudActualQty.ValueChanged += new System.EventHandler(this.nudActualQty_ValueChanged);
+            this.nudActualQty.ValueChanged += new System.EventHandler(this.NudActualQty_ValueChanged);
             // 
             // lblMatchIcon
             // 
@@ -108,7 +108,7 @@ namespace PharmacySorter
             this.btnConfirm.TabIndex = 8;
             this.btnConfirm.Text = "确认并继续";
             this.btnConfirm.UseVisualStyleBackColor = false;
-            this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
+            this.btnConfirm.Click += new System.EventHandler(this.BtnConfirm_Click);
             // 
             // lblMatch
             // 
@@ -150,7 +150,7 @@ namespace PharmacySorter
             this.btnRefill.TabIndex = 9;
             this.btnRefill.Text = "让机械臂自动补抓";
             this.btnRefill.UseVisualStyleBackColor = false;
-            this.btnRefill.Click += new System.EventHandler(this.btnRefill_Click);
+            this.btnRefill.Click += new System.EventHandler(this.BtnRefill_Click);
             // 
             // lblExcess
             // 
@@ -180,7 +180,7 @@ namespace PharmacySorter
             this.btnReset.TabIndex = 11;
             this.btnReset.Text = "该明细作废，重新抓取";
             this.btnReset.UseVisualStyleBackColor = true;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            this.btnReset.Click += new System.EventHandler(this.BtnReset_Click);
             // 
             // chkExcessCleared
             // 
@@ -190,7 +190,7 @@ namespace PharmacySorter
             this.chkExcessCleared.Size = new System.Drawing.Size(600, 48);
             this.chkExcessCleared.TabIndex = 12;
             this.chkExcessCleared.Text = "我已手动从分拣槽拿走多余药品并放回原处";
-            this.chkExcessCleared.CheckedChanged += new System.EventHandler(this.chkExcessCleared_CheckedChanged);
+            this.chkExcessCleared.CheckedChanged += new System.EventHandler(this.ChkExcessCleared_CheckedChanged);
             // 
             // pnlAlert
             // 

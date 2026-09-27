@@ -47,7 +47,7 @@ namespace PharmacySorter
         /// <summary>
         /// 保存上方工位宏指令配置。
         /// </summary>
-        private void btnSaveStation_Click(object sender, EventArgs e)
+        private void BtnSaveStation_Click(object sender, EventArgs e)
         {
             dgvStation.EndEdit();
             try
@@ -65,7 +65,7 @@ namespace PharmacySorter
         /// <summary>
         /// 保存下方药品与工位的绑定关系。
         /// </summary>
-        private void btnSaveBinding_Click(object sender, EventArgs e)
+        private void BtnSaveBinding_Click(object sender, EventArgs e)
         {
             dgvDrugBinding.EndEdit();
             try

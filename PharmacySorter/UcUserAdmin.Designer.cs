@@ -138,7 +138,7 @@ namespace PharmacySorter
             this.btnAdd.Size = new System.Drawing.Size(82, 31);
             this.btnAdd.TabIndex = 2;
             this.btnAdd.Text = "新增";
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            this.btnAdd.Click += new System.EventHandler(this.BtnAdd_Click);
             // 
             // btnSave
             // 
@@ -147,7 +147,7 @@ namespace PharmacySorter
             this.btnSave.Size = new System.Drawing.Size(82, 31);
             this.btnSave.TabIndex = 1;
             this.btnSave.Text = "保存";
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
             // dgvUsers
             // 

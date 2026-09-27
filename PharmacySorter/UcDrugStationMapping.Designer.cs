@@ -65,7 +65,7 @@ namespace PharmacySorter
             this.btnSaveStation.TabIndex = 1;
             this.btnSaveStation.Text = "保存工位";
             this.btnSaveStation.UseVisualStyleBackColor = true;
-            this.btnSaveStation.Click += new System.EventHandler(this.btnSaveStation_Click);
+            this.btnSaveStation.Click += new System.EventHandler(this.BtnSaveStation_Click);
             // 
             // dgvStation
             // 
@@ -140,7 +140,7 @@ namespace PharmacySorter
             this.btnSaveBinding.TabIndex = 1;
             this.btnSaveBinding.Text = "保存绑定";
             this.btnSaveBinding.UseVisualStyleBackColor = true;
-            this.btnSaveBinding.Click += new System.EventHandler(this.btnSaveBinding_Click);
+            this.btnSaveBinding.Click += new System.EventHandler(this.BtnSaveBinding_Click);
             // 
             // dgvDrugBinding
             // 

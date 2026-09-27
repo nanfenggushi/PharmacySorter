@@ -27,7 +27,7 @@ namespace PharmacySorter
         {
             InitializeComponent();
             cmbRole.Items.AddRange(UserRole.All);
-            dgvUsers.SelectionChanged += dgvUsers_SelectionChanged;
+            dgvUsers.SelectionChanged += DgvUsers_SelectionChanged;
             Load += UcUserAdmin_Load;
         }
 
@@ -40,7 +40,7 @@ namespace PharmacySorter
         /// <summary>
         /// 按上方输入创建账号。表格当前选中哪一行都不影响。
         /// </summary>
-        private void btnAdd_Click(object sender, EventArgs e)
+        private void BtnAdd_Click(object sender, EventArgs e)
         {
             string userName = txtUserName.Text;
             string displayName = txtDisplayName.Text;
@@ -71,7 +71,7 @@ namespace PharmacySorter
         /// <summary>
         /// 只修改表格中当前选中的账号，不负责新增。
         /// </summary>
-        private void btnSave_Click(object sender, EventArgs e)
+        private void BtnSave_Click(object sender, EventArgs e)
         {
             if (!editingUserId.HasValue)
             {
@@ -131,7 +131,7 @@ namespace PharmacySorter
             return dgvUsers.CurrentRow == null ? null : dgvUsers.CurrentRow.DataBoundItem as AppUser;
         }
 
-        private void dgvUsers_SelectionChanged(object sender, EventArgs e)
+        private void DgvUsers_SelectionChanged(object sender, EventArgs e)
         {
             if (loadingUsers || clearingSelection)
             {

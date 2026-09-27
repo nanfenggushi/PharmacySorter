@@ -74,7 +74,7 @@ namespace PharmacySorter
             this.btnSearch.TabIndex = 9;
             this.btnSearch.Text = "查询";
             this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            this.btnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
             // 
             // btnExport
             // 
@@ -84,7 +84,7 @@ namespace PharmacySorter
             this.btnExport.TabIndex = 8;
             this.btnExport.Text = "导出为 Excel";
             this.btnExport.UseVisualStyleBackColor = true;
-            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+            this.btnExport.Click += new System.EventHandler(this.BtnExport_Click);
             // 
             // cmbLogType
             // 

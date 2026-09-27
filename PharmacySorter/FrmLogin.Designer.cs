@@ -21,7 +21,6 @@ namespace PharmacySorter
             this.lblPassword = new System.Windows.Forms.Label();
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.btnLogin = new System.Windows.Forms.Button();
-            this.lblHint = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblTitle
@@ -30,7 +29,8 @@ namespace PharmacySorter
             this.lblTitle.Font = new System.Drawing.Font("Microsoft YaHei UI", 16F, System.Drawing.FontStyle.Bold);
             this.lblTitle.Location = new System.Drawing.Point(92, 28);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(206, 30);
+            this.lblTitle.Size = new System.Drawing.Size(231, 36);
+            this.lblTitle.TabIndex = 6;
             this.lblTitle.Text = "医院药品分拣系统";
             // 
             // lblUserName
@@ -39,6 +39,7 @@ namespace PharmacySorter
             this.lblUserName.Location = new System.Drawing.Point(48, 92);
             this.lblUserName.Name = "lblUserName";
             this.lblUserName.Size = new System.Drawing.Size(67, 15);
+            this.lblUserName.TabIndex = 5;
             this.lblUserName.Text = "登录账号";
             // 
             // txtUserName
@@ -47,6 +48,7 @@ namespace PharmacySorter
             this.txtUserName.MaxLength = 50;
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(210, 25);
+            this.txtUserName.TabIndex = 4;
             // 
             // lblPassword
             // 
@@ -54,6 +56,7 @@ namespace PharmacySorter
             this.lblPassword.Location = new System.Drawing.Point(48, 138);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(37, 15);
+            this.lblPassword.TabIndex = 3;
             this.lblPassword.Text = "密码";
             // 
             // txtPassword
@@ -63,31 +66,23 @@ namespace PharmacySorter
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '●';
             this.txtPassword.Size = new System.Drawing.Size(210, 25);
+            this.txtPassword.TabIndex = 2;
             // 
             // btnLogin
             // 
             this.btnLogin.Location = new System.Drawing.Point(130, 182);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(210, 36);
+            this.btnLogin.TabIndex = 1;
             this.btnLogin.Text = "登录";
             this.btnLogin.UseVisualStyleBackColor = true;
-            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
-            // 
-            // lblHint
-            // 
-            this.lblHint.AutoSize = true;
-            this.lblHint.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.lblHint.Location = new System.Drawing.Point(48, 236);
-            this.lblHint.Name = "lblHint";
-            this.lblHint.Size = new System.Drawing.Size(292, 15);
-            this.lblHint.Text = "初始管理员 admin，初始密码 Admin@123";
+            this.btnLogin.Click += new System.EventHandler(this.BtnLogin_Click);
             // 
             // FrmLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(400, 280);
-            this.Controls.Add(this.lblHint);
+            this.ClientSize = new System.Drawing.Size(398, 257);
             this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.lblPassword);
@@ -102,6 +97,7 @@ namespace PharmacySorter
             this.Text = "登录";
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private System.Windows.Forms.Label lblTitle;
@@ -110,6 +106,5 @@ namespace PharmacySorter
         private System.Windows.Forms.Label lblPassword;
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Button btnLogin;
-        private System.Windows.Forms.Label lblHint;
     }
 }

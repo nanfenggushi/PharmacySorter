@@ -61,7 +61,7 @@ namespace PharmacySorter
             this.btnAdd.TabIndex = 0;
             this.btnAdd.Text = "新增";
             this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            this.btnAdd.Click += new System.EventHandler(this.BtnAdd_Click);
             // 
             // btnSave
             // 
@@ -72,7 +72,7 @@ namespace PharmacySorter
             this.btnSave.TabIndex = 1;
             this.btnSave.Text = "保存修改";
             this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.button2_Click);
+            this.btnSave.Click += new System.EventHandler(this.Button2_Click);
             // 
             // btnStop
             // 
@@ -83,7 +83,7 @@ namespace PharmacySorter
             this.btnStop.TabIndex = 2;
             this.btnStop.Text = "停用";
             this.btnStop.UseVisualStyleBackColor = true;
-            this.btnStop.Click += new System.EventHandler(this.button3_Click);
+            this.btnStop.Click += new System.EventHandler(this.Button3_Click);
             // 
             // dgvMedicineInfo
             // 
@@ -196,7 +196,7 @@ namespace PharmacySorter
             this.btnSearch.TabIndex = 14;
             this.btnSearch.Text = "查询";
             this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            this.btnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
             // 
             // lblStation
             // 
