@@ -58,17 +58,19 @@ namespace PharmacySorter
             // 
             // lblConnection
             // 
+            this.lblConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblConnection.AutoSize = true;
-            this.lblConnection.Location = new System.Drawing.Point(1158, 19);
+            this.lblConnection.Location = new System.Drawing.Point(1249, 19);
             this.lblConnection.Name = "lblConnection";
-            this.lblConnection.Size = new System.Drawing.Size(269, 15);
+            this.lblConnection.Size = new System.Drawing.Size(142, 15);
             this.lblConnection.TabIndex = 3;
-            this.lblConnection.Text = "已连接 COM3 (绿灯) / 未连接 (红灯)";
+            this.lblConnection.Text = "通信状态：正在连接";
             // 
             // lblClock
             // 
+            this.lblClock.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblClock.AutoSize = true;
-            this.lblClock.Location = new System.Drawing.Point(144, 19);
+            this.lblClock.Location = new System.Drawing.Point(1032, 19);
             this.lblClock.Name = "lblClock";
             this.lblClock.Size = new System.Drawing.Size(67, 15);
             this.lblClock.TabIndex = 2;
@@ -76,12 +78,13 @@ namespace PharmacySorter
             // 
             // lblOperator
             // 
+            this.lblOperator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblOperator.AutoSize = true;
-            this.lblOperator.Location = new System.Drawing.Point(20, 20);
+            this.lblOperator.Location = new System.Drawing.Point(24, 19);
             this.lblOperator.Name = "lblOperator";
-            this.lblOperator.Size = new System.Drawing.Size(82, 15);
+            this.lblOperator.Size = new System.Drawing.Size(52, 15);
             this.lblOperator.TabIndex = 1;
-            this.lblOperator.Text = "操作员姓名";
+            this.lblOperator.Text = "操作员";
             // 
             // pnlNav
             // 
@@ -99,7 +102,8 @@ namespace PharmacySorter
             // 
             // btnEmergencyStop
             // 
-            this.btnEmergencyStop.Location = new System.Drawing.Point(15, 564);
+            this.btnEmergencyStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnEmergencyStop.Location = new System.Drawing.Point(12, 650);
             this.btnEmergencyStop.Name = "btnEmergencyStop";
             this.btnEmergencyStop.Size = new System.Drawing.Size(124, 50);
             this.btnEmergencyStop.TabIndex = 5;
@@ -109,7 +113,7 @@ namespace PharmacySorter
             // 
             // btnAuditLog
             // 
-            this.btnAuditLog.Location = new System.Drawing.Point(3, 304);
+            this.btnAuditLog.Location = new System.Drawing.Point(3, 248);
             this.btnAuditLog.Name = "btnAuditLog";
             this.btnAuditLog.Size = new System.Drawing.Size(153, 35);
             this.btnAuditLog.TabIndex = 4;
@@ -119,7 +123,7 @@ namespace PharmacySorter
             // 
             // btnPrescription
             // 
-            this.btnPrescription.Location = new System.Drawing.Point(6, 236);
+            this.btnPrescription.Location = new System.Drawing.Point(3, 194);
             this.btnPrescription.Name = "btnPrescription";
             this.btnPrescription.Size = new System.Drawing.Size(150, 31);
             this.btnPrescription.TabIndex = 3;
@@ -129,7 +133,7 @@ namespace PharmacySorter
             // 
             // btnDrugDictionary
             // 
-            this.btnDrugDictionary.Location = new System.Drawing.Point(15, 170);
+            this.btnDrugDictionary.Location = new System.Drawing.Point(12, 140);
             this.btnDrugDictionary.Name = "btnDrugDictionary";
             this.btnDrugDictionary.Size = new System.Drawing.Size(124, 31);
             this.btnDrugDictionary.TabIndex = 2;
@@ -139,7 +143,7 @@ namespace PharmacySorter
             // 
             // btnStationMapping
             // 
-            this.btnStationMapping.Location = new System.Drawing.Point(15, 100);
+            this.btnStationMapping.Location = new System.Drawing.Point(12, 86);
             this.btnStationMapping.Name = "btnStationMapping";
             this.btnStationMapping.Size = new System.Drawing.Size(124, 31);
             this.btnStationMapping.TabIndex = 1;
@@ -149,7 +153,7 @@ namespace PharmacySorter
             // 
             // btnDashboard
             // 
-            this.btnDashboard.Location = new System.Drawing.Point(15, 33);
+            this.btnDashboard.Location = new System.Drawing.Point(12, 32);
             this.btnDashboard.Name = "btnDashboard";
             this.btnDashboard.Size = new System.Drawing.Size(124, 31);
             this.btnDashboard.TabIndex = 0;
@@ -174,7 +178,9 @@ namespace PharmacySorter
             this.Controls.Add(this.pnlNav);
             this.Controls.Add(this.pnlHeader);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(1100, 700);
             this.Name = "FrmMain";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "医院药品分拣系统";
             this.pnlHeader.ResumeLayout(false);
             this.pnlHeader.PerformLayout();

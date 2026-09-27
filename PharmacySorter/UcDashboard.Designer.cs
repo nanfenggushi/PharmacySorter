@@ -87,7 +87,7 @@ namespace PharmacySorter
             this.tlpBody.Controls.Add(this.pnlItems, 0, 0);
             this.tlpBody.Controls.Add(this.pnlArm, 1, 0);
             this.tlpBody.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpBody.Location = new System.Drawing.Point(0, 63);
+            this.tlpBody.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpBody.Name = "tlpBody";
             this.tlpBody.RowCount = 1;
             this.tlpBody.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -160,7 +160,10 @@ namespace PharmacySorter
             this.colDashRequiredQty,
             this.colDashGrabCount,
             this.colDashStatus});
-            this.dgvItems.Location = new System.Drawing.Point(17, 76);
+            this.dgvItems.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvItems.Location = new System.Drawing.Point(12, 48);
             this.dgvItems.MultiSelect = false;
             this.dgvItems.Name = "dgvItems";
             this.dgvItems.ReadOnly = true;
@@ -272,8 +275,8 @@ namespace PharmacySorter
             // 
             // btnStart
             // 
-            this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStart.Location = new System.Drawing.Point(1100, 28);
+            this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnStart.Location = new System.Drawing.Point(16, 26);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(150, 42);
             this.btnStart.TabIndex = 0;
@@ -288,12 +291,12 @@ namespace PharmacySorter
             this.txtLog.BackColor = System.Drawing.Color.Black;
             this.txtLog.Font = new System.Drawing.Font("Consolas", 10F);
             this.txtLog.ForeColor = System.Drawing.Color.Lime;
-            this.txtLog.Location = new System.Drawing.Point(24, 12);
+            this.txtLog.Location = new System.Drawing.Point(180, 12);
             this.txtLog.Multiline = true;
             this.txtLog.Name = "txtLog";
             this.txtLog.ReadOnly = true;
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog.Size = new System.Drawing.Size(1050, 70);
+            this.txtLog.Size = new System.Drawing.Size(1070, 70);
             this.txtLog.TabIndex = 1;
             // 
             // UcDashboard
@@ -301,8 +304,8 @@ namespace PharmacySorter
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tlpBody);
-            this.Controls.Add(this.pnlBottom);
             this.Controls.Add(this.pnlSummary);
+            this.Controls.Add(this.pnlBottom);
             this.Name = "UcDashboard";
             this.Size = new System.Drawing.Size(1285, 738);
             this.pnlSummary.ResumeLayout(false);

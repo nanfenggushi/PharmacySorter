@@ -42,6 +42,11 @@ namespace Common
         private SerialPort port;
 
         /// <summary>
+        /// 为 true 时不阻塞等待。没有接机械臂时用它把配药流程快速走完。
+        /// </summary>
+        public bool SkipWait { get; set; }
+
+        /// <summary>
         /// 急停标记。为 true 时，正在进行的动作等待会提前结束，后续发送也会立即返回。
         /// </summary>
         private volatile bool stopRequested;
@@ -105,7 +110,10 @@ namespace Common
         /// </summary>
         public void RequestStop()
         {
-            stopRequested = true;
+            lock (gate)
+            {
+                stopRequested = true;
+            }
         }
 
         /// <summary>
@@ -113,7 +121,10 @@ namespace Common
         /// </summary>
         public void ClearStop()
         {
-            stopRequested = false;
+            lock (gate)
+            {
+                stopRequested = false;
+            }
         }
 
         /// <summary>
@@ -126,6 +137,7 @@ namespace Common
 
         /// <summary>
         /// 下发一条宏指令，并按给定毫秒数等待机械臂做完。
+        /// $DGT 是动作组文件里的标记，控制板不能直接执行，要先展开成舵机帧。
         /// 串口未连接时不抛错，只等待，避免演示流程被硬件挡住。
         /// 等待途中收到急停时提前返回，调用方要自己停止后续循环。
         /// </summary>
@@ -133,7 +145,7 @@ namespace Common
         /// <param name="waitMilliseconds">动作预估耗时。小于 0 时按 0 处理。</param>
         public void Send(string command, int waitMilliseconds)
         {
-            if (stopRequested)
+            if (IsStopRequested())
             {
                 return;
             }
@@ -143,16 +155,97 @@ namespace Common
                 throw new ArgumentException("宏指令不能为空");
             }
 
-            int wait = waitMilliseconds < 0 ? 0 : waitMilliseconds;
+            string trimmed = command.Trim();
+            if (trimmed.StartsWith("$DGT:", StringComparison.OrdinalIgnoreCase))
+            {
+                SendActionGroup(trimmed, waitMilliseconds);
+                return;
+            }
+
+            SendFrame(trimmed, waitMilliseconds);
+        }
+
+        /// <summary>
+        /// 把 $DGT:起始-结束,次数! 展开成逐帧舵机指令。
+        /// 控制板只认 #000P1500T1000! 这种格式，原样发送 $DGT 它不会动作。
+        /// </summary>
+        private void SendActionGroup(string command, int waitMilliseconds)
+        {
+            int colon = command.IndexOf(':');
+            int comma = command.IndexOf(',');
+            int dash = command.IndexOf('-');
+            int endMark = command.IndexOf('!');
+            int start;
+            int end;
+            if (colon < 0 || dash < 0 || comma < 0 || endMark < 0
+                || !int.TryParse(command.Substring(colon + 1, dash - colon - 1), out start)
+                || !int.TryParse(command.Substring(dash + 1, comma - dash - 1), out end)
+                || start < 0 || end < start)
+            {
+                throw new ArgumentException("动作组格式不正确：" + command);
+            }
+
+            int frameCount = end - start + 1;
+            int eachWait = frameCount == 0 ? 0 : Math.Max(waitMilliseconds, 0) / frameCount;
+            for (int index = start; index <= end; index++)
+            {
+                if (IsStopRequested())
+                {
+                    return;
+                }
+
+                string frame = GetServoFrame(index);
+                SendFrame(frame, eachWait);
+            }
+        }
+
+        /// <summary>
+        /// 下发一帧舵机指令，并等待这一帧做完。
+        /// </summary>
+        private void SendFrame(string command, int waitMilliseconds)
+        {
+            int wait = SkipWait || waitMilliseconds < 0 ? 0 : waitMilliseconds;
             lock (gate)
             {
                 if (IsConnected)
                 {
-                    port.WriteLine(command.Trim());
+                    port.Write(command.Trim());
                 }
             }
 
             Wait(wait);
+        }
+
+        /// <summary>
+        /// 取控制器动作组里的一帧。编号对应 INI 的 G0003 到 G0027。
+        /// 只保留 0 到 5 号舵机，未安装的舵机不发给控制板。
+        /// </summary>
+        private static string GetServoFrame(int index)
+        {
+            switch (index)
+            {
+                case 3: return "#000P1500T1000!#001P1500T1000!#002P1980T1000!#003P0850T1000!#004P1500T1000!#005P1500T1000!";
+                case 4: return "#000P1500T1000!#001P1250T1000!#002P2000T1000!#003P1000T1000!#004P1500T1000!#005P1200T1000!";
+                case 5: return "#000P1500T1000!#001P1250T1000!#002P2000T1000!#003P1000T1000!#004P1500T1000!#005P1800T1000!";
+                case 6: return "#000P1500T1000!#001P1300T1000!#002P1900T1000!#003P1000T1000!#004P1500T1000!#005P1800T1000!";
+                case 7: return "#000P1500T1000!#001P2100T2000!#002P2100T1000!#003P0850T2000!#004P1500T1000!#005P1800T1000!";
+                case 8: return "#000P1500T1000!#001P2100T1000!#002P2100T1000!#003P0850T1000!#004P1500T1000!#005P1800T1000!";
+                case 9: return "#000P1500T1000!#001P1000T2000!#002P1600T2000!#003P1000T2000!#004P1500T1000!#005P1800T1000!";
+                case 10: return "#000P1500T1000!#001P1000T1000!#002P1600T1000!#003P1000T1000!#004P1500T1000!#005P1200T1000!";
+                case 11: return "#000P1500T1000!#001P2100T2000!#002P2100T2000!#003P0850T2000!#004P1500T1000!#005P1200T1000!";
+                case 12: return "#000P1500T1000!#001P1500T1000!#002P1980T1000!#003P0850T1000!#004P1500T1000!#005P1500T1000!";
+                case 13: return "#000P2000T1500!#001P1500T1500!#002P1980T1500!#003P0850T1500!#004P1500T1500!#005P1200T1500!";
+                case 14: return "#000P2000T1000!#001P1250T1500!#002P2000T1000!#003P1000T1000!#004P1500T1000!#005P1200T1000!";
+                case 15: return "#000P2000T1000!#001P1250T1000!#002P2000T1000!#003P1000T1000!#004P1500T1000!#005P1800T1000!";
+                case 16: return "#000P2000T1500!#001P2100T1500!#002P2100T1500!#003P0850T1500!#004P1500T1500!#005P1800T1500!";
+                case 17: return "#000P1500T1000!#001P2100T1000!#002P2100T1000!#003P0850T1000!#004P1500T1000!#005P1800T1000!";
+                case 23: return "#000P1000T1000!#001P1500T1000!#002P1980T1000!#003P0850T1000!#004P1500T1000!#005P1200T1000!";
+                case 24: return "#000P1000T1000!#001P1250T1000!#002P2000T1000!#003P1000T1000!#004P1500T1000!#005P1200T1000!";
+                case 25: return "#000P1000T1000!#001P1250T1000!#002P2000T1000!#003P1000T1000!#004P1500T1000!#005P1800T1000!";
+                case 26: return "#000P1000T1500!#001P2100T1500!#002P2100T1500!#003P0850T1500!#004P1500T1500!#005P1800T1500!";
+                case 27: return "#000P1500T1000!#001P2100T1000!#002P2100T1000!#003P0850T1000!#004P1500T1000!#005P1800T1000!";
+                default: throw new ArgumentException("没有动作组 " + index.ToString("000") + " 的舵机指令");
+            }
         }
 
         /// <summary>
@@ -161,11 +254,19 @@ namespace Common
         private void Wait(int waitMilliseconds)
         {
             int remaining = waitMilliseconds;
-            while (remaining > 0 && !stopRequested)
+            while (remaining > 0 && !IsStopRequested())
             {
                 int slice = remaining < StopCheckIntervalMilliseconds ? remaining : StopCheckIntervalMilliseconds;
                 Thread.Sleep(slice);
                 remaining -= slice;
+            }
+        }
+
+        private bool IsStopRequested()
+        {
+            lock (gate)
+            {
+                return stopRequested;
             }
         }
 

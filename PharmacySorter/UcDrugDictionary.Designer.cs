@@ -54,7 +54,8 @@ namespace PharmacySorter
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(853, 155);
+            this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAdd.Location = new System.Drawing.Point(940, 88);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(82, 31);
             this.btnAdd.TabIndex = 0;
@@ -64,7 +65,8 @@ namespace PharmacySorter
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(853, 40);
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSave.Location = new System.Drawing.Point(940, 36);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(82, 31);
             this.btnSave.TabIndex = 1;
@@ -74,7 +76,8 @@ namespace PharmacySorter
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(853, 98);
+            this.btnStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnStop.Location = new System.Drawing.Point(940, 140);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(82, 31);
             this.btnStop.TabIndex = 2;
@@ -95,7 +98,10 @@ namespace PharmacySorter
             this.colSpec,
             this.colStationText,
             this.colIsActive});
-            this.dgvMedicineInfo.Location = new System.Drawing.Point(51, 262);
+            this.dgvMedicineInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvMedicineInfo.Location = new System.Drawing.Point(24, 250);
             this.dgvMedicineInfo.MultiSelect = false;
             this.dgvMedicineInfo.Name = "dgvMedicineInfo";
             this.dgvMedicineInfo.ReadOnly = true;
@@ -103,13 +109,13 @@ namespace PharmacySorter
             this.dgvMedicineInfo.RowHeadersWidth = 51;
             this.dgvMedicineInfo.RowTemplate.Height = 27;
             this.dgvMedicineInfo.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMedicineInfo.Size = new System.Drawing.Size(962, 397);
+            this.dgvMedicineInfo.Size = new System.Drawing.Size(1014, 414);
             this.dgvMedicineInfo.TabIndex = 3;
             // 
             // lblDrugList
             // 
             this.lblDrugList.AutoSize = true;
-            this.lblDrugList.Location = new System.Drawing.Point(48, 231);
+            this.lblDrugList.Location = new System.Drawing.Point(24, 220);
             this.lblDrugList.Name = "lblDrugList";
             this.lblDrugList.Size = new System.Drawing.Size(97, 15);
             this.lblDrugList.TabIndex = 4;
@@ -118,7 +124,7 @@ namespace PharmacySorter
             // lblDrugId
             // 
             this.lblDrugId.AutoSize = true;
-            this.lblDrugId.Location = new System.Drawing.Point(49, 51);
+            this.lblDrugId.Location = new System.Drawing.Point(24, 48);
             this.lblDrugId.Name = "lblDrugId";
             this.lblDrugId.Size = new System.Drawing.Size(67, 15);
             this.lblDrugId.TabIndex = 5;
@@ -126,7 +132,7 @@ namespace PharmacySorter
             // 
             // txtMedicineId
             // 
-            this.txtMedicineId.Location = new System.Drawing.Point(131, 41);
+            this.txtMedicineId.Location = new System.Drawing.Point(120, 42);
             this.txtMedicineId.Name = "txtMedicineId";
             this.txtMedicineId.ReadOnly = true;
             this.txtMedicineId.Size = new System.Drawing.Size(165, 25);
@@ -135,7 +141,7 @@ namespace PharmacySorter
             // lblDrugName
             // 
             this.lblDrugName.AutoSize = true;
-            this.lblDrugName.Location = new System.Drawing.Point(49, 116);
+            this.lblDrugName.Location = new System.Drawing.Point(24, 112);
             this.lblDrugName.Name = "lblDrugName";
             this.lblDrugName.Size = new System.Drawing.Size(67, 15);
             this.lblDrugName.TabIndex = 7;
@@ -143,7 +149,7 @@ namespace PharmacySorter
             // 
             // txtDrugName
             // 
-            this.txtDrugName.Location = new System.Drawing.Point(131, 106);
+            this.txtDrugName.Location = new System.Drawing.Point(120, 106);
             this.txtDrugName.MaxLength = 100;
             this.txtDrugName.Name = "txtDrugName";
             this.txtDrugName.Size = new System.Drawing.Size(165, 25);
@@ -152,7 +158,7 @@ namespace PharmacySorter
             // lblSpec
             // 
             this.lblSpec.AutoSize = true;
-            this.lblSpec.Location = new System.Drawing.Point(356, 117);
+            this.lblSpec.Location = new System.Drawing.Point(340, 112);
             this.lblSpec.Name = "lblSpec";
             this.lblSpec.Size = new System.Drawing.Size(37, 15);
             this.lblSpec.TabIndex = 9;
@@ -160,7 +166,7 @@ namespace PharmacySorter
             // 
             // txtSpec
             // 
-            this.txtSpec.Location = new System.Drawing.Point(474, 104);
+            this.txtSpec.Location = new System.Drawing.Point(450, 106);
             this.txtSpec.MaxLength = 100;
             this.txtSpec.Name = "txtSpec";
             this.txtSpec.Size = new System.Drawing.Size(165, 25);
@@ -169,7 +175,7 @@ namespace PharmacySorter
             // lblKeyword
             // 
             this.lblKeyword.AutoSize = true;
-            this.lblKeyword.Location = new System.Drawing.Point(49, 196);
+            this.lblKeyword.Location = new System.Drawing.Point(24, 176);
             this.lblKeyword.Name = "lblKeyword";
             this.lblKeyword.Size = new System.Drawing.Size(52, 15);
             this.lblKeyword.TabIndex = 12;
@@ -177,14 +183,14 @@ namespace PharmacySorter
             // 
             // txtKeyword
             // 
-            this.txtKeyword.Location = new System.Drawing.Point(131, 191);
+            this.txtKeyword.Location = new System.Drawing.Point(120, 170);
             this.txtKeyword.Name = "txtKeyword";
             this.txtKeyword.Size = new System.Drawing.Size(330, 25);
             this.txtKeyword.TabIndex = 13;
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(474, 186);
+            this.btnSearch.Location = new System.Drawing.Point(470, 166);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(82, 31);
             this.btnSearch.TabIndex = 14;
@@ -195,7 +201,7 @@ namespace PharmacySorter
             // lblStation
             // 
             this.lblStation.AutoSize = true;
-            this.lblStation.Location = new System.Drawing.Point(356, 51);
+            this.lblStation.Location = new System.Drawing.Point(340, 48);
             this.lblStation.Name = "lblStation";
             this.lblStation.Size = new System.Drawing.Size(97, 15);
             this.lblStation.TabIndex = 15;
@@ -204,7 +210,7 @@ namespace PharmacySorter
             // cmbCurrentWorkstation
             // 
             this.cmbCurrentWorkstation.FormattingEnabled = true;
-            this.cmbCurrentWorkstation.Location = new System.Drawing.Point(474, 43);
+            this.cmbCurrentWorkstation.Location = new System.Drawing.Point(450, 42);
             this.cmbCurrentWorkstation.Name = "cmbCurrentWorkstation";
             this.cmbCurrentWorkstation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCurrentWorkstation.Size = new System.Drawing.Size(165, 23);

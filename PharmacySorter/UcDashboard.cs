@@ -4,6 +4,7 @@ using Model;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PharmacySorter
@@ -44,11 +45,16 @@ namespace PharmacySorter
         /// </summary>
         private readonly Color stationIdleColor = Color.WhiteSmoke;
 
+        /// <summary>
+        /// 正在自动配药。切回看板时不能把进行中的处方刷新成空闲。
+        /// </summary>
+        private bool dispensing;
+
         public UcDashboard()
         {
             InitializeComponent();
             dgvItems.CellFormatting += dgvItems_CellFormatting;
-            Load += UcDashboard_Load;
+            VisibleChanged += UcDashboard_VisibleChanged;
         }
 
         /// <summary>
@@ -73,17 +79,20 @@ namespace PharmacySorter
         }
 
         /// <summary>
-        /// 每次进入看板都重新读取队列，避免处方页提交后这里还是旧数据。
+        /// 每次重新显示看板都读取最新队列。配药过程中不打断当前处方。
         /// </summary>
-        private void UcDashboard_Load(object sender, EventArgs e)
+        private void UcDashboard_VisibleChanged(object sender, EventArgs e)
         {
-            LoadCurrent();
+            if (Visible && !dispensing)
+            {
+                LoadCurrent();
+            }
         }
 
         /// <summary>
-        /// 检查通过后启动当前处方。抓取过程中按钮不可再次点击。
+        /// 检查通过后启动当前处方。抓取放到后台，界面和急停按钮保持可操作。
         /// </summary>
-        private void btnStart_Click(object sender, EventArgs e)
+        private async void btnStart_Click(object sender, EventArgs e)
         {
             string reason = dispenseBll.GetStartBlockReason(currentPrescription, currentItems);
             if (!string.IsNullOrEmpty(reason))
@@ -93,16 +102,20 @@ namespace PharmacySorter
                 return;
             }
 
+            btnStart.Enabled = false;
+            stopRequested = false;
+            dispensing = true;
+            arm.ClearStop();
             try
             {
-                btnStart.Enabled = false;
-                stopRequested = false;
-                arm.ClearStop();
                 dispenseBll.Start(currentPrescription);
-                AppendLog("下发" + ArmCommandService.StandbyActionName + "待命指令");
-                arm.SendStandby();
                 BindSummary();
-                RunPrescription();
+                AppendLog("下发待命指令 " + ArmCommandService.StandbyCommand);
+                await Task.Run(new Action(arm.SendStandby));
+                if (!stopRequested)
+                {
+                    await RunPrescriptionAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -111,16 +124,16 @@ namespace PharmacySorter
             }
             finally
             {
+                dispensing = false;
                 ShowActiveStation(null);
-                BindSummary();
-                BindItems();
+                LoadCurrent();
             }
         }
 
         /// <summary>
         /// 逐条处理未完成的明细。每条抓满后必须人工核对。
         /// </summary>
-        private void RunPrescription()
+        private async Task RunPrescriptionAsync()
         {
             while (!stopRequested)
             {
@@ -137,7 +150,7 @@ namespace PharmacySorter
                 int count = item.Status == "待核对" ? 0 : Math.Max(item.RequiredQty - item.GrabCount, 0);
                 if (count > 0)
                 {
-                    GrabTimes(item, count);
+                    await GrabTimesAsync(item, count);
                 }
 
                 if (stopRequested)
@@ -147,9 +160,16 @@ namespace PharmacySorter
 
                 dispenseBll.MarkWaitingCheck(item);
                 BindItems();
-                if (!VerifyItem(item))
+                int nextCount = VerifyItem(item);
+                while (nextCount > 0 && !stopRequested)
                 {
-                    return;
+                    await GrabTimesAsync(item, nextCount);
+                    if (stopRequested)
+                    {
+                        return;
+                    }
+
+                    nextCount = VerifyItem(item);
                 }
             }
         }
@@ -157,7 +177,7 @@ namespace PharmacySorter
         /// <summary>
         /// 对一条明细连续抓取指定次数。每次都是先抓药位，再投到分拣槽。
         /// </summary>
-        private void GrabTimes(PrescriptionItem item, int count)
+        private async Task GrabTimesAsync(PrescriptionItem item, int count)
         {
             Station grabStation = dispenseBll.GetGrabStation(item);
             Station dropStation = dispenseBll.GetDropStation();
@@ -170,46 +190,63 @@ namespace PharmacySorter
                 }
 
                 ShowActiveStation(grabStation.StationId);
-                AppendLog("下发抓取指令 " + grabStation.GrabCommand);
-                arm.Send(grabStation.GrabCommand, grabStation.EstTimeMs);
-                Application.DoEvents();
+                int grabNo = item.GrabCount + 1;
+                AppendLog("【" + item.DrugName + "】第 " + grabNo + " 次抓取 " + grabStation.GrabCommand);
+                await SendArmAsync(grabStation.GrabCommand, grabStation.EstTimeMs);
+
+                if (stopRequested)
+                {
+                    return;
+                }
 
                 ShowActiveStation(dropStation.StationId);
-                AppendLog("下发投递指令 " + dropStation.DropCommand);
-                arm.Send(dropStation.DropCommand, dropStation.EstTimeMs);
+                AppendLog("【" + item.DrugName + "】第 " + grabNo + " 次投递 " + dropStation.DropCommand);
+                await SendArmAsync(dropStation.DropCommand, dropStation.EstTimeMs);
                 dispenseBll.RecordGrab(item, grabStation.GrabCommand, dropStation.DropCommand);
                 BindItems();
-                Application.DoEvents();
             }
 
             ShowActiveStation(null);
         }
 
         /// <summary>
-        /// 弹出数量核对。补抓和作废都会回到抓取流程，通过后才处理下一条。
+        /// 在后台发送并等待机械臂。界面线程只负责刷新日志和工位颜色。
         /// </summary>
-        private bool VerifyItem(PrescriptionItem item)
+        private Task SendArmAsync(string command, int waitMilliseconds)
+        {
+            string currentCommand = command;
+            int currentWait = waitMilliseconds;
+            return Task.Run(delegate
+            {
+                arm.Send(currentCommand, currentWait);
+            });
+        }
+
+        /// <summary>
+        /// 弹出数量核对。返回还要补抓的次数，取消、急停或已经通过时返回 0。
+        /// </summary>
+        private int VerifyItem(PrescriptionItem item)
         {
             using (FrmQuantityVerify dialog = new FrmQuantityVerify(item))
             {
                 if (dialog.ShowDialog(FindForm()) != DialogResult.OK)
                 {
                     AppendLog("数量核对已取消");
-                    return false;
+                    return 0;
                 }
 
                 // 核对弹窗是模态的，急停当时清不掉这里的循环标记，关闭后再补一次。
                 if (stopRequested)
                 {
                     AppendLog("急停后不再继续当前药品");
-                    return false;
+                    return 0;
                 }
 
                 int nextCount = dispenseBll.ApplyDecision(item, dialog.ActualQty, dialog.Decision);
                 BindItems();
                 if (nextCount <= 0)
                 {
-                    return true;
+                    return 0;
                 }
 
                 if (dialog.Decision == VerifyDecision.Reset)
@@ -221,13 +258,7 @@ namespace PharmacySorter
                     AppendLog("【" + item.DrugName + "】补抓 " + nextCount + " 盒");
                 }
 
-                GrabTimes(item, nextCount);
-                if (stopRequested)
-                {
-                    return false;
-                }
-
-                return VerifyItem(item);
+                return nextCount;
             }
         }
 

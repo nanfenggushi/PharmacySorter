@@ -48,8 +48,9 @@ namespace PharmacySorter
         {
             clockTimer.Start();
             clockTimer_Tick(this, EventArgs.Empty);
-            ConnectArm();
+            ShowConnection(false, ConfigurationManager.AppSettings["ArmPortName"]);
             btnDashboard_Click(this, EventArgs.Empty);
+            BeginInvoke(new Action(ConnectArm));
         }
 
         /// <summary>
@@ -75,6 +76,7 @@ namespace PharmacySorter
         /// </summary>
         private void ConnectArm()
         {
+            arm.SkipWait = string.Equals(ConfigurationManager.AppSettings["SkipArmWait"], "true", StringComparison.OrdinalIgnoreCase);
             string portName = ConfigurationManager.AppSettings["ArmPortName"];
             try
             {

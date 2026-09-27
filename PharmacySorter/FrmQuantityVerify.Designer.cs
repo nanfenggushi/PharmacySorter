@@ -140,9 +140,9 @@ namespace PharmacySorter
             // 
             this.btnRefill.BackColor = System.Drawing.Color.DarkOrange;
             this.btnRefill.ForeColor = System.Drawing.Color.White;
-            this.btnRefill.Location = new System.Drawing.Point(430, 400);
+            this.btnRefill.Location = new System.Drawing.Point(250, 400);
             this.btnRefill.Name = "btnRefill";
-            this.btnRefill.Size = new System.Drawing.Size(210, 42);
+            this.btnRefill.Size = new System.Drawing.Size(390, 42);
             this.btnRefill.TabIndex = 9;
             this.btnRefill.Text = "让机械臂自动补抓";
             this.btnRefill.UseVisualStyleBackColor = false;
@@ -170,7 +170,7 @@ namespace PharmacySorter
             // 
             // btnReset
             // 
-            this.btnReset.Location = new System.Drawing.Point(24, 400);
+            this.btnReset.Location = new System.Drawing.Point(24, 406);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(210, 42);
             this.btnReset.TabIndex = 11;
@@ -181,7 +181,7 @@ namespace PharmacySorter
             // chkExcessCleared
             //
             this.chkExcessCleared.Font = new System.Drawing.Font("Microsoft YaHei UI", 10F);
-            this.chkExcessCleared.Location = new System.Drawing.Point(16, 52);
+            this.chkExcessCleared.Location = new System.Drawing.Point(16, 78);
             this.chkExcessCleared.Name = "chkExcessCleared";
             this.chkExcessCleared.Size = new System.Drawing.Size(600, 48);
             this.chkExcessCleared.TabIndex = 12;
@@ -199,7 +199,7 @@ namespace PharmacySorter
             this.pnlAlert.Controls.Add(this.chkExcessCleared);
             this.pnlAlert.Location = new System.Drawing.Point(24, 230);
             this.pnlAlert.Name = "pnlAlert";
-            this.pnlAlert.Size = new System.Drawing.Size(640, 140);
+            this.pnlAlert.Size = new System.Drawing.Size(640, 150);
             this.pnlAlert.TabIndex = 13;
             // 
             // FrmQuantityVerify
@@ -213,7 +213,6 @@ namespace PharmacySorter
             this.Controls.Add(this.btnReset);
             this.Controls.Add(this.btnRefill);
             this.Controls.Add(this.btnConfirm);
-            this.Controls.Add(this.btnCommitQty);
             this.Controls.Add(this.nudActualQty);
             this.Controls.Add(this.lblActualQty);
             this.Controls.Add(this.lblRequiredQty);

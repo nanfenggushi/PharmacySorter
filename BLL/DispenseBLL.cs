@@ -148,7 +148,9 @@ namespace BLL
             }
 
             logBll.Add(item.ItemId, AppLogType.Command,
-                "【" + item.DrugName + "】第 " + item.GrabCount + " 次抓取 " + grabCommand + "，投递 " + dropCommand);
+                "【" + item.DrugName + "】第 " + item.GrabCount + " 次抓取 " + grabCommand);
+            logBll.Add(item.ItemId, AppLogType.Command,
+                "【" + item.DrugName + "】第 " + item.GrabCount + " 次投递 " + dropCommand);
         }
 
         /// <summary>
