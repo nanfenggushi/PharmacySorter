@@ -46,6 +46,7 @@
     <Compile Include="StationBLL.cs" />
     <Compile Include="AppLogBLL.cs" />
     <Compile Include="PrescriptionBLL.cs" />
+    <Compile Include="UserBLL.cs" />
     <Compile Include="DispenseBLL.cs" />
   </ItemGroup>
   <ItemGroup>

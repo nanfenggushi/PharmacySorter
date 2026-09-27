@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbHelper.cs" />
+    <Compile Include="PasswordHasher.cs" />
     <Compile Include="Md5Helpler.cs" />
     <Compile Include="PageHelper.cs" />
     <Compile Include="ArmCommandService.cs" />

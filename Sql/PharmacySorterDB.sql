@@ -121,3 +121,28 @@ IF COL_LENGTH('PrescriptionItem', 'GrabCount') IS NULL
 UPDATE StationAction
 SET EstTimeMs = 6000
 WHERE EstTimeMs < 6000;
+-- 登录账号。密码只保存 PBKDF2 哈希，不保存明文。
+IF OBJECT_ID(''AppUser'', ''U'') IS NULL
+BEGIN
+    CREATE TABLE AppUser (
+        UserId INT IDENTITY(1,1) PRIMARY KEY,
+        UserName NVARCHAR(50) NOT NULL,
+        DisplayName NVARCHAR(50) NOT NULL,
+        PasswordHash NVARCHAR(200) NOT NULL,
+        RoleName NVARCHAR(20) NOT NULL,
+        IsActive BIT NOT NULL CONSTRAINT DF_AppUser_IsActive DEFAULT 1,
+        CONSTRAINT UQ_AppUser_UserName UNIQUE (UserName)
+    );
+END
+
+-- 初始管理员 admin / Admin@123。已有同名账号时不覆盖密码。
+IF NOT EXISTS (SELECT 1 FROM AppUser WHERE UserName = N''admin'')
+BEGIN
+    INSERT INTO AppUser (UserName, DisplayName, PasswordHash, RoleName, IsActive)
+    VALUES (
+        N''admin'',
+        N''系统管理员'',
+        N''PBKDF2$100000$dGVzdC1zYWx0LTAwMDAwMQ==$MN9jQ/waBESrVTLeHCG0b4oSf+VO8pwnB5LvbCsQumw='',
+        N''管理员'',
+        1);
+END

@@ -53,6 +53,7 @@ namespace Model
         public const string QuantityCheck = "数量核对";
         public const string ExceptionFix = "异常纠偏";
         public const string Prescription = "处方管理";
+        public const string User = "账号管理";
 
         /// <summary>
         /// 筛选下拉框使用的全部类型，顺序与界面一致。
@@ -64,7 +65,8 @@ namespace Model
             Command,
             QuantityCheck,
             ExceptionFix,
-            Prescription
+            Prescription,
+            User
         };
     }
 }

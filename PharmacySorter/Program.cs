@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PharmacySorter
@@ -16,7 +13,15 @@ namespace PharmacySorter
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FrmMain());
+            using (FrmLogin login = new FrmLogin())
+            {
+                if (login.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+
+                Application.Run(new FrmMain(login.CurrentUser));
+            }
         }
     }
 }

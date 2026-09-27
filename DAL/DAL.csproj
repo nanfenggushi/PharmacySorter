@@ -45,6 +45,7 @@
     <Compile Include="DrugDAL.cs" />
     <Compile Include="StationDAL.cs" />
     <Compile Include="AppLogDAL.cs" />
+    <Compile Include="UserDAL.cs" />
     <Compile Include="PrescriptionDAL.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -35,6 +35,7 @@ namespace PharmacySorter
             this.lblOperator = new System.Windows.Forms.Label();
             this.pnlNav = new System.Windows.Forms.Panel();
             this.btnEmergencyStop = new System.Windows.Forms.Button();
+            this.btnUserAdmin = new System.Windows.Forms.Button();
             this.btnAuditLog = new System.Windows.Forms.Button();
             this.btnPrescription = new System.Windows.Forms.Button();
             this.btnDrugDictionary = new System.Windows.Forms.Button();
@@ -89,6 +90,7 @@ namespace PharmacySorter
             // pnlNav
             // 
             this.pnlNav.Controls.Add(this.btnEmergencyStop);
+            this.pnlNav.Controls.Add(this.btnUserAdmin);
             this.pnlNav.Controls.Add(this.btnAuditLog);
             this.pnlNav.Controls.Add(this.btnPrescription);
             this.pnlNav.Controls.Add(this.btnDrugDictionary);
@@ -120,6 +122,16 @@ namespace PharmacySorter
             this.btnAuditLog.Text = "系统操作日志审计";
             this.btnAuditLog.UseVisualStyleBackColor = true;
             this.btnAuditLog.Click += new System.EventHandler(this.btnAuditLog_Click);
+            // 
+            // btnUserAdmin
+            // 
+            this.btnUserAdmin.Location = new System.Drawing.Point(3, 300);
+            this.btnUserAdmin.Name = "btnUserAdmin";
+            this.btnUserAdmin.Size = new System.Drawing.Size(153, 35);
+            this.btnUserAdmin.TabIndex = 6;
+            this.btnUserAdmin.Text = "账号与权限管理";
+            this.btnUserAdmin.UseVisualStyleBackColor = true;
+            this.btnUserAdmin.Click += new System.EventHandler(this.btnUserAdmin_Click);
             // 
             // btnPrescription
             // 
@@ -199,6 +211,7 @@ namespace PharmacySorter
         private System.Windows.Forms.Panel pnlPageContainer;
         private System.Windows.Forms.Button btnEmergencyStop;
         private System.Windows.Forms.Button btnAuditLog;
+        private System.Windows.Forms.Button btnUserAdmin;
         private System.Windows.Forms.Button btnPrescription;
         private System.Windows.Forms.Button btnDrugDictionary;
         private System.Windows.Forms.Button btnStationMapping;

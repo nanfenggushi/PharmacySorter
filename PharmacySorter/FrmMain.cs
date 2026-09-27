@@ -1,4 +1,6 @@
+using BLL;
 using Common;
+using Model;
 using System;
 using System.Configuration;
 using System.Drawing;
@@ -19,9 +21,13 @@ namespace PharmacySorter
         // 系统操作日志审计
         private UserControl ucSystemAuditLog = null;
 
+        // 账号与权限管理
+        private UserControl ucUserAdmin = null;
+
         /// <summary>
-        /// 顶部时钟。每秒刷新一次系统时间。
+        /// 当前登录账号。菜单和操作权限都根据它的角色判断。
         /// </summary>
+        private readonly AppUser currentUser;
         private readonly Timer clockTimer = new Timer();
 
         /// <summary>
@@ -29,10 +35,16 @@ namespace PharmacySorter
         /// </summary>
         private readonly ArmCommandService arm = new ArmCommandService();
 
-        public FrmMain()
+        public FrmMain(AppUser user)
         {
+            if (user == null)
+            {
+                throw new ArgumentNullException("user");
+            }
+
+            currentUser = user;
             InitializeComponent();
-            lblOperator.Text = ConfigurationManager.AppSettings["OperatorName"] ?? "操作员";
+            lblOperator.Text = user.DisplayName + "（" + user.RoleName + "）";
             btnEmergencyStop.BackColor = Color.Firebrick;
             btnEmergencyStop.ForeColor = Color.White;
             clockTimer.Interval = 1000;
@@ -47,6 +59,7 @@ namespace PharmacySorter
         private void FrmMain_Load(object sender, EventArgs e)
         {
             clockTimer.Start();
+            ApplyPermissions();
             clockTimer_Tick(this, EventArgs.Empty);
             ShowConnection(false, ConfigurationManager.AppSettings["ArmPortName"]);
             btnDashboard_Click(this, EventArgs.Empty);
@@ -106,6 +119,32 @@ namespace PharmacySorter
             string name = string.IsNullOrWhiteSpace(portName) ? "未配置" : portName.Trim();
             lblConnection.Text = "通信状态：未连接 " + name;
             lblConnection.ForeColor = Color.Firebrick;
+        }
+
+        /// <summary>
+        /// 按角色显示菜单。管理员拥有全部权限，药师维护药品和处方，操作员负责配药。
+        /// </summary>
+        private void ApplyPermissions()
+        {
+            bool isAdmin = currentUser.RoleName == UserRole.Admin;
+            bool isPharmacist = currentUser.RoleName == UserRole.Pharmacist;
+            btnStationMapping.Visible = isAdmin;
+            btnDrugDictionary.Visible = isAdmin || isPharmacist;
+            btnPrescription.Visible = isAdmin || isPharmacist;
+            btnAuditLog.Visible = isAdmin;
+            btnUserAdmin.Visible = isAdmin;
+            btnDashboard.Visible = true;
+            btnEmergencyStop.Visible = true;
+        }
+
+        private void btnUserAdmin_Click(object sender, EventArgs e)
+        {
+            if (currentUser.RoleName != UserRole.Admin)
+            {
+                return;
+            }
+
+            PageHelper.SwitchPage<UcUserAdmin>(pnlPageContainer, ref ucUserAdmin);
         }
 
         // 跳转到配药监控看板
