@@ -28,11 +28,11 @@ namespace PharmacySorter
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblConnection = new System.Windows.Forms.Label();
             this.lblClock = new System.Windows.Forms.Label();
             this.lblOperator = new System.Windows.Forms.Label();
-            this.lblTitle = new System.Windows.Forms.Label();
             this.pnlNav = new System.Windows.Forms.Panel();
             this.btnEmergencyStop = new System.Windows.Forms.Button();
             this.btnAuditLog = new System.Windows.Forms.Button();
@@ -50,7 +50,6 @@ namespace PharmacySorter
             this.pnlHeader.Controls.Add(this.lblConnection);
             this.pnlHeader.Controls.Add(this.lblClock);
             this.pnlHeader.Controls.Add(this.lblOperator);
-            this.pnlHeader.Controls.Add(this.lblTitle);
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlHeader.Location = new System.Drawing.Point(0, 0);
             this.pnlHeader.Name = "pnlHeader";
@@ -69,7 +68,7 @@ namespace PharmacySorter
             // lblClock
             // 
             this.lblClock.AutoSize = true;
-            this.lblClock.Location = new System.Drawing.Point(357, 19);
+            this.lblClock.Location = new System.Drawing.Point(144, 19);
             this.lblClock.Name = "lblClock";
             this.lblClock.Size = new System.Drawing.Size(67, 15);
             this.lblClock.TabIndex = 2;
@@ -78,20 +77,11 @@ namespace PharmacySorter
             // lblOperator
             // 
             this.lblOperator.AutoSize = true;
-            this.lblOperator.Location = new System.Drawing.Point(233, 20);
+            this.lblOperator.Location = new System.Drawing.Point(20, 20);
             this.lblOperator.Name = "lblOperator";
             this.lblOperator.Size = new System.Drawing.Size(82, 15);
             this.lblOperator.TabIndex = 1;
             this.lblOperator.Text = "操作员姓名";
-            // 
-            // lblTitle
-            // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Location = new System.Drawing.Point(12, 20);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(127, 15);
-            this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "医院药品分拣系统";
             // 
             // pnlNav
             // 
@@ -183,7 +173,9 @@ namespace PharmacySorter
             this.Controls.Add(this.pnlPageContainer);
             this.Controls.Add(this.pnlNav);
             this.Controls.Add(this.pnlHeader);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmMain";
+            this.Text = "医院药品分拣系统";
             this.pnlHeader.ResumeLayout(false);
             this.pnlHeader.PerformLayout();
             this.pnlNav.ResumeLayout(false);
@@ -197,7 +189,6 @@ namespace PharmacySorter
         private System.Windows.Forms.Label lblConnection;
         private System.Windows.Forms.Label lblClock;
         private System.Windows.Forms.Label lblOperator;
-        private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Panel pnlNav;
         private System.Windows.Forms.Panel pnlPageContainer;
         private System.Windows.Forms.Button btnEmergencyStop;

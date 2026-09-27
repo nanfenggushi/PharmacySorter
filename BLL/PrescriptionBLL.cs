@@ -67,8 +67,8 @@ namespace BLL
         /// </summary>
         public int Submit(string patientNo, IList<PrescriptionItem> items)
         {
-            patientNo = NormalizePatientNo(patientNo);
-            items = NormalizeItems(items);
+            patientNo = NormalizePatientNo(patientNo); // 校验患者id
+            items = NormalizeItems(items); // 校验处方明细
 
             Prescription prescription = new Prescription
             {
@@ -107,6 +107,12 @@ namespace BLL
             logBll.Add(null, AppLogType.Prescription, "撤销处方 " + prescription.PrescriptionId + "，患者 " + prescription.PatientNo);
         }
 
+        /// <summary>
+        /// 确认是否为待配药处方
+        /// </summary>
+        /// <param name="prescriptionId"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
         private Prescription EnsureWaiting(int prescriptionId)
         {
             Prescription prescription = dal.GetById(prescriptionId);
@@ -136,6 +142,12 @@ namespace BLL
             return prescriptionId;
         }
 
+        /// <summary>
+        /// 校验处方明细
+        /// </summary>
+        /// <param name="patientNo"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
         private static string NormalizePatientNo(string patientNo)
         {
             if (string.IsNullOrWhiteSpace(patientNo))
@@ -151,6 +163,12 @@ namespace BLL
             return patientNo;
         }
 
+        /// <summary>
+        /// 校验处方明细
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
         private List<PrescriptionItem> NormalizeItems(IList<PrescriptionItem> items)
         {
             if (items == null || items.Count == 0)

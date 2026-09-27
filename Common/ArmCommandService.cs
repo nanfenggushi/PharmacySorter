@@ -18,10 +18,7 @@ namespace Common
         public const string StandbyActionName = "G0002";
 
         /// <summary>
-        /// G0002 的完整待命指令。数据取自《3D打印机械臂-双轴-自研爪子版》INI：
-        /// S0 底座回中 1500，S1 大臂抬起 1500，S2 小臂抬高 2300，
-        /// S3 腕部回安全角 1000，S4 腕旋转回中 1500，S5 夹爪张开 1500。
-        /// 只发底座一帧时，手臂和爪子都不会回到安全高度。
+        /// G0002 的完整待命指令。
         /// </summary>
         public const string StandbyCommand =
             "#000P1500T1000!" +

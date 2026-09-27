@@ -34,11 +34,11 @@ namespace PharmacySorter
         /// </summary>
         private void UcPrescriptionQueue_Load(object sender, EventArgs e)
         {
-            BindDrugs();
-            PreviewPrescriptionId();
-            nudQuantity.Value = 1;
-            BindDraft();
-            LoadQueue();
+            BindDrugs(); // 下拉框绑定可选药品
+            PreviewPrescriptionId(); // 显示下一个处方编号
+            nudQuantity.Value = 1; // 药品数量初始值设为1
+            BindDraft(); // 绑定尚未提交的药品清单
+            LoadQueue(); // 读取待配药队列
         }
 
         /// <summary>
@@ -238,6 +238,10 @@ namespace PharmacySorter
             }
         }
 
+        /// <summary>
+        /// 返回当前选择的草稿处方药品对象
+        /// </summary>
+        /// <returns></returns>
         private PrescriptionItem CurrentDraftItem()
         {
             if (dgvDraft.CurrentRow == null)
@@ -247,6 +251,10 @@ namespace PharmacySorter
             return dgvDraft.CurrentRow.DataBoundItem as PrescriptionItem;
         }
 
+        /// <summary>
+        /// 返回当前选择的处方对象
+        /// </summary>
+        /// <returns></returns>
         private Prescription CurrentPrescription()
         {
             if (dgvQueue.CurrentRow == null)

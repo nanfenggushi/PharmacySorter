@@ -41,16 +41,16 @@ ORDER BY p.SortNo, p.CreateTime, p.PrescriptionId";
         public int PreviewNextId()
         {
             object result = DbHelper.Scalar(@"
-SELECT CASE
-    WHEN MAX(PrescriptionId) IS NULL THEN CAST(IDENT_SEED('Prescription') AS INT)
-    ELSE MAX(PrescriptionId) + CAST(IDENT_INCR('Prescription') AS INT)
-END
-FROM Prescription");
+                SELECT CASE
+                    WHEN MAX(PrescriptionId) IS NULL THEN CAST(IDENT_SEED('Prescription') AS INT)
+                    ELSE MAX(PrescriptionId) + CAST(IDENT_INCR('Prescription') AS INT)
+                END
+                FROM Prescription");
             return Convert.ToInt32(result);
         }
 
         /// <summary>
-        /// 当前待配队列里最小的序号，置顶时再减一。
+        /// 获取当前待配队列里最小的序号。
         /// </summary>
         public int GetMinWaitingSortNo()
         {
@@ -140,12 +140,12 @@ ORDER BY p.CreateTime DESC, p.PrescriptionId DESC";
         public Prescription GetCurrent()
         {
             string sql = @"
-SELECT TOP 1 p.PrescriptionId, p.PatientNo, p.Status, p.CreateTime, p.CompleteTime, p.SortNo,
-       (SELECT COUNT(1) FROM PrescriptionItem i WHERE i.PrescriptionId = p.PrescriptionId) AS ItemCount
-FROM Prescription p
-WHERE p.Status IN (N'配药中', N'部分异常', N'待配药')
-ORDER BY CASE p.Status WHEN N'配药中' THEN 0 WHEN N'部分异常' THEN 1 ELSE 2 END,
-         p.SortNo, p.CreateTime, p.PrescriptionId";
+                SELECT TOP 1 p.PrescriptionId, p.PatientNo, p.Status, p.CreateTime, p.CompleteTime, p.SortNo,
+                       (SELECT COUNT(1) FROM PrescriptionItem i WHERE i.PrescriptionId = p.PrescriptionId) AS ItemCount
+                FROM Prescription p
+                WHERE p.Status IN (N'配药中', N'部分异常', N'待配药')
+                ORDER BY CASE p.Status WHEN N'配药中' THEN 0 WHEN N'部分异常' THEN 1 ELSE 2 END,
+                         p.SortNo, p.CreateTime, p.PrescriptionId";
             List<Prescription> list = MapPrescriptions(DbHelper.Find(sql));
             return list.Count == 0 ? null : list[0];
         }
