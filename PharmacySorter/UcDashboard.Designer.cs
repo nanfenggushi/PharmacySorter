@@ -280,7 +280,7 @@ namespace PharmacySorter
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(150, 42);
             this.btnStart.TabIndex = 0;
-            this.btnStart.Text = "启动自动配药";
+            this.btnStart.Text = "启动连续配药";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 

@@ -19,7 +19,15 @@ namespace BLL
         /// </summary>
         public Prescription GetCurrentPrescription()
         {
-            return prescriptionDal.GetCurrent();
+            return GetCurrentPrescription(0);
+        }
+
+        /// <summary>
+        /// 当前应展示的处方。skipPrescriptionId 用于跳过指令不完整、暂时不能配的处方。
+        /// </summary>
+        public Prescription GetCurrentPrescription(int skipPrescriptionId)
+        {
+            return prescriptionDal.GetCurrent(skipPrescriptionId);
         }
 
         /// <summary>
@@ -40,9 +48,9 @@ namespace BLL
                 return "当前没有待配处方";
             }
 
-            if (prescription.Status != "待配药")
+            if (prescription.Status != "待配药" && prescription.Status != "配药中" && prescription.Status != "部分异常")
             {
-                return "只有待配药的处方可以启动";
+                return "当前处方不能继续配药";
             }
 
             if (items == null || items.Count == 0)
@@ -104,14 +112,16 @@ namespace BLL
                 throw new ArgumentException("当前没有待配处方");
             }
 
+            bool resume = prescription.Status == "配药中" || prescription.Status == "部分异常";
             if (prescriptionDal.MarkDispensing(prescription.PrescriptionId) == 0)
             {
                 throw new ArgumentException("处方状态已变化，不能启动");
             }
 
             prescription.Status = "配药中";
-            logBll.Add(null, AppLogType.Command,
-                "处方 " + prescription.PrescriptionId + " 开始配药，下发" + Common.ArmCommandService.StandbyActionName + "待命指令");
+            logBll.Add(null, AppLogType.Command, resume
+                ? "处方 " + prescription.PrescriptionId + " 从中断处继续配药"
+                : "处方 " + prescription.PrescriptionId + " 开始配药，下发" + Common.ArmCommandService.StandbyActionName + "待命指令");
         }
 
         /// <summary>

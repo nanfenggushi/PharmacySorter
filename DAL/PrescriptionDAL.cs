@@ -139,14 +139,23 @@ ORDER BY p.CreateTime DESC, p.PrescriptionId DESC";
         /// </summary>
         public Prescription GetCurrent()
         {
+            return GetCurrent(0);
+        }
+
+        /// <summary>
+        /// 读取当前应处理的处方。skipPrescriptionId 大于 0 时不返回这张处方。
+        /// </summary>
+        public Prescription GetCurrent(int skipPrescriptionId)
+        {
             string sql = @"
                 SELECT TOP 1 p.PrescriptionId, p.PatientNo, p.Status, p.CreateTime, p.CompleteTime, p.SortNo,
                        (SELECT COUNT(1) FROM PrescriptionItem i WHERE i.PrescriptionId = p.PrescriptionId) AS ItemCount
                 FROM Prescription p
                 WHERE p.Status IN (N'配药中', N'部分异常', N'待配药')
+                  AND p.PrescriptionId <> @SkipPrescriptionId
                 ORDER BY CASE p.Status WHEN N'配药中' THEN 0 WHEN N'部分异常' THEN 1 ELSE 2 END,
                          p.SortNo, p.CreateTime, p.PrescriptionId";
-            List<Prescription> list = MapPrescriptions(DbHelper.Find(sql));
+            List<Prescription> list = MapPrescriptions(DbHelper.Find(sql, new SqlParameter("@SkipPrescriptionId", skipPrescriptionId)));
             return list.Count == 0 ? null : list[0];
         }
 
@@ -174,7 +183,7 @@ ORDER BY i.ItemId";
         {
             string sql = @"UPDATE Prescription
 SET Status = N'配药中', CompleteTime = NULL
-WHERE PrescriptionId = @PrescriptionId AND Status IN (N'待配药', N'配药中')";
+WHERE PrescriptionId = @PrescriptionId AND Status IN (N'待配药', N'配药中', N'部分异常')";
             return DbHelper.Update(sql, new SqlParameter("@PrescriptionId", prescriptionId));
         }
 

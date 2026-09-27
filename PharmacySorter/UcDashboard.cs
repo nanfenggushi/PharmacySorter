@@ -90,31 +90,39 @@ namespace PharmacySorter
         }
 
         /// <summary>
-        /// 检查通过后启动当前处方。抓取放到后台，界面和急停按钮保持可操作。
+        /// 启动后持续处理队列。当前处方完成后自动读取下一张，没有处方时等待新处方。
         /// </summary>
         private async void btnStart_Click(object sender, EventArgs e)
         {
-            string reason = dispenseBll.GetStartBlockReason(currentPrescription, currentItems);
-            if (!string.IsNullOrEmpty(reason))
-            {
-                AppendLog(reason);
-                MessageBox.Show(reason, "不能启动", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
             btnStart.Enabled = false;
             stopRequested = false;
             dispensing = true;
             arm.ClearStop();
             try
             {
-                dispenseBll.Start(currentPrescription);
-                BindSummary();
                 AppendLog("下发待命指令 " + ArmCommandService.StandbyCommand);
                 await Task.Run(new Action(arm.SendStandby));
-                if (!stopRequested)
+                while (!stopRequested)
                 {
+                    if (!BeginCurrentPrescription())
+                    {
+                        lblStatus.Text = "等待新处方";
+                        lblStatus.ForeColor = Color.Gray;
+                        await Task.Delay(1000);
+                        if (!stopRequested)
+                        {
+                            LoadCurrent();
+                        }
+                        continue;
+                    }
+
                     await RunPrescriptionAsync();
+                    if (stopRequested)
+                    {
+                        break;
+                    }
+
+                    LoadCurrent();
                 }
             }
             catch (Exception ex)
@@ -128,6 +136,41 @@ namespace PharmacySorter
                 ShowActiveStation(null);
                 LoadCurrent();
             }
+        }
+
+        /// <summary>
+        /// 开始或继续当前处方。不能配药时跳过并读取下一张，队列空了返回 false。
+        /// </summary>
+        private bool BeginCurrentPrescription()
+        {
+            while (!stopRequested)
+            {
+                if (currentPrescription == null)
+                {
+                    return false;
+                }
+
+                bool resume = currentPrescription.Status == "配药中" || currentPrescription.Status == "部分异常";
+                if (!resume && currentPrescription.Status != "待配药")
+                {
+                    return false;
+                }
+
+                string reason = dispenseBll.GetStartBlockReason(currentPrescription, currentItems);
+                if (!string.IsNullOrEmpty(reason))
+                {
+                    AppendLog("跳过处方 " + currentPrescription.PrescriptionId + "：" + reason);
+                    LoadCurrent(currentPrescription.PrescriptionId);
+                    continue;
+                }
+
+                dispenseBll.Start(currentPrescription);
+                BindSummary();
+                AppendLog((resume ? "继续处方 " : "开始处方 ") + currentPrescription.PrescriptionId);
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -265,11 +308,12 @@ namespace PharmacySorter
         /// <summary>
         /// 读取当前处方和明细，并刷新摘要、进度和工位指示。
         /// </summary>
-        private void LoadCurrent()
+        /// <param name="skipPrescriptionId">跳过不能配药的处方，避免反复选中同一张。</param>
+        private void LoadCurrent(int skipPrescriptionId)
         {
             try
             {
-                currentPrescription = dispenseBll.GetCurrentPrescription();
+                currentPrescription = dispenseBll.GetCurrentPrescription(skipPrescriptionId);
                 currentItems = currentPrescription == null
                     ? new List<PrescriptionItem>()
                     : dispenseBll.GetCurrentItems(currentPrescription.PrescriptionId);
@@ -287,6 +331,14 @@ namespace PharmacySorter
         }
 
         /// <summary>
+        /// 读取当前处方和明细，并刷新摘要、进度和工位指示。
+        /// </summary>
+        private void LoadCurrent()
+        {
+            LoadCurrent(0);
+        }
+
+        /// <summary>
         /// 顶部显示处方号、患者编号和整体状态。没有处方时显示空闲。
         /// </summary>
         private void BindSummary()
@@ -296,14 +348,14 @@ namespace PharmacySorter
                 lblSummary.Text = "当前没有待配处方";
                 lblStatus.Text = "空闲";
                 lblStatus.ForeColor = Color.Gray;
-                btnStart.Enabled = false;
+                btnStart.Enabled = !dispensing;
                 return;
             }
 
             lblSummary.Text = "处方号 " + currentPrescription.PrescriptionId + "    患者编号 " + currentPrescription.PatientNo;
             lblStatus.Text = currentPrescription.Status;
             lblStatus.ForeColor = GetStatusColor(currentPrescription.Status);
-            btnStart.Enabled = currentPrescription.Status == "待配药";
+            btnStart.Enabled = !dispensing;
         }
 
         /// <summary>
