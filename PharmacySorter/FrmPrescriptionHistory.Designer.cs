@@ -22,6 +22,7 @@ namespace PharmacySorter
             this.lblEnd = new System.Windows.Forms.Label();
             this.dtpEnd = new System.Windows.Forms.DateTimePicker();
             this.btnSearch = new System.Windows.Forms.Button();
+            this.btnRequeue = new System.Windows.Forms.Button();
             this.lblCount = new System.Windows.Forms.Label();
             this.dgvHistory = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -92,10 +93,20 @@ namespace PharmacySorter
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
+            // btnRequeue
+            // 
+            this.btnRequeue.Location = new System.Drawing.Point(788, 14);
+            this.btnRequeue.Name = "btnRequeue";
+            this.btnRequeue.Size = new System.Drawing.Size(90, 30);
+            this.btnRequeue.TabIndex = 9;
+            this.btnRequeue.Text = "再次配药";
+            this.btnRequeue.UseVisualStyleBackColor = true;
+            this.btnRequeue.Click += new System.EventHandler(this.btnRequeue_Click);
+            // 
             // lblCount
             // 
             this.lblCount.AutoSize = true;
-            this.lblCount.Location = new System.Drawing.Point(790, 22);
+            this.lblCount.Location = new System.Drawing.Point(18, 450);
             this.lblCount.Name = "lblCount";
             this.lblCount.Size = new System.Drawing.Size(61, 15);
             this.lblCount.TabIndex = 1;
@@ -120,7 +131,7 @@ namespace PharmacySorter
             this.dgvHistory.RowHeadersVisible = false;
             this.dgvHistory.RowHeadersWidth = 51;
             this.dgvHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvHistory.Size = new System.Drawing.Size(860, 400);
+            this.dgvHistory.Size = new System.Drawing.Size(860, 360);
             this.dgvHistory.TabIndex = 0;
             // 
             // Column1
@@ -170,6 +181,7 @@ namespace PharmacySorter
             this.ClientSize = new System.Drawing.Size(900, 480);
             this.Controls.Add(this.dgvHistory);
             this.Controls.Add(this.lblCount);
+            this.Controls.Add(this.btnRequeue);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.dtpEnd);
             this.Controls.Add(this.lblEnd);
@@ -196,6 +208,7 @@ namespace PharmacySorter
         private System.Windows.Forms.Label lblEnd;
         private System.Windows.Forms.DateTimePicker dtpEnd;
         private System.Windows.Forms.Button btnSearch;
+        private System.Windows.Forms.Button btnRequeue;
         private System.Windows.Forms.Label lblCount;
         private System.Windows.Forms.DataGridView dgvHistory;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;

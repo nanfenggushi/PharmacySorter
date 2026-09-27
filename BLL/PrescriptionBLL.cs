@@ -108,6 +108,33 @@ namespace BLL
         }
 
         /// <summary>
+        /// 按历史处方再次生成一张待配处方。原处方保持不变，新处方使用新的处方号。
+        /// </summary>
+        public int Requeue(int prescriptionId)
+        {
+            Prescription source = dal.GetById(prescriptionId);
+            if (source == null)
+            {
+                throw new ArgumentException("处方不存在");
+            }
+
+            List<PrescriptionItem> sourceItems = dal.GetItems(prescriptionId);
+            List<PrescriptionItem> items = new List<PrescriptionItem>();
+            foreach (PrescriptionItem item in sourceItems)
+            {
+                items.Add(new PrescriptionItem
+                {
+                    DrugId = item.DrugId,
+                    RequiredQty = item.RequiredQty
+                });
+            }
+
+            int newPrescriptionId = Submit(source.PatientNo, items);
+            logBll.Add(null, AppLogType.Prescription, "历史处方 " + prescriptionId + " 已再次加入队列，新处方号 " + newPrescriptionId);
+            return newPrescriptionId;
+        }
+
+        /// <summary>
         /// 确认是否为待配药处方
         /// </summary>
         /// <param name="prescriptionId"></param>

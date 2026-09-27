@@ -48,7 +48,10 @@ namespace PharmacySorter
         {
             using (FrmPrescriptionHistory dialog = new FrmPrescriptionHistory())
             {
-                dialog.ShowDialog(FindForm());
+                if (dialog.ShowDialog(FindForm()) == DialogResult.OK)
+                {
+                    LoadQueue();
+                }
             }
         }
 
