@@ -32,7 +32,6 @@ namespace PharmacySorter
         public FrmMain()
         {
             InitializeComponent();
-            lblTitle.Text = "医院药品分拣系统 V2.2";
             lblOperator.Text = ConfigurationManager.AppSettings["OperatorName"] ?? "操作员";
             btnEmergencyStop.BackColor = Color.Firebrick;
             btnEmergencyStop.ForeColor = Color.White;
@@ -80,7 +79,8 @@ namespace PharmacySorter
             try
             {
                 arm.Connect(portName);
-                arm.Send(ArmCommandService.ResetCommand, 0);
+                // 开机先回到 G0002 待命姿态。未连接时 SendStandby 只等待，不中断启动。
+                arm.SendStandby();
                 ShowConnection(true, arm.PortName);
             }
             catch (Exception)
@@ -142,10 +142,11 @@ namespace PharmacySorter
         }
 
         /// <summary>
-        /// 急停。无论当前在哪个页面，都中断看板循环并向机械臂下发复位。
+        /// 急停。先打断正在等待的动作，再下发 G0002，让机械臂抬起并张开夹爪。
         /// </summary>
         private void btnEmergencyStop_Click(object sender, EventArgs e)
         {
+            arm.RequestStop();
             UcDashboard dashboard = ucDashboard as UcDashboard;
             if (dashboard != null)
             {
@@ -154,7 +155,9 @@ namespace PharmacySorter
 
             try
             {
-                arm.Send(ArmCommandService.ResetCommand, 0);
+                // RequestStop 会让普通发送直接返回，复位前要先清掉标记。
+                arm.ClearStop();
+                arm.SendStandby();
             }
             catch (Exception ex)
             {

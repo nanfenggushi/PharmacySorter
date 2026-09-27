@@ -97,9 +97,10 @@ namespace PharmacySorter
             {
                 btnStart.Enabled = false;
                 stopRequested = false;
+                arm.ClearStop();
                 dispenseBll.Start(currentPrescription);
-                AppendLog("下发复位指令 " + ArmCommandService.ResetCommand);
-                arm.Send(ArmCommandService.ResetCommand, 1000);
+                AppendLog("下发" + ArmCommandService.StandbyActionName + "待命指令");
+                arm.SendStandby();
                 BindSummary();
                 RunPrescription();
             }
@@ -194,6 +195,13 @@ namespace PharmacySorter
                 if (dialog.ShowDialog(FindForm()) != DialogResult.OK)
                 {
                     AppendLog("数量核对已取消");
+                    return false;
+                }
+
+                // 核对弹窗是模态的，急停当时清不掉这里的循环标记，关闭后再补一次。
+                if (stopRequested)
+                {
+                    AppendLog("急停后不再继续当前药品");
                     return false;
                 }
 

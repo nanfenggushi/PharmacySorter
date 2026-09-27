@@ -110,7 +110,8 @@ namespace BLL
             }
 
             prescription.Status = "配药中";
-            logBll.Add(null, AppLogType.Command, "处方 " + prescription.PrescriptionId + " 开始配药，下发复位指令 " + Common.ArmCommandService.ResetCommand);
+            logBll.Add(null, AppLogType.Command,
+                "处方 " + prescription.PrescriptionId + " 开始配药，下发" + Common.ArmCommandService.StandbyActionName + "待命指令");
         }
 
         /// <summary>
@@ -247,7 +248,7 @@ namespace BLL
         /// </summary>
         public Station GetGrabStation(PrescriptionItem item)
         {
-            EnsureItem(item);
+            EnsureItem(item); // 判断处方明细是否有效
             if (item.StationId != 2 && item.StationId != 3)
             {
                 throw new ArgumentException("【" + item.DrugName + "】没有绑定左侧或右侧药位");
@@ -281,6 +282,11 @@ namespace BLL
             prescriptionDal.PassItem(item.ItemId, item.RequiredQty);
         }
 
+        /// <summary>
+        /// 判断处方明细是否有效
+        /// </summary>
+        /// <param name="item"></param>
+        /// <exception cref="ArgumentException"></exception>
         private static void EnsureItem(PrescriptionItem item)
         {
             if (item == null || item.ItemId <= 0)
@@ -289,6 +295,11 @@ namespace BLL
             }
         }
 
+        /// <summary>
+        /// 根据工位编号查询工位
+        /// </summary>
+        /// <param name="stationId"></param>
+        /// <returns></returns>
         private Station FindStation(int stationId)
         {
             foreach (Station station in stationDal.GetAll())

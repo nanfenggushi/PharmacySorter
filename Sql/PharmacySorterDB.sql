@@ -10,7 +10,7 @@ CREATE TABLE StationAction (
     StationName NVARCHAR(50) NOT NULL,       -- 工位名称
     GrabCommand VARCHAR(100) NULL,           -- 抓取触发指令串 (串口指令为ASCII，用VARCHAR)
     DropCommand VARCHAR(100) NULL,           -- 放置触发指令串
-    EstTimeMs INT NOT NULL DEFAULT 3500      -- 动作预估耗时(毫秒)，供 C# 线程 Sleep 使用
+    EstTimeMs INT NOT NULL DEFAULT 6000      -- 动作预估耗时(毫秒)，供 C# 线程 Sleep 使用
 );
 
 -- 2. 创建药品信息表
@@ -56,19 +56,21 @@ CREATE TABLE AppLog (
 
 -- =============================================
 -- 初始化基础配置数据 (必须执行)
--- 将 V2.1 需求文档中的预设动作组合写入数据库
+-- 动作组与《3D打印机械臂-双轴-自研爪子版》INI 一致：
+-- 正前抓取 G0003-G0007，正前投递 G0008-G0012，左抓 G0013-G0017，右抓 G0023-G0027。
+-- 一组 5 帧，单帧多为 1000ms，含转向和抬臂的帧为 1500-2000ms，默认等待取 6000ms。
 -- =============================================
 
 INSERT INTO StationAction (StationId, StationName, GrabCommand, DropCommand, EstTimeMs)
 VALUES 
--- 工位1：正前分拣槽 (主要用于放置投递，也可以配置抓取指令测试用)
-(1, N'正前分拣槽', '$DGT:3-7,1!', '$DGT:8-12,1!', 3500),
+-- 工位1：正前分拣槽。配药投递用 DropCommand，GrabCommand 只用于单动测试。
+(1, N'正前分拣槽', '$DGT:3-7,1!', '$DGT:8-12,1!', 6000),
 
--- 工位2：左侧药位 (主要执行左转抓取动作)
-(2, N'左侧药位', '$DGT:13-17,1!', NULL, 4000),
+-- 工位2：左侧药位。只配置抓取，放下统一走正前分拣槽。
+(2, N'左侧药位', '$DGT:13-17,1!', NULL, 6000),
 
--- 工位3：右侧药位 (主要执行右转抓取动作)
-(3, N'右侧药位', '$DGT:23-27,1!', NULL, 4000);
+-- 工位3：右侧药位。只配置抓取，放下统一走正前分拣槽。
+(3, N'右侧药位', '$DGT:23-27,1!', NULL, 6000);
 
 
 -- =============================================
@@ -113,3 +115,9 @@ END
 -- 已有明细增加已执行抓取次数。看板用它显示进度，补抓时继续累加。
 IF COL_LENGTH('PrescriptionItem', 'GrabCount') IS NULL
     ALTER TABLE PrescriptionItem ADD GrabCount INT NOT NULL CONSTRAINT DF_PrescriptionItem_GrabCount DEFAULT 0;
+
+-- 旧库的动作等待偏短。一组动作约 5 到 8 秒，低于 6000ms 的记录补到 6000ms。
+-- 界面里已经手工改得更长的延时保持不动。
+UPDATE StationAction
+SET EstTimeMs = 6000
+WHERE EstTimeMs < 6000;
