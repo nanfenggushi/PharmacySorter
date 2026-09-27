@@ -78,9 +78,13 @@ namespace PharmacySorter
             // 
             this.nudActualQty.Font = new System.Drawing.Font("Microsoft YaHei UI", 16F);
             this.nudActualQty.Location = new System.Drawing.Point(150, 154);
-            this.nudActualQty.Maximum = new decimal(new int[] { 99, 0, 0, 0 });
+            this.nudActualQty.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
             this.nudActualQty.Name = "nudActualQty";
-            this.nudActualQty.Size = new System.Drawing.Size(120, 42);
+            this.nudActualQty.Size = new System.Drawing.Size(120, 41);
             this.nudActualQty.TabIndex = 3;
             this.nudActualQty.ValueChanged += new System.EventHandler(this.nudActualQty_ValueChanged);
             // 
@@ -98,7 +102,7 @@ namespace PharmacySorter
             // 
             this.btnConfirm.BackColor = System.Drawing.Color.SeaGreen;
             this.btnConfirm.ForeColor = System.Drawing.Color.White;
-            this.btnConfirm.Location = new System.Drawing.Point(430, 400);
+            this.btnConfirm.Location = new System.Drawing.Point(417, 406);
             this.btnConfirm.Name = "btnConfirm";
             this.btnConfirm.Size = new System.Drawing.Size(210, 42);
             this.btnConfirm.TabIndex = 8;
@@ -140,7 +144,7 @@ namespace PharmacySorter
             // 
             this.btnRefill.BackColor = System.Drawing.Color.DarkOrange;
             this.btnRefill.ForeColor = System.Drawing.Color.White;
-            this.btnRefill.Location = new System.Drawing.Point(250, 400);
+            this.btnRefill.Location = new System.Drawing.Point(274, 406);
             this.btnRefill.Name = "btnRefill";
             this.btnRefill.Size = new System.Drawing.Size(390, 42);
             this.btnRefill.TabIndex = 9;
@@ -177,9 +181,9 @@ namespace PharmacySorter
             this.btnReset.Text = "该明细作废，重新抓取";
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
-            //
+            // 
             // chkExcessCleared
-            //
+            // 
             this.chkExcessCleared.Font = new System.Drawing.Font("Microsoft YaHei UI", 10F);
             this.chkExcessCleared.Location = new System.Drawing.Point(16, 78);
             this.chkExcessCleared.Name = "chkExcessCleared";
@@ -187,9 +191,9 @@ namespace PharmacySorter
             this.chkExcessCleared.TabIndex = 12;
             this.chkExcessCleared.Text = "我已手动从分拣槽拿走多余药品并放回原处";
             this.chkExcessCleared.CheckedChanged += new System.EventHandler(this.chkExcessCleared_CheckedChanged);
-            //
+            // 
             // pnlAlert
-            //
+            // 
             this.pnlAlert.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlAlert.Controls.Add(this.lblMatchIcon);
             this.pnlAlert.Controls.Add(this.lblMatch);
@@ -207,7 +211,7 @@ namespace PharmacySorter
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightYellow;
-            this.ClientSize = new System.Drawing.Size(690, 470);
+            this.ClientSize = new System.Drawing.Size(698, 489);
             this.ControlBox = false;
             this.Controls.Add(this.pnlAlert);
             this.Controls.Add(this.btnReset);
@@ -221,10 +225,9 @@ namespace PharmacySorter
             this.Name = "FrmQuantityVerify";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "人工数量复核";
-            this.pnlAlert.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudActualQty)).EndInit();
+            this.pnlAlert.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

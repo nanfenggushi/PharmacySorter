@@ -100,6 +100,9 @@
     <EmbeddedResource Include="FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmPrescriptionHistory.resx">
+      <DependentUpon>FrmPrescriptionHistory.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmQuantityVerify.resx">
       <DependentUpon>FrmQuantityVerify.cs</DependentUpon>
     </EmbeddedResource>

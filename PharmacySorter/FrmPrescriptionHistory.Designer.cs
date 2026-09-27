@@ -24,71 +24,148 @@ namespace PharmacySorter
             this.btnSearch = new System.Windows.Forms.Button();
             this.lblCount = new System.Windows.Forms.Label();
             this.dgvHistory = new System.Windows.Forms.DataGridView();
-            this.colHistoryId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colHistoryPatientNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colHistoryItemCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colHistoryCreateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colHistoryStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHistory)).BeginInit();
             this.SuspendLayout();
+            // 
+            // lblPrescriptionId
+            // 
             this.lblPrescriptionId.AutoSize = true;
             this.lblPrescriptionId.Location = new System.Drawing.Point(18, 22);
             this.lblPrescriptionId.Name = "lblPrescriptionId";
+            this.lblPrescriptionId.Size = new System.Drawing.Size(67, 15);
+            this.lblPrescriptionId.TabIndex = 8;
             this.lblPrescriptionId.Text = "处方编号";
+            // 
+            // txtPrescriptionId
+            // 
             this.txtPrescriptionId.Location = new System.Drawing.Point(92, 16);
             this.txtPrescriptionId.Name = "txtPrescriptionId";
             this.txtPrescriptionId.Size = new System.Drawing.Size(120, 25);
+            this.txtPrescriptionId.TabIndex = 7;
+            // 
+            // lblStart
+            // 
             this.lblStart.AutoSize = true;
             this.lblStart.Location = new System.Drawing.Point(230, 22);
             this.lblStart.Name = "lblStart";
+            this.lblStart.Size = new System.Drawing.Size(67, 15);
+            this.lblStart.TabIndex = 6;
             this.lblStart.Text = "开始日期";
+            // 
+            // dtpStart
+            // 
             this.dtpStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpStart.Location = new System.Drawing.Point(304, 16);
             this.dtpStart.Name = "dtpStart";
             this.dtpStart.Size = new System.Drawing.Size(130, 25);
+            this.dtpStart.TabIndex = 5;
+            // 
+            // lblEnd
+            // 
             this.lblEnd.AutoSize = true;
             this.lblEnd.Location = new System.Drawing.Point(452, 22);
             this.lblEnd.Name = "lblEnd";
+            this.lblEnd.Size = new System.Drawing.Size(67, 15);
+            this.lblEnd.TabIndex = 4;
             this.lblEnd.Text = "结束日期";
+            // 
+            // dtpEnd
+            // 
             this.dtpEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpEnd.Location = new System.Drawing.Point(526, 16);
             this.dtpEnd.Name = "dtpEnd";
             this.dtpEnd.Size = new System.Drawing.Size(130, 25);
+            this.dtpEnd.TabIndex = 3;
+            // 
+            // btnSearch
+            // 
             this.btnSearch.Location = new System.Drawing.Point(680, 14);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(90, 30);
+            this.btnSearch.TabIndex = 2;
             this.btnSearch.Text = "查询";
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // lblCount
+            // 
             this.lblCount.AutoSize = true;
             this.lblCount.Location = new System.Drawing.Point(790, 22);
             this.lblCount.Name = "lblCount";
+            this.lblCount.Size = new System.Drawing.Size(61, 15);
+            this.lblCount.TabIndex = 1;
             this.lblCount.Text = "共 0 张";
+            // 
+            // dgvHistory
+            // 
             this.dgvHistory.AllowUserToAddRows = false;
             this.dgvHistory.AllowUserToDeleteRows = false;
             this.dgvHistory.AutoGenerateColumns = false;
             this.dgvHistory.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvHistory.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2,
+            this.Column3,
+            this.Column4,
+            this.Column5});
             this.dgvHistory.Location = new System.Drawing.Point(18, 62);
             this.dgvHistory.Name = "dgvHistory";
             this.dgvHistory.ReadOnly = true;
             this.dgvHistory.RowHeadersVisible = false;
+            this.dgvHistory.RowHeadersWidth = 51;
             this.dgvHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvHistory.Size = new System.Drawing.Size(860, 400);
-            this.colHistoryId.DataPropertyName = "PrescriptionId";
-            this.colHistoryId.HeaderText = "处方号";
-            this.colHistoryId.Name = "colHistoryId";
-            this.colHistoryPatientNo.DataPropertyName = "PatientNo";
-            this.colHistoryPatientNo.HeaderText = "患者编号";
-            this.colHistoryPatientNo.Name = "colHistoryPatientNo";
-            this.colHistoryItemCount.DataPropertyName = "ItemCount";
-            this.colHistoryItemCount.HeaderText = "药品数";
-            this.colHistoryItemCount.Name = "colHistoryItemCount";
-            this.colHistoryCreateTime.DataPropertyName = "CreateTimeText";
-            this.colHistoryCreateTime.HeaderText = "接收时间";
-            this.colHistoryCreateTime.Name = "colHistoryCreateTime";
-            this.colHistoryStatus.DataPropertyName = "Status";
-            this.colHistoryStatus.HeaderText = "状态";
-            this.colHistoryStatus.Name = "colHistoryStatus";
+            this.dgvHistory.TabIndex = 0;
+            // 
+            // Column1
+            // 
+            this.Column1.DataPropertyName = "PrescriptionId";
+            this.Column1.HeaderText = "处方号";
+            this.Column1.MinimumWidth = 6;
+            this.Column1.Name = "colHistoryId";
+            this.Column1.ReadOnly = true;
+            // 
+            // Column2
+            // 
+            this.Column2.DataPropertyName = "PatientNo";
+            this.Column2.HeaderText = "患者编号";
+            this.Column2.MinimumWidth = 6;
+            this.Column2.Name = "colHistoryPatientNo";
+            this.Column2.ReadOnly = true;
+            // 
+            // Column3
+            // 
+            this.Column3.DataPropertyName = "ItemCount";
+            this.Column3.HeaderText = "药品数";
+            this.Column3.MinimumWidth = 6;
+            this.Column3.Name = "colHistoryItemCount";
+            this.Column3.ReadOnly = true;
+            // 
+            // Column4
+            // 
+            this.Column4.DataPropertyName = "CreateTimeText";
+            this.Column4.HeaderText = "接收时间";
+            this.Column4.MinimumWidth = 6;
+            this.Column4.Name = "colHistoryCreateTime";
+            this.Column4.ReadOnly = true;
+            // 
+            // Column5
+            // 
+            this.Column5.DataPropertyName = "Status";
+            this.Column5.HeaderText = "状态";
+            this.Column5.MinimumWidth = 6;
+            this.Column5.Name = "colHistoryStatus";
+            this.Column5.ReadOnly = true;
+            // 
+            // FrmPrescriptionHistory
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(900, 480);
             this.Controls.Add(this.dgvHistory);
@@ -107,14 +184,9 @@ namespace PharmacySorter
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "历史处方查询";
             ((System.ComponentModel.ISupportInitialize)(this.dgvHistory)).EndInit();
-            this.dgvHistory.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colHistoryId,
-            this.colHistoryPatientNo,
-            this.colHistoryItemCount,
-            this.colHistoryCreateTime,
-            this.colHistoryStatus});
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private System.Windows.Forms.Label lblPrescriptionId;
@@ -126,10 +198,10 @@ namespace PharmacySorter
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Label lblCount;
         private System.Windows.Forms.DataGridView dgvHistory;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colHistoryId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colHistoryPatientNo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colHistoryItemCount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colHistoryCreateTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colHistoryStatus;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
     }
 }

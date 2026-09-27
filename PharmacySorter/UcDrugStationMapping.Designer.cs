@@ -91,6 +91,7 @@ namespace PharmacySorter
             // 
             // colStationName
             // 
+            this.colStationName.DataPropertyName = "StationName";
             this.colStationName.HeaderText = "工位名称";
             this.colStationName.MinimumWidth = 6;
             this.colStationName.Name = "colStationName";
@@ -98,6 +99,7 @@ namespace PharmacySorter
             // 
             // colGrabCommand
             // 
+            this.colGrabCommand.DataPropertyName = "GrabCommand";
             this.colGrabCommand.HeaderText = "抓取触发字符串";
             this.colGrabCommand.MaxInputLength = 100;
             this.colGrabCommand.MinimumWidth = 6;
@@ -105,6 +107,7 @@ namespace PharmacySorter
             // 
             // colDropCommand
             // 
+            this.colDropCommand.DataPropertyName = "DropCommand";
             this.colDropCommand.HeaderText = "放置触发字符串";
             this.colDropCommand.MaxInputLength = 100;
             this.colDropCommand.MinimumWidth = 6;
@@ -112,6 +115,7 @@ namespace PharmacySorter
             // 
             // colEstTimeMs
             // 
+            this.colEstTimeMs.DataPropertyName = "EstTimeMs";
             this.colEstTimeMs.HeaderText = "延时设定(毫秒)";
             this.colEstTimeMs.MaxInputLength = 5;
             this.colEstTimeMs.MinimumWidth = 6;
@@ -160,6 +164,7 @@ namespace PharmacySorter
             // 
             // colDrugName
             // 
+            this.colDrugName.DataPropertyName = "DrugName";
             this.colDrugName.HeaderText = "药品名称";
             this.colDrugName.MinimumWidth = 6;
             this.colDrugName.Name = "colDrugName";
@@ -167,6 +172,7 @@ namespace PharmacySorter
             // 
             // colBindStation
             // 
+            this.colBindStation.DataPropertyName = "StationId";
             this.colBindStation.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
             this.colBindStation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.colBindStation.HeaderText = "绑定工位";

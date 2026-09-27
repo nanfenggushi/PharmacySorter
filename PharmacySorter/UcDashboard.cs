@@ -54,6 +54,7 @@ namespace PharmacySorter
         {
             InitializeComponent();
             dgvItems.CellFormatting += dgvItems_CellFormatting;
+            dgvItems.SelectionChanged += dgvItems_SelectionChanged;
             VisibleChanged += UcDashboard_VisibleChanged;
         }
 
@@ -405,6 +406,18 @@ namespace PharmacySorter
             {
                 style.BackColor = dgvItems.DefaultCellStyle.BackColor;
                 style.ForeColor = dgvItems.DefaultCellStyle.ForeColor;
+            }
+        }
+
+        /// <summary>
+        /// 明细表只展示进度，不允许选中，避免选中色盖住行颜色。
+        /// </summary>
+        private void dgvItems_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvItems.CurrentCell != null || dgvItems.SelectedCells.Count > 0)
+            {
+                dgvItems.ClearSelection();
+                dgvItems.CurrentCell = null;
             }
         }
 

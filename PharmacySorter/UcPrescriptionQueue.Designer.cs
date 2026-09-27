@@ -35,9 +35,9 @@ namespace PharmacySorter
             this.btnRemoveItem = new System.Windows.Forms.Button();
             this.btnAddItem = new System.Windows.Forms.Button();
             this.dgvDraft = new System.Windows.Forms.DataGridView();
-            this.colDraftDrugName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDraftSpec = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDraftQuantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lblDraft = new System.Windows.Forms.Label();
             this.nudQuantity = new System.Windows.Forms.NumericUpDown();
             this.lblQuantity = new System.Windows.Forms.Label();
@@ -54,11 +54,11 @@ namespace PharmacySorter
             this.btnMoveTop = new System.Windows.Forms.Button();
             this.btnHistory = new System.Windows.Forms.Button();
             this.dgvQueue = new System.Windows.Forms.DataGridView();
-            this.colQueueId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colQueuePatientNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colQueueItemCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colQueueCreateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colQueueStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tlpMain.SuspendLayout();
             this.pnlEntry.SuspendLayout();
             this.grpEntry.SuspendLayout();
@@ -154,9 +154,9 @@ namespace PharmacySorter
             this.dgvDraft.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvDraft.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDraft.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colDraftDrugName,
-            this.colDraftSpec,
-            this.colDraftQuantity});
+            this.Column1,
+            this.Column2,
+            this.Column3});
             this.dgvDraft.Location = new System.Drawing.Point(31, 305);
             this.dgvDraft.MultiSelect = false;
             this.dgvDraft.Name = "dgvDraft";
@@ -167,30 +167,30 @@ namespace PharmacySorter
             this.dgvDraft.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvDraft.Size = new System.Drawing.Size(496, 250);
             this.dgvDraft.TabIndex = 11;
-            //
-            // colDraftDrugName
-            //
-            this.colDraftDrugName.DataPropertyName = "DrugName";
-            this.colDraftDrugName.HeaderText = "药品名称";
-            this.colDraftDrugName.MinimumWidth = 80;
-            this.colDraftDrugName.Name = "colDraftDrugName";
-            this.colDraftDrugName.ReadOnly = true;
-            //
-            // colDraftSpec
-            //
-            this.colDraftSpec.DataPropertyName = "Spec";
-            this.colDraftSpec.HeaderText = "规格";
-            this.colDraftSpec.MinimumWidth = 70;
-            this.colDraftSpec.Name = "colDraftSpec";
-            this.colDraftSpec.ReadOnly = true;
-            //
-            // colDraftQuantity
-            //
-            this.colDraftQuantity.DataPropertyName = "RequiredQty";
-            this.colDraftQuantity.HeaderText = "数量";
-            this.colDraftQuantity.MinimumWidth = 50;
-            this.colDraftQuantity.Name = "colDraftQuantity";
-            this.colDraftQuantity.ReadOnly = true;
+            // 
+            // Column1
+            // 
+            this.Column1.DataPropertyName = "DrugName";
+            this.Column1.HeaderText = "药品名称";
+            this.Column1.MinimumWidth = 6;
+            this.Column1.Name = "colDraftDrugName";
+            this.Column1.ReadOnly = true;
+            // 
+            // Column2
+            // 
+            this.Column2.DataPropertyName = "Spec";
+            this.Column2.HeaderText = "规格";
+            this.Column2.MinimumWidth = 6;
+            this.Column2.Name = "colDraftSpec";
+            this.Column2.ReadOnly = true;
+            // 
+            // Column3
+            // 
+            this.Column3.DataPropertyName = "RequiredQty";
+            this.Column3.HeaderText = "数量";
+            this.Column3.MinimumWidth = 6;
+            this.Column3.Name = "colDraftQuantity";
+            this.Column3.ReadOnly = true;
             // 
             // lblDraft
             // 
@@ -317,7 +317,7 @@ namespace PharmacySorter
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(290, 610);
+            this.btnCancel.Location = new System.Drawing.Point(215, 607);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(140, 35);
             this.btnCancel.TabIndex = 2;
@@ -327,17 +327,17 @@ namespace PharmacySorter
             // 
             // btnMoveTop
             // 
-            this.btnMoveTop.Location = new System.Drawing.Point(110, 610);
+            this.btnMoveTop.Location = new System.Drawing.Point(21, 607);
             this.btnMoveTop.Name = "btnMoveTop";
             this.btnMoveTop.Size = new System.Drawing.Size(140, 35);
             this.btnMoveTop.TabIndex = 1;
             this.btnMoveTop.Text = "优先处理(置顶)";
             this.btnMoveTop.UseVisualStyleBackColor = true;
             this.btnMoveTop.Click += new System.EventHandler(this.btnMoveTop_Click);
-            //
+            // 
             // btnHistory
-            //
-            this.btnHistory.Location = new System.Drawing.Point(400, 610);
+            // 
+            this.btnHistory.Location = new System.Drawing.Point(400, 607);
             this.btnHistory.Name = "btnHistory";
             this.btnHistory.Size = new System.Drawing.Size(140, 35);
             this.btnHistory.TabIndex = 3;
@@ -353,11 +353,11 @@ namespace PharmacySorter
             this.dgvQueue.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvQueue.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvQueue.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colQueueId,
-            this.colQueuePatientNo,
-            this.colQueueItemCount,
-            this.colQueueCreateTime,
-            this.colQueueStatus});
+            this.Column4,
+            this.Column5,
+            this.Column6,
+            this.Column7,
+            this.Column8});
             this.dgvQueue.Location = new System.Drawing.Point(21, 38);
             this.dgvQueue.MultiSelect = false;
             this.dgvQueue.Name = "dgvQueue";
@@ -368,51 +368,46 @@ namespace PharmacySorter
             this.dgvQueue.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvQueue.Size = new System.Drawing.Size(519, 540);
             this.dgvQueue.TabIndex = 0;
-            //
-            // colQueueId
-            //
-            this.colQueueId.DataPropertyName = "PrescriptionId";
-            this.colQueueId.FillWeight = 35F;
-            this.colQueueId.HeaderText = "处方号";
-            this.colQueueId.MinimumWidth = 60;
-            this.colQueueId.Name = "colQueueId";
-            this.colQueueId.ReadOnly = true;
-            //
-            // colQueuePatientNo
-            //
-            this.colQueuePatientNo.DataPropertyName = "PatientNo";
-            this.colQueuePatientNo.FillWeight = 40F;
-            this.colQueuePatientNo.HeaderText = "患者编号";
-            this.colQueuePatientNo.MinimumWidth = 70;
-            this.colQueuePatientNo.Name = "colQueuePatientNo";
-            this.colQueuePatientNo.ReadOnly = true;
-            //
-            // colQueueItemCount
-            //
-            this.colQueueItemCount.DataPropertyName = "ItemCount";
-            this.colQueueItemCount.FillWeight = 25F;
-            this.colQueueItemCount.HeaderText = "药品数";
-            this.colQueueItemCount.MinimumWidth = 50;
-            this.colQueueItemCount.Name = "colQueueItemCount";
-            this.colQueueItemCount.ReadOnly = true;
-            //
-            // colQueueCreateTime
-            //
-            this.colQueueCreateTime.DataPropertyName = "CreateTimeText";
-            this.colQueueCreateTime.FillWeight = 55F;
-            this.colQueueCreateTime.HeaderText = "接收时间";
-            this.colQueueCreateTime.MinimumWidth = 120;
-            this.colQueueCreateTime.Name = "colQueueCreateTime";
-            this.colQueueCreateTime.ReadOnly = true;
-            //
-            // colQueueStatus
-            //
-            this.colQueueStatus.DataPropertyName = "Status";
-            this.colQueueStatus.FillWeight = 30F;
-            this.colQueueStatus.HeaderText = "状态";
-            this.colQueueStatus.MinimumWidth = 60;
-            this.colQueueStatus.Name = "colQueueStatus";
-            this.colQueueStatus.ReadOnly = true;
+            // 
+            // Column4
+            // 
+            this.Column4.DataPropertyName = "PrescriptionId";
+            this.Column4.HeaderText = "处方号";
+            this.Column4.MinimumWidth = 6;
+            this.Column4.Name = "colQueueId";
+            this.Column4.ReadOnly = true;
+            // 
+            // Column5
+            // 
+            this.Column5.DataPropertyName = "PatientNo";
+            this.Column5.HeaderText = "患者编号";
+            this.Column5.MinimumWidth = 6;
+            this.Column5.Name = "colQueuePatientNo";
+            this.Column5.ReadOnly = true;
+            // 
+            // Column6
+            // 
+            this.Column6.DataPropertyName = "ItemCount";
+            this.Column6.HeaderText = "药品种类数";
+            this.Column6.MinimumWidth = 6;
+            this.Column6.Name = "colQueueItemCount";
+            this.Column6.ReadOnly = true;
+            // 
+            // Column7
+            // 
+            this.Column7.DataPropertyName = "CreateTimeText";
+            this.Column7.HeaderText = "接收时间";
+            this.Column7.MinimumWidth = 6;
+            this.Column7.Name = "colQueueCreateTime";
+            this.Column7.ReadOnly = true;
+            // 
+            // Column8
+            // 
+            this.Column8.DataPropertyName = "Status";
+            this.Column8.HeaderText = "状态";
+            this.Column8.MinimumWidth = 6;
+            this.Column8.Name = "colQueueStatus";
+            this.Column8.ReadOnly = true;
             // 
             // UcPrescriptionQueue
             // 
@@ -452,18 +447,18 @@ namespace PharmacySorter
         private System.Windows.Forms.NumericUpDown nudQuantity;
         private System.Windows.Forms.Label lblDraft;
         private System.Windows.Forms.DataGridView dgvDraft;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDraftDrugName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDraftSpec;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDraftQuantity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.Button btnAddItem;
         private System.Windows.Forms.Button btnRemoveItem;
         private System.Windows.Forms.Button btnSubmit;
         private System.Windows.Forms.DataGridView dgvQueue;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colQueueId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colQueuePatientNo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colQueueItemCount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colQueueCreateTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colQueueStatus;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.Button btnMoveTop;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnHistory;

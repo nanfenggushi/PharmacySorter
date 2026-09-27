@@ -44,11 +44,11 @@ namespace PharmacySorter
             this.btnSearch = new System.Windows.Forms.Button();
             this.lblStation = new System.Windows.Forms.Label();
             this.cmbCurrentWorkstation = new System.Windows.Forms.ComboBox();
-            this.colDrugId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDrugName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSpec = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colStationText = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colIsActive = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMedicineInfo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -89,18 +89,18 @@ namespace PharmacySorter
             // 
             this.dgvMedicineInfo.AllowUserToAddRows = false;
             this.dgvMedicineInfo.AllowUserToDeleteRows = false;
-            this.dgvMedicineInfo.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvMedicineInfo.AutoGenerateColumns = false;
+            this.dgvMedicineInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvMedicineInfo.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvMedicineInfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMedicineInfo.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colDrugId,
-            this.colDrugName,
-            this.colSpec,
-            this.colStationText,
-            this.colIsActive});
-            this.dgvMedicineInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Column1,
+            this.Column2,
+            this.Column3,
+            this.Column4,
+            this.Column5});
             this.dgvMedicineInfo.Location = new System.Drawing.Point(24, 250);
             this.dgvMedicineInfo.MultiSelect = false;
             this.dgvMedicineInfo.Name = "dgvMedicineInfo";
@@ -209,52 +209,52 @@ namespace PharmacySorter
             // 
             // cmbCurrentWorkstation
             // 
+            this.cmbCurrentWorkstation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCurrentWorkstation.FormattingEnabled = true;
             this.cmbCurrentWorkstation.Location = new System.Drawing.Point(450, 42);
             this.cmbCurrentWorkstation.Name = "cmbCurrentWorkstation";
-            this.cmbCurrentWorkstation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCurrentWorkstation.Size = new System.Drawing.Size(165, 23);
             this.cmbCurrentWorkstation.TabIndex = 16;
             // 
-            // colDrugId
+            // Column1
             // 
-            this.colDrugId.DataPropertyName = "DrugId";
-            this.colDrugId.HeaderText = "药品编号";
-            this.colDrugId.MinimumWidth = 6;
-            this.colDrugId.Name = "colDrugId";
-            this.colDrugId.ReadOnly = true;
+            this.Column1.DataPropertyName = "DrugId";
+            this.Column1.HeaderText = "药品编号";
+            this.Column1.MinimumWidth = 6;
+            this.Column1.Name = "colDrugId";
+            this.Column1.ReadOnly = true;
             // 
-            // colDrugName
+            // Column2
             // 
-            this.colDrugName.DataPropertyName = "DrugName";
-            this.colDrugName.HeaderText = "药品名称";
-            this.colDrugName.MinimumWidth = 6;
-            this.colDrugName.Name = "colDrugName";
-            this.colDrugName.ReadOnly = true;
+            this.Column2.DataPropertyName = "DrugName";
+            this.Column2.HeaderText = "药品名称";
+            this.Column2.MinimumWidth = 6;
+            this.Column2.Name = "colDrugName";
+            this.Column2.ReadOnly = true;
             // 
-            // colSpec
+            // Column3
             // 
-            this.colSpec.DataPropertyName = "Spec";
-            this.colSpec.HeaderText = "规格";
-            this.colSpec.MinimumWidth = 6;
-            this.colSpec.Name = "colSpec";
-            this.colSpec.ReadOnly = true;
+            this.Column3.DataPropertyName = "Spec";
+            this.Column3.HeaderText = "规格";
+            this.Column3.MinimumWidth = 6;
+            this.Column3.Name = "colSpec";
+            this.Column3.ReadOnly = true;
             // 
-            // colStationText
+            // Column4
             // 
-            this.colStationText.DataPropertyName = "StationText";
-            this.colStationText.HeaderText = "当前绑定工位";
-            this.colStationText.MinimumWidth = 6;
-            this.colStationText.Name = "colStationText";
-            this.colStationText.ReadOnly = true;
+            this.Column4.DataPropertyName = "StationText";
+            this.Column4.HeaderText = "当前绑定工位";
+            this.Column4.MinimumWidth = 6;
+            this.Column4.Name = "colStationText";
+            this.Column4.ReadOnly = true;
             // 
-            // colIsActive
+            // Column5
             // 
-            this.colIsActive.DataPropertyName = "StatusText";
-            this.colIsActive.HeaderText = "是否启用";
-            this.colIsActive.MinimumWidth = 6;
-            this.colIsActive.Name = "colIsActive";
-            this.colIsActive.ReadOnly = true;
+            this.Column5.DataPropertyName = "StatusText";
+            this.Column5.HeaderText = "是否启用";
+            this.Column5.MinimumWidth = 6;
+            this.Column5.Name = "colIsActive";
+            this.Column5.ReadOnly = true;
             // 
             // UcDrugDictionary
             // 
@@ -302,10 +302,10 @@ namespace PharmacySorter
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Label lblStation;
         private System.Windows.Forms.ComboBox cmbCurrentWorkstation;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDrugId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDrugName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colSpec;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colStationText;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colIsActive;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
     }
 }

@@ -40,10 +40,10 @@ namespace PharmacySorter
             this.lblStart = new System.Windows.Forms.Label();
             this.dtpStart = new System.Windows.Forms.DateTimePicker();
             this.dgvLog = new System.Windows.Forms.DataGridView();
-            this.colLogTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colPrescriptionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colLogType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlFilter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).BeginInit();
             this.SuspendLayout();
@@ -162,10 +162,10 @@ namespace PharmacySorter
             this.dgvLog.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvLog.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvLog.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colLogTime,
-            this.colPrescriptionId,
-            this.colLogType,
-            this.colContent});
+            this.Column1,
+            this.Column2,
+            this.Column3,
+            this.Column4});
             this.dgvLog.Location = new System.Drawing.Point(27, 101);
             this.dgvLog.MultiSelect = false;
             this.dgvLog.Name = "dgvLog";
@@ -177,41 +177,37 @@ namespace PharmacySorter
             this.dgvLog.Size = new System.Drawing.Size(1140, 574);
             this.dgvLog.TabIndex = 1;
             // 
-            // colLogTime
+            // Column1
             // 
-            this.colLogTime.DataPropertyName = "LogTimeText";
-            this.colLogTime.FillWeight = 40F;
-            this.colLogTime.HeaderText = "时间";
-            this.colLogTime.MinimumWidth = 160;
-            this.colLogTime.Name = "colLogTime";
-            this.colLogTime.ReadOnly = true;
+            this.Column1.DataPropertyName = "LogTimeText";
+            this.Column1.HeaderText = "时间";
+            this.Column1.MinimumWidth = 6;
+            this.Column1.Name = "colLogTime";
+            this.Column1.ReadOnly = true;
             // 
-            // colPrescriptionId
+            // Column2
             // 
-            this.colPrescriptionId.DataPropertyName = "PrescriptionText";
-            this.colPrescriptionId.FillWeight = 25F;
-            this.colPrescriptionId.HeaderText = "处方号";
-            this.colPrescriptionId.MinimumWidth = 80;
-            this.colPrescriptionId.Name = "colPrescriptionId";
-            this.colPrescriptionId.ReadOnly = true;
+            this.Column2.DataPropertyName = "PrescriptionText";
+            this.Column2.HeaderText = "处方号";
+            this.Column2.MinimumWidth = 6;
+            this.Column2.Name = "colPrescriptionId";
+            this.Column2.ReadOnly = true;
             // 
-            // colLogType
+            // Column3
             // 
-            this.colLogType.DataPropertyName = "LogType";
-            this.colLogType.FillWeight = 30F;
-            this.colLogType.HeaderText = "事件类型";
-            this.colLogType.MinimumWidth = 90;
-            this.colLogType.Name = "colLogType";
-            this.colLogType.ReadOnly = true;
+            this.Column3.DataPropertyName = "LogType";
+            this.Column3.HeaderText = "事件类型";
+            this.Column3.MinimumWidth = 6;
+            this.Column3.Name = "colLogType";
+            this.Column3.ReadOnly = true;
             // 
-            // colContent
+            // Column4
             // 
-            this.colContent.DataPropertyName = "Content";
-            this.colContent.FillWeight = 120F;
-            this.colContent.HeaderText = "详细内容";
-            this.colContent.MinimumWidth = 200;
-            this.colContent.Name = "colContent";
-            this.colContent.ReadOnly = true;
+            this.Column4.DataPropertyName = "Content";
+            this.Column4.HeaderText = "详细内容";
+            this.Column4.MinimumWidth = 6;
+            this.Column4.Name = "colContent";
+            this.Column4.ReadOnly = true;
             // 
             // UcSystemAuditLog
             // 
@@ -232,10 +228,10 @@ namespace PharmacySorter
 
         private System.Windows.Forms.Panel pnlFilter;
         private System.Windows.Forms.DataGridView dgvLog;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colLogTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colPrescriptionId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colLogType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colContent;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.Label lblLogType;
         private System.Windows.Forms.TextBox txtPrescriptionId;
         private System.Windows.Forms.Label lblPrescriptionId;

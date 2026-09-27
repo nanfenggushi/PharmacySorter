@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.IO.Ports;
 using System.Text;
 using System.Threading;
@@ -69,6 +70,15 @@ namespace Common
         }
 
         /// <summary>
+        /// 按 App.config 中的端口、波特率、校验位、数据位和停止位打开串口。
+        /// 已经连接同一端口时不重复打开。
+        /// </summary>
+        public void Connect()
+        {
+            Connect(ConfigurationManager.AppSettings["ArmPortName"]);
+        }
+
+        /// <summary>
         /// 打开串口。已经连接同一端口时不重复打开。
         /// </summary>
         public void Connect(string portName)
@@ -78,6 +88,11 @@ namespace Common
                 throw new ArgumentException("请配置串口号");
             }
 
+            int baudRate = ReadIntSetting("ArmBaudRate", 115200);
+            int dataBits = ReadIntSetting("ArmDataBits", 8);
+            Parity parity = ReadParitySetting();
+            StopBits stopBits = ReadStopBitsSetting();
+
             lock (gate)
             {
                 if (IsConnected && string.Equals(port.PortName, portName, StringComparison.OrdinalIgnoreCase))
@@ -86,12 +101,54 @@ namespace Common
                 }
 
                 ClosePort();
-                SerialPort serialPort = new SerialPort(portName.Trim(), 115200, Parity.None, 8, StopBits.One);
+                SerialPort serialPort = new SerialPort(portName.Trim(), baudRate, parity, dataBits, stopBits);
                 serialPort.Encoding = Encoding.ASCII;
                 serialPort.NewLine = "\r\n";
                 serialPort.Open();
                 port = serialPort;
             }
+        }
+
+        /// <summary>
+        /// 读取整数配置。配置缺失或不是整数时使用默认值。
+        /// </summary>
+        private static int ReadIntSetting(string key, int defaultValue)
+        {
+            int value;
+            if (int.TryParse(ConfigurationManager.AppSettings[key], out value) && value > 0)
+            {
+                return value;
+            }
+
+            return defaultValue;
+        }
+
+        /// <summary>
+        /// 读取校验位。可选 None、Odd、Even、Mark、Space。
+        /// </summary>
+        private static Parity ReadParitySetting()
+        {
+            Parity parity;
+            if (Enum.TryParse(ConfigurationManager.AppSettings["ArmParity"], true, out parity))
+            {
+                return parity;
+            }
+
+            return Parity.None;
+        }
+
+        /// <summary>
+        /// 读取停止位。可选 None、One、Two、OnePointFive。
+        /// </summary>
+        private static StopBits ReadStopBitsSetting()
+        {
+            StopBits stopBits;
+            if (Enum.TryParse(ConfigurationManager.AppSettings["ArmStopBits"], true, out stopBits))
+            {
+                return stopBits;
+            }
+
+            return StopBits.One;
         }
 
         /// <summary>
@@ -136,10 +193,7 @@ namespace Common
         }
 
         /// <summary>
-        /// 下发一条宏指令，并按给定毫秒数等待机械臂做完。
-        /// $DGT 是动作组文件里的标记，控制板不能直接执行，要先展开成舵机帧。
-        /// 串口未连接时不抛错，只等待，避免演示流程被硬件挡住。
-        /// 等待途中收到急停时提前返回，调用方要自己停止后续循环。
+        /// 下发一条指令，并按给定毫秒数等待机械臂做完。
         /// </summary>
         /// <param name="command">$DGT 动作组，或 G0002 拼出的舵机指令。</param>
         /// <param name="waitMilliseconds">动作预估耗时。小于 0 时按 0 处理。</param>
@@ -262,6 +316,10 @@ namespace Common
             }
         }
 
+        /// <summary>
+        /// 是否请求停止
+        /// </summary>
+        /// <returns></returns>
         private bool IsStopRequested()
         {
             lock (gate)
@@ -270,7 +328,9 @@ namespace Common
             }
         }
 
-
+        /// <summary>
+        /// 断开串口连接
+        /// </summary>
         private void ClosePort()
         {
             if (port == null)
