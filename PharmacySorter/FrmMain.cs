@@ -84,7 +84,7 @@ namespace PharmacySorter
         }
 
         /// <summary>
-        /// 按配置打开串口。打不开时界面显示未连接，配药流程仍可按延时演示。
+        /// 按配置打开串口。打不开时界面显示未连接，不能启动配药。
         /// </summary>
         private void ConnectArm()
         {
@@ -93,7 +93,7 @@ namespace PharmacySorter
             try
             {
                 arm.Connect(portName);
-                // 开机先回到 G0002 待命姿态。未连接时 SendStandby 只等待，不中断启动。
+                // 开机先回到 G0002 待命姿态。串口未打开时 SendStandby 会失败，启动配药会被拦住。
                 arm.SendStandby();
                 ShowConnection(true, arm.PortName);
             }

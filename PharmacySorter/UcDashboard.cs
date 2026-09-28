@@ -31,6 +31,11 @@ namespace PharmacySorter
         private bool stopRequested;
 
         /// <summary>
+        /// 急停、取消核对或暂停取药后，状态标签不能再显示“配药中”。
+        /// </summary>
+        private bool paused;
+
+        /// <summary>
         /// 当前展示的处方。没有待处理处方时为空。
         /// </summary>
         private Prescription currentPrescription;
@@ -59,7 +64,7 @@ namespace PharmacySorter
         }
 
         /// <summary>
-        /// 绑定主窗体已经打开的串口。未传入时保留本地对象，仍可按延时演示。
+        /// 绑定主窗体已经打开的串口。急停和抓取必须使用这一条连接。
         /// </summary>
         public void BindArm(ArmCommandService commandService)
         {
@@ -75,8 +80,10 @@ namespace PharmacySorter
         public void RequestStop()
         {
             stopRequested = true;
+            paused = true;
             AppendLog("急停，当前抓取循环已中断");
             ShowActiveStation(null);
+            ShowPausedStatus();
         }
 
         /// <summary>
@@ -97,10 +104,17 @@ namespace PharmacySorter
         {
             btnStart.Enabled = false;
             stopRequested = false;
+            paused = false;
             dispensing = true;
             arm.ClearStop();
             try
             {
+                if (!arm.IsConnected)
+                {
+                    paused = true;
+                    throw new InvalidOperationException("机械臂串口未连接，不能启动配药");
+                }
+
                 AppendLog("下发待命指令 " + ArmCommandService.StandbyCommand);
                 await Task.Run(new Action(arm.SendStandby));
                 while (!stopRequested)
@@ -128,6 +142,7 @@ namespace PharmacySorter
             }
             catch (Exception ex)
             {
+                paused = true;
                 AppendLog("配药中断：" + ex.Message);
                 MessageBox.Show(ex.Message, "配药失败", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -187,6 +202,11 @@ namespace PharmacySorter
                     if (dispenseBll.TryComplete(currentPrescription))
                     {
                         AppendLog("处方 " + currentPrescription.PrescriptionId + " 已完成");
+                        if (!ConfirmSlotCleared(currentPrescription))
+                        {
+                            stopRequested = true;
+                            paused = true;
+                        }
                     }
                     return;
                 }
@@ -216,6 +236,31 @@ namespace PharmacySorter
                     nextCount = VerifyItem(item);
                 }
             }
+        }
+
+        /// <summary>
+        /// 一张处方核对通过后，分拣槽里的药品必须先取走，机械臂才能继续下一张。
+        /// </summary>
+        private bool ConfirmSlotCleared(Prescription prescription)
+        {
+            if (prescription == null)
+            {
+                return false;
+            }
+
+            DialogResult result = MessageBox.Show(
+                "处方 " + prescription.PrescriptionId + "（患者 " + prescription.PatientNo + "）已核对通过。\r\n请先取走分拣槽内的全部药品，取走后再继续配药。",
+                "请取走药品",
+                MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Information);
+            if (result != DialogResult.OK)
+            {
+                AppendLog("药品尚未取走，连续配药已暂停");
+                return false;
+            }
+
+            AppendLog("分拣槽药品已取走，可以继续下一张处方");
+            return true;
         }
 
         /// <summary>
@@ -275,13 +320,16 @@ namespace PharmacySorter
             {
                 if (dialog.ShowDialog(FindForm()) != DialogResult.OK)
                 {
-                    AppendLog("数量核对已取消");
+                    stopRequested = true;
+                    paused = true;
+                    AppendLog("数量核对已取消，配药已暂停");
                     return 0;
                 }
 
                 // 核对弹窗是模态的，急停当时清不掉这里的循环标记，关闭后再补一次。
                 if (stopRequested)
                 {
+                    paused = true;
                     AppendLog("急停后不再继续当前药品");
                     return 0;
                 }
@@ -354,9 +402,30 @@ namespace PharmacySorter
             }
 
             lblSummary.Text = "处方号 " + currentPrescription.PrescriptionId + "    患者编号 " + currentPrescription.PatientNo;
-            lblStatus.Text = currentPrescription.Status;
-            lblStatus.ForeColor = GetStatusColor(currentPrescription.Status);
+            if (paused && !dispensing)
+            {
+                ShowPausedStatus();
+            }
+            else if (!dispensing && (currentPrescription.Status == "配药中" || currentPrescription.Status == "部分异常"))
+            {
+                // 程序退出后数据库仍是配药中，但机械臂已经停止。重新打开时显示为已暂停。
+                ShowPausedStatus();
+            }
+            else
+            {
+                lblStatus.Text = currentPrescription.Status;
+                lblStatus.ForeColor = GetStatusColor(currentPrescription.Status);
+            }
             btnStart.Enabled = !dispensing;
+        }
+
+        /// <summary>
+        /// 中断后的界面状态。数据库仍是“配药中”，但机械臂已经停止。
+        /// </summary>
+        private void ShowPausedStatus()
+        {
+            lblStatus.Text = "已暂停";
+            lblStatus.ForeColor = Color.Firebrick;
         }
 
         /// <summary>

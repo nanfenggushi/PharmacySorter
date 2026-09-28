@@ -8,7 +8,7 @@ namespace Common
 {
     /// <summary>
     /// 机械臂串口服务。负责打开串口、下发宏指令，并按动作耗时阻塞等待。
-    /// 没有连接硬件时只等待、不抛错，方便在电脑上把配药流程走完。
+    /// 未连接串口时不允许下发动作，避免机械臂没有执行却把配药流程走完。
     /// </summary>
     public class ArmCommandService
     {
@@ -260,10 +260,12 @@ namespace Common
             int wait = SkipWait || waitMilliseconds < 0 ? 0 : waitMilliseconds;
             lock (gate)
             {
-                if (IsConnected)
+                if (!IsConnected)
                 {
-                    port.Write(command.Trim());
+                    throw new InvalidOperationException("机械臂串口未连接，不能下发动作");
                 }
+
+                port.Write(command.Trim());
             }
 
             Wait(wait);
