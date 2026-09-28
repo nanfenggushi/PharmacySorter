@@ -48,6 +48,8 @@
     <Compile Include="AppLog.cs" />
     <Compile Include="Prescription.cs" />
     <Compile Include="PrescriptionItem.cs" />
+    <Compile Include="DispenseOrder.cs" />
+    <Compile Include="DispenseOrderItem.cs" />
     <Compile Include="VerifyDecision.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

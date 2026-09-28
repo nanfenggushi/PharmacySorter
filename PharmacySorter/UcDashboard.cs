@@ -36,14 +36,14 @@ namespace PharmacySorter
         private bool paused;
 
         /// <summary>
-        /// 当前展示的处方。没有待处理处方时为空。
+        /// 当前展示的待配任务。没有待处理任务时为空。
         /// </summary>
-        private Prescription currentPrescription;
+        private DispenseOrder currentOrder;
 
         /// <summary>
-        /// 当前处方的明细，表格直接绑定这份列表。
+        /// 当前任务的明细，表格直接绑定这份列表。
         /// </summary>
-        private List<PrescriptionItem> currentItems = new List<PrescriptionItem>();
+        private List<DispenseOrderItem> currentItems = new List<DispenseOrderItem>();
 
         /// <summary>
         /// 工位指示的常态颜色。动作中再改成高亮色。
@@ -119,9 +119,9 @@ namespace PharmacySorter
                 await Task.Run(new Action(arm.SendStandby));
                 while (!stopRequested)
                 {
-                    if (!BeginCurrentPrescription())
+                    if (!BeginCurrentOrder())
                     {
-                        lblStatus.Text = "等待新处方";
+                        lblStatus.Text = "等待新任务";
                         lblStatus.ForeColor = Color.Gray;
                         await Task.Delay(1000);
                         if (!stopRequested)
@@ -131,7 +131,7 @@ namespace PharmacySorter
                         continue;
                     }
 
-                    await RunPrescriptionAsync();
+                    await RunOrderAsync();
                     if (stopRequested)
                     {
                         break;
@@ -155,34 +155,34 @@ namespace PharmacySorter
         }
 
         /// <summary>
-        /// 开始或继续当前处方。不能配药时跳过并读取下一张，队列空了返回 false。
+        /// 开始或继续当前任务。不能配药时跳过并读取下一条，队列空了返回 false。
         /// </summary>
-        private bool BeginCurrentPrescription()
+        private bool BeginCurrentOrder()
         {
             while (!stopRequested)
             {
-                if (currentPrescription == null)
+                if (currentOrder == null)
                 {
                     return false;
                 }
 
-                bool resume = currentPrescription.Status == "配药中" || currentPrescription.Status == "部分异常";
-                if (!resume && currentPrescription.Status != "待配药")
+                bool resume = currentOrder.Status == "配药中" || currentOrder.Status == "部分异常";
+                if (!resume && currentOrder.Status != "待配药")
                 {
                     return false;
                 }
 
-                string reason = dispenseBll.GetStartBlockReason(currentPrescription, currentItems);
+                string reason = dispenseBll.GetStartBlockReason(currentOrder, currentItems);
                 if (!string.IsNullOrEmpty(reason))
                 {
-                    AppendLog("跳过处方 " + currentPrescription.PrescriptionId + "：" + reason);
-                    LoadCurrent(currentPrescription.PrescriptionId);
+                    AppendLog("跳过任务 " + currentOrder.OrderId + "：" + reason);
+                    LoadCurrent(currentOrder.OrderId);
                     continue;
                 }
 
-                dispenseBll.Start(currentPrescription);
+                dispenseBll.Start(currentOrder);
                 BindSummary();
-                AppendLog((resume ? "继续处方 " : "开始处方 ") + currentPrescription.PrescriptionId);
+                AppendLog((resume ? "继续任务 " : "开始任务 ") + currentOrder.OrderId);
                 return true;
             }
 
@@ -192,17 +192,17 @@ namespace PharmacySorter
         /// <summary>
         /// 逐条处理未完成的明细。每条抓满后必须人工核对。
         /// </summary>
-        private async Task RunPrescriptionAsync()
+        private async Task RunOrderAsync()
         {
             while (!stopRequested)
             {
-                PrescriptionItem item = dispenseBll.FindNextItem(currentItems);
+                DispenseOrderItem item = dispenseBll.FindNextItem(currentItems);
                 if (item == null)
                 {
-                    if (dispenseBll.TryComplete(currentPrescription))
+                    if (dispenseBll.TryComplete(currentOrder))
                     {
-                        AppendLog("处方 " + currentPrescription.PrescriptionId + " 已完成");
-                        if (!ConfirmSlotCleared(currentPrescription))
+                        AppendLog("任务 " + currentOrder.OrderId + " 已完成");
+                        if (!ConfirmSlotCleared(currentOrder))
                         {
                             stopRequested = true;
                             paused = true;
@@ -239,17 +239,17 @@ namespace PharmacySorter
         }
 
         /// <summary>
-        /// 一张处方核对通过后，分拣槽里的药品必须先取走，机械臂才能继续下一张。
+        /// 一条任务核对通过后，分拣槽里的药品必须先取走，机械臂才能继续下一条。
         /// </summary>
-        private bool ConfirmSlotCleared(Prescription prescription)
+        private bool ConfirmSlotCleared(DispenseOrder order)
         {
-            if (prescription == null)
+            if (order == null)
             {
                 return false;
             }
 
             DialogResult result = MessageBox.Show(
-                "处方 " + prescription.PrescriptionId + "（患者 " + prescription.PatientNo + "）已核对通过。\r\n请先取走分拣槽内的全部药品，取走后再继续配药。",
+                "任务 " + order.OrderId + "（患者 " + order.PatientNo + "，处方 " + order.PrescriptionName + "）已核对通过。\r\n请先取走分拣槽内的全部药品，取走后再继续配药。",
                 "请取走药品",
                 MessageBoxButtons.OKCancel,
                 MessageBoxIcon.Information);
@@ -259,14 +259,14 @@ namespace PharmacySorter
                 return false;
             }
 
-            AppendLog("分拣槽药品已取走，可以继续下一张处方");
+            AppendLog("分拣槽药品已取走，可以继续下一条任务");
             return true;
         }
 
         /// <summary>
         /// 对一条明细连续抓取指定次数。每次都是先抓药位，再投到分拣槽。
         /// </summary>
-        private async Task GrabTimesAsync(PrescriptionItem item, int count)
+        private async Task GrabTimesAsync(DispenseOrderItem item, int count)
         {
             Station grabStation = dispenseBll.GetGrabStation(item);
             Station dropStation = dispenseBll.GetDropStation();
@@ -314,7 +314,7 @@ namespace PharmacySorter
         /// <summary>
         /// 弹出数量核对。返回还要补抓的次数，取消、急停或已经通过时返回 0。
         /// </summary>
-        private int VerifyItem(PrescriptionItem item)
+        private int VerifyItem(DispenseOrderItem item)
         {
             using (FrmQuantityVerify dialog = new FrmQuantityVerify(item))
             {
@@ -355,22 +355,22 @@ namespace PharmacySorter
         }
 
         /// <summary>
-        /// 读取当前处方和明细，并刷新摘要、进度和工位指示。
+        /// 读取当前任务和明细，并刷新摘要、进度和工位指示。
         /// </summary>
-        /// <param name="skipPrescriptionId">跳过不能配药的处方，避免反复选中同一张。</param>
-        private void LoadCurrent(int skipPrescriptionId)
+        /// <param name="skipOrderId">跳过不能配药的任务，避免反复选中同一条。</param>
+        private void LoadCurrent(int skipOrderId)
         {
             try
             {
-                currentPrescription = dispenseBll.GetCurrentPrescription(skipPrescriptionId);
-                currentItems = currentPrescription == null
-                    ? new List<PrescriptionItem>()
-                    : dispenseBll.GetCurrentItems(currentPrescription.PrescriptionId);
+                currentOrder = dispenseBll.GetCurrentOrder(skipOrderId);
+                currentItems = currentOrder == null
+                    ? new List<DispenseOrderItem>()
+                    : dispenseBll.GetCurrentItems(currentOrder.OrderId);
             }
             catch (Exception ex)
             {
-                currentPrescription = null;
-                currentItems = new List<PrescriptionItem>();
+                currentOrder = null;
+                currentItems = new List<DispenseOrderItem>();
                 AppendLog("读取看板数据失败：" + ex.Message);
             }
 
@@ -388,33 +388,35 @@ namespace PharmacySorter
         }
 
         /// <summary>
-        /// 顶部显示处方号、患者编号和整体状态。没有处方时显示空闲。
+        /// 顶部显示任务号、患者编号、处方名称和整体状态。没有任务时显示空闲。
         /// </summary>
         private void BindSummary()
         {
-            if (currentPrescription == null)
+            if (currentOrder == null)
             {
-                lblSummary.Text = "当前没有待配处方";
+                lblSummary.Text = "当前没有待配任务";
                 lblStatus.Text = "空闲";
                 lblStatus.ForeColor = Color.Gray;
                 btnStart.Enabled = !dispensing;
                 return;
             }
 
-            lblSummary.Text = "处方号 " + currentPrescription.PrescriptionId + "    患者编号 " + currentPrescription.PatientNo;
+            lblSummary.Text = "任务号 " + currentOrder.OrderId
+                + "    患者编号 " + currentOrder.PatientNo
+                + "    处方 " + currentOrder.PrescriptionName;
             if (paused && !dispensing)
             {
                 ShowPausedStatus();
             }
-            else if (!dispensing && (currentPrescription.Status == "配药中" || currentPrescription.Status == "部分异常"))
+            else if (!dispensing && (currentOrder.Status == "配药中" || currentOrder.Status == "部分异常"))
             {
                 // 程序退出后数据库仍是配药中，但机械臂已经停止。重新打开时显示为已暂停。
                 ShowPausedStatus();
             }
             else
             {
-                lblStatus.Text = currentPrescription.Status;
-                lblStatus.ForeColor = GetStatusColor(currentPrescription.Status);
+                lblStatus.Text = currentOrder.Status;
+                lblStatus.ForeColor = GetStatusColor(currentOrder.Status);
             }
             btnStart.Enabled = !dispensing;
         }
@@ -434,7 +436,7 @@ namespace PharmacySorter
         private void BindItems()
         {
             int passed = dispenseBll.CountPassed(currentItems);
-            lblItems.Text = "处方明细 " + passed + "/" + currentItems.Count;
+            lblItems.Text = "任务明细 " + passed + "/" + currentItems.Count;
             dgvItems.DataSource = null;
             dgvItems.DataSource = currentItems;
         }
@@ -449,7 +451,7 @@ namespace PharmacySorter
                 return;
             }
 
-            PrescriptionItem item = dgvItems.Rows[e.RowIndex].DataBoundItem as PrescriptionItem;
+            DispenseOrderItem item = dgvItems.Rows[e.RowIndex].DataBoundItem as DispenseOrderItem;
             if (item == null)
             {
                 return;

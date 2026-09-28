@@ -97,6 +97,12 @@
     <Compile Include="UcPrescriptionQueue.Designer.cs">
       <DependentUpon>UcPrescriptionQueue.cs</DependentUpon>
     </Compile>
+    <Compile Include="UcPrescriptionCatalog.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UcPrescriptionCatalog.Designer.cs">
+      <DependentUpon>UcPrescriptionCatalog.cs</DependentUpon>
+    </Compile>
     <Compile Include="UcSystemAuditLog.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -141,6 +147,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UcPrescriptionQueue.resx">
       <DependentUpon>UcPrescriptionQueue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UcPrescriptionCatalog.resx">
+      <DependentUpon>UcPrescriptionCatalog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UcSystemAuditLog.resx">
       <DependentUpon>UcSystemAuditLog.cs</DependentUpon>

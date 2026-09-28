@@ -23,26 +23,48 @@ CREATE TABLE Drug (
     CONSTRAINT FK_Drug_Station FOREIGN KEY (StationId) REFERENCES StationAction(StationId)
 );
 
--- 3. 创建处方表
+-- 3. 创建固定处方。处方可以反复选用，不绑定患者。
 CREATE TABLE Prescription (
-    PrescriptionId INT IDENTITY(1000,1) PRIMARY KEY, -- 处方流水号，从1000开始自增
-    PatientNo NVARCHAR(50) NOT NULL,                 -- 患者编号
-    Status NVARCHAR(20) NOT NULL DEFAULT N'待配药',   -- 状态：待配药 / 配药中 / 部分异常 / 已完成
-    CreateTime DATETIME NOT NULL DEFAULT GETDATE(),  -- 处方接收时间
-    CompleteTime DATETIME NULL                       -- 配药完成时间
-    ,SortNo INT NOT NULL CONSTRAINT DF_Prescription_SortNo DEFAULT 0 -- 队列顺序，越小越优先
+    PrescriptionId INT IDENTITY(1000,1) PRIMARY KEY, -- 处方编号，从1000开始自增
+    PrescriptionName NVARCHAR(50) NOT NULL,          -- 处方名称，全库唯一
+    CreateTime DATETIME NOT NULL DEFAULT GETDATE(),  -- 处方建立时间
+    CONSTRAINT UQ_Prescription_Name UNIQUE (PrescriptionName)
 );
 
--- 4. 创建处方明细表
+-- 4. 创建固定处方明细。只保存药品和数量，不保存某一次配药进度。
 CREATE TABLE PrescriptionItem (
-    ItemId INT IDENTITY(1,1) PRIMARY KEY,            -- 明细ID，自增
-    PrescriptionId INT NOT NULL,                     -- 关联处方表
-    DrugId INT NOT NULL,                             -- 关联药品表
-    RequiredQty INT NOT NULL,                        -- 处方要求数量
-    ActualQty INT NOT NULL DEFAULT 0,                -- 人工核对后确认的实收数量
-    Status NVARCHAR(20) NOT NULL DEFAULT N'待取药',   -- 状态：待取药 / 取药中 / 待核对 / 核对通过 / 异常
+    ItemId INT IDENTITY(1,1) PRIMARY KEY,
+    PrescriptionId INT NOT NULL,
+    DrugId INT NOT NULL,
+    RequiredQty INT NOT NULL,
     CONSTRAINT FK_Item_Prescription FOREIGN KEY (PrescriptionId) REFERENCES Prescription(PrescriptionId),
-    CONSTRAINT FK_Item_Drug FOREIGN KEY (DrugId) REFERENCES Drug(DrugId)
+    CONSTRAINT FK_Item_Drug FOREIGN KEY (DrugId) REFERENCES Drug(DrugId),
+    CONSTRAINT UQ_PrescriptionItem_Drug UNIQUE (PrescriptionId, DrugId)
+);
+
+-- 5. 创建待配任务。患者编号、队列顺序和配药状态都记在这一次任务上。
+CREATE TABLE DispenseOrder (
+    OrderId INT IDENTITY(1,1) PRIMARY KEY,
+    PrescriptionId INT NOT NULL,
+    PatientNo NVARCHAR(50) NOT NULL,
+    Status NVARCHAR(20) NOT NULL DEFAULT N'待配药', -- 待配药 / 配药中 / 部分异常 / 已完成 / 已撤销
+    SortNo INT NOT NULL CONSTRAINT DF_DispenseOrder_SortNo DEFAULT 0,
+    CreateTime DATETIME NOT NULL DEFAULT GETDATE(),
+    CompleteTime DATETIME NULL,
+    CONSTRAINT FK_Order_Prescription FOREIGN KEY (PrescriptionId) REFERENCES Prescription(PrescriptionId)
+);
+
+-- 6. 创建待配任务明细。抓取次数和核对结果只属于这一次配药。
+CREATE TABLE DispenseOrderItem (
+    ItemId INT IDENTITY(1,1) PRIMARY KEY,
+    OrderId INT NOT NULL,
+    DrugId INT NOT NULL,
+    RequiredQty INT NOT NULL,
+    ActualQty INT NOT NULL DEFAULT 0,
+    GrabCount INT NOT NULL CONSTRAINT DF_DispenseOrderItem_GrabCount DEFAULT 0,
+    Status NVARCHAR(20) NOT NULL DEFAULT N'待取药', -- 待取药 / 取药中 / 待核对 / 核对通过 / 异常
+    CONSTRAINT FK_OrderItem_Order FOREIGN KEY (OrderId) REFERENCES DispenseOrder(OrderId),
+    CONSTRAINT FK_OrderItem_Drug FOREIGN KEY (DrugId) REFERENCES Drug(DrugId)
 );
 
 -- 5. 创建操作与指令日志表
@@ -99,22 +121,97 @@ WHERE Spec IS NULL
   AND CHARINDEX('(', DrugName) > 1
   AND CHARINDEX(')', DrugName) > CHARINDEX('(', DrugName);
 
--- 已有处方表增加队列顺序。旧数据按接收时间补序号。
-IF COL_LENGTH('Prescription', 'SortNo') IS NULL
+-- 已有库升级：固定处方与待配任务拆开。旧处方保留成历史任务，处方名称用原处方号生成。
+IF OBJECT_ID('DispenseOrder', 'U') IS NULL AND COL_LENGTH('Prescription', 'PatientNo') IS NOT NULL
 BEGIN
-    ALTER TABLE Prescription ADD SortNo INT NOT NULL CONSTRAINT DF_Prescription_SortNo DEFAULT 0;
-    ;WITH Ordered AS (
-        SELECT PrescriptionId, ROW_NUMBER() OVER (ORDER BY CreateTime, PrescriptionId) AS NewSortNo
-        FROM Prescription
-    )
-    UPDATE p SET SortNo = o.NewSortNo
-    FROM Prescription p
-    INNER JOIN Ordered o ON p.PrescriptionId = o.PrescriptionId;
+    CREATE TABLE DispenseOrder (
+        OrderId INT IDENTITY(1,1) PRIMARY KEY,
+        PrescriptionId INT NOT NULL,
+        PatientNo NVARCHAR(50) NOT NULL,
+        Status NVARCHAR(20) NOT NULL,
+        SortNo INT NOT NULL,
+        CreateTime DATETIME NOT NULL,
+        CompleteTime DATETIME NULL
+    );
+
+    CREATE TABLE DispenseOrderItem (
+        ItemId INT IDENTITY(1,1) PRIMARY KEY,
+        OrderId INT NOT NULL,
+        DrugId INT NOT NULL,
+        RequiredQty INT NOT NULL,
+        ActualQty INT NOT NULL DEFAULT 0,
+        GrabCount INT NOT NULL CONSTRAINT DF_DispenseOrderItem_GrabCount DEFAULT 0,
+        Status NVARCHAR(20) NOT NULL
+    );
+
+    IF COL_LENGTH('Prescription', 'PrescriptionName') IS NULL
+        ALTER TABLE Prescription ADD PrescriptionName NVARCHAR(50) NULL;
+
+    UPDATE Prescription
+    SET PrescriptionName = N'历史处方' + CAST(PrescriptionId AS NVARCHAR(20))
+    WHERE PrescriptionName IS NULL OR LTRIM(RTRIM(PrescriptionName)) = N'';
+
+    INSERT INTO DispenseOrder (PrescriptionId, PatientNo, Status, SortNo, CreateTime, CompleteTime)
+    SELECT PrescriptionId, PatientNo, Status, SortNo, CreateTime, CompleteTime
+    FROM Prescription;
+
+    INSERT INTO DispenseOrderItem (OrderId, DrugId, RequiredQty, ActualQty, GrabCount, Status)
+    SELECT o.OrderId, i.DrugId, i.RequiredQty, i.ActualQty, ISNULL(i.GrabCount, 0), i.Status
+    FROM PrescriptionItem i
+    INNER JOIN DispenseOrder o ON o.PrescriptionId = i.PrescriptionId;
+
+    ALTER TABLE PrescriptionItem DROP CONSTRAINT FK_Item_Prescription;
+    ALTER TABLE PrescriptionItem DROP COLUMN ActualQty;
+    ALTER TABLE PrescriptionItem DROP COLUMN Status;
+    DECLARE @GrabDefault NVARCHAR(128);
+    SELECT @GrabDefault = dc.name
+    FROM sys.default_constraints dc
+    INNER JOIN sys.columns c ON c.default_object_id = dc.object_id
+    WHERE dc.parent_object_id = OBJECT_ID('PrescriptionItem') AND c.name = 'GrabCount';
+    IF @GrabDefault IS NOT NULL
+        EXEC('ALTER TABLE PrescriptionItem DROP CONSTRAINT ' + @GrabDefault);
+    IF COL_LENGTH('PrescriptionItem', 'GrabCount') IS NOT NULL
+        ALTER TABLE PrescriptionItem DROP COLUMN GrabCount;
+    ALTER TABLE PrescriptionItem ADD CONSTRAINT FK_Item_Prescription FOREIGN KEY (PrescriptionId) REFERENCES Prescription(PrescriptionId);
+
+    DECLARE @SortDefault NVARCHAR(128);
+    SELECT @SortDefault = dc.name
+    FROM sys.default_constraints dc
+    INNER JOIN sys.columns c ON c.default_object_id = dc.object_id
+    WHERE dc.parent_object_id = OBJECT_ID('Prescription') AND c.name = 'SortNo';
+    IF @SortDefault IS NOT NULL
+        EXEC('ALTER TABLE Prescription DROP CONSTRAINT ' + @SortDefault);
+
+    ALTER TABLE Prescription DROP COLUMN PatientNo;
+    ALTER TABLE Prescription DROP COLUMN Status;
+    ALTER TABLE Prescription DROP COLUMN CompleteTime;
+    ALTER TABLE Prescription DROP COLUMN SortNo;
+    ALTER TABLE Prescription ALTER COLUMN PrescriptionName NVARCHAR(50) NOT NULL;
+    IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'UQ_Prescription_Name' AND object_id = OBJECT_ID('Prescription'))
+        ALTER TABLE Prescription ADD CONSTRAINT UQ_Prescription_Name UNIQUE (PrescriptionName);
 END
 
+-- 已有任务表补上接收时间的默认值。加入队列不写该列时由数据库填当前时间。
+IF OBJECT_ID('DispenseOrder', 'U') IS NOT NULL
+   AND NOT EXISTS (
+       SELECT 1
+       FROM sys.default_constraints dc
+       INNER JOIN sys.columns c ON c.default_object_id = dc.object_id
+       WHERE dc.parent_object_id = OBJECT_ID('DispenseOrder') AND c.name = 'CreateTime')
+    ALTER TABLE DispenseOrder ADD CONSTRAINT DF_DispenseOrder_CreateTime DEFAULT GETDATE() FOR CreateTime;
+
+-- 已有任务表补上队列序号默认值。全新建表已带同名约束，这里不能重复创建。
+IF OBJECT_ID('DispenseOrder', 'U') IS NOT NULL
+   AND NOT EXISTS (
+       SELECT 1
+       FROM sys.default_constraints dc
+       INNER JOIN sys.columns c ON c.default_object_id = dc.object_id
+       WHERE dc.parent_object_id = OBJECT_ID('DispenseOrder') AND c.name = 'SortNo')
+    ALTER TABLE DispenseOrder ADD CONSTRAINT DF_DispenseOrder_SortNo DEFAULT 0 FOR SortNo;
+
 -- 已有明细增加已执行抓取次数。看板用它显示进度，补抓时继续累加。
-IF COL_LENGTH('PrescriptionItem', 'GrabCount') IS NULL
-    ALTER TABLE PrescriptionItem ADD GrabCount INT NOT NULL CONSTRAINT DF_PrescriptionItem_GrabCount DEFAULT 0;
+IF OBJECT_ID('DispenseOrderItem', 'U') IS NOT NULL AND COL_LENGTH('DispenseOrderItem', 'GrabCount') IS NULL
+    ALTER TABLE DispenseOrderItem ADD GrabCount INT NOT NULL CONSTRAINT DF_DispenseOrderItem_GrabCount DEFAULT 0;
 
 -- 旧库的动作等待偏短。一组动作约 5 到 8 秒，低于 6000ms 的记录补到 6000ms。
 -- 界面里已经手工改得更长的延时保持不动。

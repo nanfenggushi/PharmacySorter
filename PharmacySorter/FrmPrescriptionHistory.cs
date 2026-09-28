@@ -14,7 +14,7 @@ namespace PharmacySorter
         /// <summary>
         /// 处方业务。界面不直接访问数据库。
         /// </summary>
-        private readonly PrescriptionBLL prescriptionBll = new PrescriptionBLL();
+        private readonly DispenseOrderBLL orderBll = new DispenseOrderBLL();
 
         public FrmPrescriptionHistory()
         {
@@ -47,10 +47,10 @@ namespace PharmacySorter
         {
             try
             {
-                List<Prescription> list = prescriptionBll.SearchHistory(txtPrescriptionId.Text, dtpStart.Value, dtpEnd.Value);
+                List<DispenseOrder> list = orderBll.SearchHistory(txtPrescriptionId.Text, string.Empty, dtpStart.Value, dtpEnd.Value);
                 dgvHistory.DataSource = null;
                 dgvHistory.DataSource = list;
-                lblCount.Text = "共 " + list.Count + " 张";
+                lblCount.Text = "共 " + list.Count + " 条";
             }
             catch (Exception ex)
             {
@@ -63,15 +63,15 @@ namespace PharmacySorter
         /// </summary>
         private void BtnRequeue_Click(object sender, EventArgs e)
         {
-            Prescription prescription = dgvHistory.CurrentRow == null ? null : dgvHistory.CurrentRow.DataBoundItem as Prescription;
-            if (prescription == null)
+            DispenseOrder order = dgvHistory.CurrentRow == null ? null : dgvHistory.CurrentRow.DataBoundItem as DispenseOrder;
+            if (order == null)
             {
-                MessageBox.Show("请先选择一张历史处方", "再次配药", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("请先选择一条配药记录", "再次配药", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
             DialogResult confirm = MessageBox.Show(
-                "将按处方 " + prescription.PrescriptionId + " 的患者和药品生成一张新的待配处方，原处方保持不变。是否继续？",
+                "将按任务 " + order.OrderId + " 的患者和处方再生成一条待配任务，原记录保持不变。是否继续？",
                 "再次配药",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
@@ -82,8 +82,8 @@ namespace PharmacySorter
 
             try
             {
-                int newPrescriptionId = prescriptionBll.Requeue(prescription.PrescriptionId);
-                MessageBox.Show("已加入待配队列，新处方号：" + newPrescriptionId, "再次配药", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                int newOrderId = orderBll.AddToQueue(order.PatientNo, order.PrescriptionId);
+                MessageBox.Show("已加入待配队列，新任务号：" + newOrderId, "再次配药", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DialogResult = DialogResult.OK;
             }
             catch (Exception ex)

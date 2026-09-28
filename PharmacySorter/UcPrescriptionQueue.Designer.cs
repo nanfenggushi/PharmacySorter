@@ -32,21 +32,15 @@ namespace PharmacySorter
             this.pnlEntry = new System.Windows.Forms.Panel();
             this.grpEntry = new System.Windows.Forms.GroupBox();
             this.btnSubmit = new System.Windows.Forms.Button();
-            this.btnRemoveItem = new System.Windows.Forms.Button();
-            this.btnAddItem = new System.Windows.Forms.Button();
             this.dgvDraft = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDraftDrugName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDraftSpec = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDraftQuantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lblDraft = new System.Windows.Forms.Label();
-            this.nudQuantity = new System.Windows.Forms.NumericUpDown();
-            this.lblQuantity = new System.Windows.Forms.Label();
             this.cmbDrug = new System.Windows.Forms.ComboBox();
             this.lblDrugName = new System.Windows.Forms.Label();
-            this.lblAddDrug = new System.Windows.Forms.Label();
             this.txtPatientNo = new System.Windows.Forms.TextBox();
             this.lblPatientNo = new System.Windows.Forms.Label();
-            this.txtPrescriptionId = new System.Windows.Forms.TextBox();
             this.lblPrescriptionId = new System.Windows.Forms.Label();
             this.pnlQueue = new System.Windows.Forms.Panel();
             this.grpQueue = new System.Windows.Forms.GroupBox();
@@ -54,19 +48,24 @@ namespace PharmacySorter
             this.btnMoveTop = new System.Windows.Forms.Button();
             this.btnHistory = new System.Windows.Forms.Button();
             this.dgvQueue = new System.Windows.Forms.DataGridView();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colQueueId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colQueuePatientNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colQueueItemCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colQueueCreateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colQueueStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnRemoveItem = new System.Windows.Forms.Button();
+            this.btnAddItem = new System.Windows.Forms.Button();
+            this.nudQuantity = new System.Windows.Forms.NumericUpDown();
+            this.lblQuantity = new System.Windows.Forms.Label();
+            this.lblAddDrug = new System.Windows.Forms.Label();
             this.tlpMain.SuspendLayout();
             this.pnlEntry.SuspendLayout();
             this.grpEntry.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDraft)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudQuantity)).BeginInit();
             this.pnlQueue.SuspendLayout();
             this.grpQueue.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvQueue)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudQuantity)).BeginInit();
             this.SuspendLayout();
             // 
             // tlpMain
@@ -96,25 +95,19 @@ namespace PharmacySorter
             // grpEntry
             // 
             this.grpEntry.Controls.Add(this.btnSubmit);
-            this.grpEntry.Controls.Add(this.btnRemoveItem);
-            this.grpEntry.Controls.Add(this.btnAddItem);
             this.grpEntry.Controls.Add(this.dgvDraft);
             this.grpEntry.Controls.Add(this.lblDraft);
-            this.grpEntry.Controls.Add(this.nudQuantity);
-            this.grpEntry.Controls.Add(this.lblQuantity);
             this.grpEntry.Controls.Add(this.cmbDrug);
             this.grpEntry.Controls.Add(this.lblDrugName);
-            this.grpEntry.Controls.Add(this.lblAddDrug);
             this.grpEntry.Controls.Add(this.txtPatientNo);
             this.grpEntry.Controls.Add(this.lblPatientNo);
-            this.grpEntry.Controls.Add(this.txtPrescriptionId);
             this.grpEntry.Controls.Add(this.lblPrescriptionId);
             this.grpEntry.Location = new System.Drawing.Point(17, 15);
             this.grpEntry.Name = "grpEntry";
             this.grpEntry.Size = new System.Drawing.Size(562, 678);
             this.grpEntry.TabIndex = 0;
             this.grpEntry.TabStop = false;
-            this.grpEntry.Text = "处方录入表单";
+            this.grpEntry.Text = "加入待配队列";
             // 
             // btnSubmit
             // 
@@ -122,29 +115,9 @@ namespace PharmacySorter
             this.btnSubmit.Name = "btnSubmit";
             this.btnSubmit.Size = new System.Drawing.Size(140, 35);
             this.btnSubmit.TabIndex = 13;
-            this.btnSubmit.Text = "正式提交处方";
+            this.btnSubmit.Text = "加入队列";
             this.btnSubmit.UseVisualStyleBackColor = true;
             this.btnSubmit.Click += new System.EventHandler(this.BtnSubmit_Click);
-            // 
-            // btnRemoveItem
-            // 
-            this.btnRemoveItem.Location = new System.Drawing.Point(31, 575);
-            this.btnRemoveItem.Name = "btnRemoveItem";
-            this.btnRemoveItem.Size = new System.Drawing.Size(110, 35);
-            this.btnRemoveItem.TabIndex = 14;
-            this.btnRemoveItem.Text = "移除选中";
-            this.btnRemoveItem.UseVisualStyleBackColor = true;
-            this.btnRemoveItem.Click += new System.EventHandler(this.BtnRemoveItem_Click);
-            // 
-            // btnAddItem
-            // 
-            this.btnAddItem.Location = new System.Drawing.Point(404, 190);
-            this.btnAddItem.Name = "btnAddItem";
-            this.btnAddItem.Size = new System.Drawing.Size(110, 35);
-            this.btnAddItem.TabIndex = 12;
-            this.btnAddItem.Text = "加入清单";
-            this.btnAddItem.UseVisualStyleBackColor = true;
-            this.btnAddItem.Click += new System.EventHandler(this.BtnAddItem_Click);
             // 
             // dgvDraft
             // 
@@ -152,11 +125,12 @@ namespace PharmacySorter
             this.dgvDraft.AllowUserToDeleteRows = false;
             this.dgvDraft.AutoGenerateColumns = false;
             this.dgvDraft.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvDraft.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvDraft.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dgvDraft.ColumnHeadersHeight = 32;
             this.dgvDraft.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3});
+            this.colDraftDrugName,
+            this.colDraftSpec,
+            this.colDraftQuantity});
             this.dgvDraft.Location = new System.Drawing.Point(31, 305);
             this.dgvDraft.MultiSelect = false;
             this.dgvDraft.Name = "dgvDraft";
@@ -168,96 +142,60 @@ namespace PharmacySorter
             this.dgvDraft.Size = new System.Drawing.Size(496, 250);
             this.dgvDraft.TabIndex = 11;
             // 
-            // Column1
+            // colDraftDrugName
             // 
-            this.Column1.DataPropertyName = "DrugName";
-            this.Column1.HeaderText = "药品名称";
-            this.Column1.MinimumWidth = 6;
-            this.Column1.Name = "colDraftDrugName";
-            this.Column1.ReadOnly = true;
+            this.colDraftDrugName.DataPropertyName = "DrugName";
+            this.colDraftDrugName.FillWeight = 180F;
+            this.colDraftDrugName.HeaderText = "药品名称";
+            this.colDraftDrugName.MinimumWidth = 80;
+            this.colDraftDrugName.Name = "colDraftDrugName";
+            this.colDraftDrugName.ReadOnly = true;
             // 
-            // Column2
+            // colDraftSpec
             // 
-            this.Column2.DataPropertyName = "Spec";
-            this.Column2.HeaderText = "规格";
-            this.Column2.MinimumWidth = 6;
-            this.Column2.Name = "colDraftSpec";
-            this.Column2.ReadOnly = true;
+            this.colDraftSpec.DataPropertyName = "Spec";
+            this.colDraftSpec.FillWeight = 140F;
+            this.colDraftSpec.HeaderText = "规格";
+            this.colDraftSpec.MinimumWidth = 60;
+            this.colDraftSpec.Name = "colDraftSpec";
+            this.colDraftSpec.ReadOnly = true;
             // 
-            // Column3
+            // colDraftQuantity
             // 
-            this.Column3.DataPropertyName = "RequiredQty";
-            this.Column3.HeaderText = "数量";
-            this.Column3.MinimumWidth = 6;
-            this.Column3.Name = "colDraftQuantity";
-            this.Column3.ReadOnly = true;
+            this.colDraftQuantity.DataPropertyName = "RequiredQty";
+            this.colDraftQuantity.FillWeight = 60F;
+            this.colDraftQuantity.HeaderText = "数量";
+            this.colDraftQuantity.MinimumWidth = 48;
+            this.colDraftQuantity.Name = "colDraftQuantity";
+            this.colDraftQuantity.ReadOnly = true;
             // 
             // lblDraft
             // 
             this.lblDraft.AutoSize = true;
             this.lblDraft.Location = new System.Drawing.Point(28, 275);
             this.lblDraft.Name = "lblDraft";
-            this.lblDraft.Size = new System.Drawing.Size(82, 15);
+            this.lblDraft.Size = new System.Drawing.Size(97, 15);
             this.lblDraft.TabIndex = 10;
-            this.lblDraft.Text = "待提交清单";
-            // 
-            // nudQuantity
-            // 
-            this.nudQuantity.Location = new System.Drawing.Point(217, 201);
-            this.nudQuantity.Maximum = new decimal(new int[] {
-            99,
-            0,
-            0,
-            0});
-            this.nudQuantity.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.nudQuantity.Name = "nudQuantity";
-            this.nudQuantity.Size = new System.Drawing.Size(168, 25);
-            this.nudQuantity.TabIndex = 9;
-            this.nudQuantity.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // lblQuantity
-            // 
-            this.lblQuantity.AutoSize = true;
-            this.lblQuantity.Location = new System.Drawing.Point(128, 206);
-            this.lblQuantity.Name = "lblQuantity";
-            this.lblQuantity.Size = new System.Drawing.Size(82, 15);
-            this.lblQuantity.TabIndex = 8;
-            this.lblQuantity.Text = "药品数量：";
+            this.lblDraft.Text = "处方药品明细";
             // 
             // cmbDrug
             // 
             this.cmbDrug.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbDrug.FormattingEnabled = true;
-            this.cmbDrug.Location = new System.Drawing.Point(217, 162);
+            this.cmbDrug.Location = new System.Drawing.Point(128, 44);
             this.cmbDrug.Name = "cmbDrug";
-            this.cmbDrug.Size = new System.Drawing.Size(168, 23);
-            this.cmbDrug.TabIndex = 7;
+            this.cmbDrug.Size = new System.Drawing.Size(257, 23);
+            this.cmbDrug.TabIndex = 1;
+            this.cmbDrug.SelectedIndexChanged += new System.EventHandler(this.CmbPrescription_SelectedIndexChanged);
             // 
             // lblDrugName
             // 
             this.lblDrugName.AutoSize = true;
-            this.lblDrugName.Location = new System.Drawing.Point(128, 166);
+            this.lblDrugName.Location = new System.Drawing.Point(28, 52);
             this.lblDrugName.Name = "lblDrugName";
-            this.lblDrugName.Size = new System.Drawing.Size(82, 15);
-            this.lblDrugName.TabIndex = 6;
-            this.lblDrugName.Text = "药品名称：";
-            // 
-            // lblAddDrug
-            // 
-            this.lblAddDrug.AutoSize = true;
-            this.lblAddDrug.Location = new System.Drawing.Point(28, 166);
-            this.lblAddDrug.Name = "lblAddDrug";
-            this.lblAddDrug.Size = new System.Drawing.Size(82, 15);
-            this.lblAddDrug.TabIndex = 5;
-            this.lblAddDrug.Text = "药品添加：";
+            this.lblDrugName.Size = new System.Drawing.Size(67, 15);
+            this.lblDrugName.TabIndex = 0;
+            this.lblDrugName.Text = "固定处方";
             // 
             // txtPatientNo
             // 
@@ -275,14 +213,6 @@ namespace PharmacySorter
             this.lblPatientNo.Size = new System.Drawing.Size(67, 15);
             this.lblPatientNo.TabIndex = 3;
             this.lblPatientNo.Text = "患者编号";
-            // 
-            // txtPrescriptionId
-            // 
-            this.txtPrescriptionId.Location = new System.Drawing.Point(128, 42);
-            this.txtPrescriptionId.Name = "txtPrescriptionId";
-            this.txtPrescriptionId.ReadOnly = true;
-            this.txtPrescriptionId.Size = new System.Drawing.Size(140, 25);
-            this.txtPrescriptionId.TabIndex = 1;
             // 
             // lblPrescriptionId
             // 
@@ -313,7 +243,7 @@ namespace PharmacySorter
             this.grpQueue.Size = new System.Drawing.Size(562, 678);
             this.grpQueue.TabIndex = 1;
             this.grpQueue.TabStop = false;
-            this.grpQueue.Text = "待配处方队列";
+            this.grpQueue.Text = "待配任务队列";
             // 
             // btnCancel
             // 
@@ -351,13 +281,14 @@ namespace PharmacySorter
             this.dgvQueue.AllowUserToDeleteRows = false;
             this.dgvQueue.AutoGenerateColumns = false;
             this.dgvQueue.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvQueue.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvQueue.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dgvQueue.ColumnHeadersHeight = 32;
             this.dgvQueue.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column4,
-            this.Column5,
-            this.Column6,
-            this.Column7,
-            this.Column8});
+            this.colQueueId,
+            this.colQueuePatientNo,
+            this.colQueueItemCount,
+            this.colQueueCreateTime,
+            this.colQueueStatus});
             this.dgvQueue.Location = new System.Drawing.Point(21, 38);
             this.dgvQueue.MultiSelect = false;
             this.dgvQueue.Name = "dgvQueue";
@@ -369,45 +300,110 @@ namespace PharmacySorter
             this.dgvQueue.Size = new System.Drawing.Size(519, 540);
             this.dgvQueue.TabIndex = 0;
             // 
-            // Column4
+            // colQueueId
             // 
-            this.Column4.DataPropertyName = "PrescriptionId";
-            this.Column4.HeaderText = "处方号";
-            this.Column4.MinimumWidth = 6;
-            this.Column4.Name = "colQueueId";
-            this.Column4.ReadOnly = true;
+            this.colQueueId.DataPropertyName = "OrderId";
+            this.colQueueId.FillWeight = 70F;
+            this.colQueueId.HeaderText = "任务号";
+            this.colQueueId.MinimumWidth = 56;
+            this.colQueueId.Name = "colQueueId";
+            this.colQueueId.ReadOnly = true;
             // 
-            // Column5
+            // colQueuePatientNo
             // 
-            this.Column5.DataPropertyName = "PatientNo";
-            this.Column5.HeaderText = "患者编号";
-            this.Column5.MinimumWidth = 6;
-            this.Column5.Name = "colQueuePatientNo";
-            this.Column5.ReadOnly = true;
+            this.colQueuePatientNo.DataPropertyName = "PatientNo";
+            this.colQueuePatientNo.FillWeight = 90F;
+            this.colQueuePatientNo.HeaderText = "患者编号";
+            this.colQueuePatientNo.MinimumWidth = 72;
+            this.colQueuePatientNo.Name = "colQueuePatientNo";
+            this.colQueuePatientNo.ReadOnly = true;
             // 
-            // Column6
+            // colQueueItemCount
             // 
-            this.Column6.DataPropertyName = "ItemCount";
-            this.Column6.HeaderText = "药品种类数";
-            this.Column6.MinimumWidth = 6;
-            this.Column6.Name = "colQueueItemCount";
-            this.Column6.ReadOnly = true;
+            this.colQueueItemCount.DataPropertyName = "PrescriptionName";
+            this.colQueueItemCount.FillWeight = 120F;
+            this.colQueueItemCount.HeaderText = "处方名称";
+            this.colQueueItemCount.MinimumWidth = 72;
+            this.colQueueItemCount.Name = "colQueueItemCount";
+            this.colQueueItemCount.ReadOnly = true;
             // 
-            // Column7
+            // colQueueCreateTime
             // 
-            this.Column7.DataPropertyName = "CreateTimeText";
-            this.Column7.HeaderText = "接收时间";
-            this.Column7.MinimumWidth = 6;
-            this.Column7.Name = "colQueueCreateTime";
-            this.Column7.ReadOnly = true;
+            this.colQueueCreateTime.DataPropertyName = "ItemCount";
+            this.colQueueCreateTime.FillWeight = 100F;
+            this.colQueueCreateTime.HeaderText = "药品种类数";
+            this.colQueueCreateTime.MinimumWidth = 80;
+            this.colQueueCreateTime.Name = "colQueueCreateTime";
+            this.colQueueCreateTime.ReadOnly = true;
             // 
-            // Column8
+            // colQueueStatus
             // 
-            this.Column8.DataPropertyName = "Status";
-            this.Column8.HeaderText = "状态";
-            this.Column8.MinimumWidth = 6;
-            this.Column8.Name = "colQueueStatus";
-            this.Column8.ReadOnly = true;
+            this.colQueueStatus.DataPropertyName = "CreateTimeText";
+            this.colQueueStatus.FillWeight = 150F;
+            this.colQueueStatus.HeaderText = "接收时间";
+            this.colQueueStatus.MinimumWidth = 120;
+            this.colQueueStatus.Name = "colQueueStatus";
+            this.colQueueStatus.ReadOnly = true;
+            // 
+            // btnRemoveItem
+            // 
+            this.btnRemoveItem.Location = new System.Drawing.Point(31, 575);
+            this.btnRemoveItem.Name = "btnRemoveItem";
+            this.btnRemoveItem.Size = new System.Drawing.Size(110, 35);
+            this.btnRemoveItem.TabIndex = 14;
+            this.btnRemoveItem.Text = "移除选中";
+            this.btnRemoveItem.UseVisualStyleBackColor = true;
+            this.btnRemoveItem.Click += new System.EventHandler(this.BtnRemoveItem_Click);
+            // 
+            // btnAddItem
+            // 
+            this.btnAddItem.Location = new System.Drawing.Point(404, 190);
+            this.btnAddItem.Name = "btnAddItem";
+            this.btnAddItem.Size = new System.Drawing.Size(110, 35);
+            this.btnAddItem.TabIndex = 12;
+            this.btnAddItem.Text = "加入清单";
+            this.btnAddItem.UseVisualStyleBackColor = true;
+            this.btnAddItem.Click += new System.EventHandler(this.BtnAddItem_Click);
+            // 
+            // nudQuantity
+            // 
+            this.nudQuantity.Location = new System.Drawing.Point(217, 201);
+            this.nudQuantity.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+            this.nudQuantity.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudQuantity.Name = "nudQuantity";
+            this.nudQuantity.Size = new System.Drawing.Size(168, 25);
+            this.nudQuantity.TabIndex = 9;
+            this.nudQuantity.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // lblQuantity
+            // 
+            this.lblQuantity.AutoSize = true;
+            this.lblQuantity.Location = new System.Drawing.Point(128, 206);
+            this.lblQuantity.Name = "lblQuantity";
+            this.lblQuantity.Size = new System.Drawing.Size(82, 15);
+            this.lblQuantity.TabIndex = 8;
+            this.lblQuantity.Text = "药品数量：";
+            // 
+            // lblAddDrug
+            // 
+            this.lblAddDrug.AutoSize = true;
+            this.lblAddDrug.Location = new System.Drawing.Point(28, 166);
+            this.lblAddDrug.Name = "lblAddDrug";
+            this.lblAddDrug.Size = new System.Drawing.Size(82, 15);
+            this.lblAddDrug.TabIndex = 5;
+            this.lblAddDrug.Text = "药品添加：";
             // 
             // UcPrescriptionQueue
             // 
@@ -421,10 +417,10 @@ namespace PharmacySorter
             this.grpEntry.ResumeLayout(false);
             this.grpEntry.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDraft)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudQuantity)).EndInit();
             this.pnlQueue.ResumeLayout(false);
             this.grpQueue.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvQueue)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudQuantity)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -437,7 +433,6 @@ namespace PharmacySorter
         private System.Windows.Forms.Panel pnlQueue;
         private System.Windows.Forms.GroupBox grpQueue;
         private System.Windows.Forms.Label lblPrescriptionId;
-        private System.Windows.Forms.TextBox txtPrescriptionId;
         private System.Windows.Forms.TextBox txtPatientNo;
         private System.Windows.Forms.Label lblPatientNo;
         private System.Windows.Forms.Label lblAddDrug;
@@ -447,20 +442,20 @@ namespace PharmacySorter
         private System.Windows.Forms.NumericUpDown nudQuantity;
         private System.Windows.Forms.Label lblDraft;
         private System.Windows.Forms.DataGridView dgvDraft;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.Button btnAddItem;
         private System.Windows.Forms.Button btnRemoveItem;
         private System.Windows.Forms.Button btnSubmit;
         private System.Windows.Forms.DataGridView dgvQueue;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.Button btnMoveTop;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnHistory;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDraftDrugName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDraftSpec;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDraftQuantity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colQueueId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colQueuePatientNo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colQueueItemCount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colQueueCreateTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colQueueStatus;
     }
 }

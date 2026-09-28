@@ -47,6 +47,7 @@
     <Compile Include="AppLogDAL.cs" />
     <Compile Include="UserDAL.cs" />
     <Compile Include="PrescriptionDAL.cs" />
+    <Compile Include="DispenseOrderDAL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

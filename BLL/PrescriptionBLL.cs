@@ -7,16 +7,16 @@ using System.Text;
 namespace BLL
 {
     /// <summary>
-    /// 处方录入与待配队列。只允许选择已启用且已绑定左右药位的药品。
+    /// 固定处方维护。处方名称必须唯一，药品必须已启用并绑定左右药位。
     /// </summary>
-    public class PrescriptionBLL
+    public partial class PrescriptionBLL
     {
         private readonly PrescriptionDAL dal = new PrescriptionDAL();
         private readonly DrugDAL drugDal = new DrugDAL();
         private readonly AppLogBLL logBll = new AppLogBLL();
 
         /// <summary>
-        /// 处方录入下拉框使用的药品。停用或未绑定工位的药品不能加入处方。
+        /// 处方维护下拉框使用的药品。停用或未绑定工位的药品不能加入处方。
         /// </summary>
         public List<Drug> GetSelectableDrugs()
         {
@@ -31,171 +31,89 @@ namespace BLL
             return result;
         }
 
-        /// <summary>
-        /// 取得待配药队列，已经按优先级排好。
-        /// </summary>
-        public List<Prescription> GetWaitingQueue()
+        public List<Prescription> GetAll()
         {
-            return dal.GetWaitingQueue();
+            return dal.GetAll();
         }
 
-        /// <summary>
-        /// 按处方号和接收日期查询历史处方。日期按整天计算，结束日期当天也包含在内。
-        /// </summary>
-        public List<Prescription> SearchHistory(string prescriptionIdText, DateTime? startDate, DateTime? endDate)
+        public Prescription GetById(int prescriptionId)
         {
-            if (startDate.HasValue && endDate.HasValue && startDate.Value.Date > endDate.Value.Date)
+            return dal.GetById(prescriptionId);
+        }
+
+        public List<PrescriptionItem> GetItems(int prescriptionId)
+        {
+            return dal.GetItems(prescriptionId);
+        }
+
+        public int Save(int prescriptionId, string prescriptionName, IList<PrescriptionItem> items)
+        {
+            prescriptionName = NormalizeName(prescriptionName);
+            items = NormalizeItems(items);
+            EnsureUniqueName(prescriptionId, prescriptionName);
+
+            if (prescriptionId <= 0)
             {
-                throw new ArgumentException("开始日期不能晚于结束日期");
+                int newId = dal.Add(prescriptionName, items);
+                logBll.Add(null, AppLogType.Prescription, BuildContent("新增处方", newId, prescriptionName, items));
+                return newId;
             }
 
-            DateTime? startTime = startDate.HasValue ? startDate.Value.Date : (DateTime?)null;
-            DateTime? endTime = endDate.HasValue ? endDate.Value.Date.AddDays(1) : (DateTime?)null;
-            return dal.SearchHistory(ParsePrescriptionId(prescriptionIdText), startTime, endTime);
-        }
-
-        /// <summary>
-        /// 预览下一个自动生成的处方号。真正编号仍在提交时由数据库生成。
-        /// </summary>
-        public int PreviewNextId()
-        {
-            return dal.PreviewNextId();
-        }
-
-        /// <summary>
-        /// 校验并提交一张处方。返回数据库生成的处方号。
-        /// </summary>
-        public int Submit(string patientNo, IList<PrescriptionItem> items)
-        {
-            patientNo = NormalizePatientNo(patientNo); // 校验患者id
-            items = NormalizeItems(items); // 校验处方明细
-
-            Prescription prescription = new Prescription
-            {
-                PatientNo = patientNo,
-                SortNo = dal.GetNextSortNo()
-            };
-            int prescriptionId = dal.Add(prescription, items);
-            logBll.Add(null, AppLogType.Prescription, BuildSubmitContent(prescriptionId, patientNo, items));
-            return prescriptionId;
-        }
-
-        /// <summary>
-        /// 将待配处方移到队列最前面。
-        /// </summary>
-        public void MoveToTop(int prescriptionId)
-        {
-            Prescription prescription = EnsureWaiting(prescriptionId);
-            int sortNo = dal.GetMinWaitingSortNo() - 1;
-            if (dal.UpdateSortNo(prescriptionId, sortNo) == 0)
-            {
-                throw new ArgumentException("处方状态已变化，不能置顶");
-            }
-            logBll.Add(null, AppLogType.Prescription, "处方 " + prescription.PrescriptionId + " 已置顶");
-        }
-
-        /// <summary>
-        /// 撤销尚未开始配药的处方。明细保留，方便事后核对。
-        /// </summary>
-        public void Cancel(int prescriptionId)
-        {
-            Prescription prescription = EnsureWaiting(prescriptionId);
-            if (dal.Cancel(prescriptionId) == 0)
-            {
-                throw new ArgumentException("处方状态已变化，不能撤销");
-            }
-            logBll.Add(null, AppLogType.Prescription, "撤销处方 " + prescription.PrescriptionId + "，患者 " + prescription.PatientNo);
-        }
-
-        /// <summary>
-        /// 按历史处方再次生成一张待配处方。原处方保持不变，新处方使用新的处方号。
-        /// </summary>
-        public int Requeue(int prescriptionId)
-        {
-            Prescription source = dal.GetById(prescriptionId);
-            if (source == null)
+            if (dal.GetById(prescriptionId) == null)
             {
                 throw new ArgumentException("处方不存在");
             }
 
-            List<PrescriptionItem> sourceItems = dal.GetItems(prescriptionId);
-            List<PrescriptionItem> items = new List<PrescriptionItem>();
-            foreach (PrescriptionItem item in sourceItems)
-            {
-                items.Add(new PrescriptionItem
-                {
-                    DrugId = item.DrugId,
-                    RequiredQty = item.RequiredQty
-                });
-            }
-
-            int newPrescriptionId = Submit(source.PatientNo, items);
-            logBll.Add(null, AppLogType.Prescription, "历史处方 " + prescriptionId + " 已再次加入队列，新处方号 " + newPrescriptionId);
-            return newPrescriptionId;
+            dal.Update(prescriptionId, prescriptionName, items);
+            logBll.Add(null, AppLogType.Prescription, BuildContent("修改处方", prescriptionId, prescriptionName, items));
+            return prescriptionId;
         }
 
-        /// <summary>
-        /// 确认是否为待配药处方
-        /// </summary>
-        /// <param name="prescriptionId"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentException"></exception>
-        private Prescription EnsureWaiting(int prescriptionId)
+        public void Delete(int prescriptionId)
         {
             Prescription prescription = dal.GetById(prescriptionId);
             if (prescription == null)
             {
                 throw new ArgumentException("处方不存在");
             }
-            if (prescription.Status != "待配药")
+            if (dal.HasOrders(prescriptionId))
             {
-                throw new ArgumentException("只有待配药的处方可以操作");
+                throw new ArgumentException("该处方已有配药记录，不能删除");
             }
-            return prescription;
+            if (dal.Delete(prescriptionId) == 0)
+            {
+                throw new ArgumentException("处方不存在");
+            }
+            logBll.Add(null, AppLogType.Prescription, "删除处方 " + prescription.PrescriptionName);
         }
 
-        private static int? ParsePrescriptionId(string prescriptionIdText)
+        private void EnsureUniqueName(int prescriptionId, string prescriptionName)
         {
-            if (string.IsNullOrWhiteSpace(prescriptionIdText))
+            foreach (Prescription exists in dal.GetAll())
             {
-                return null;
+                if (exists.PrescriptionId != prescriptionId
+                    && string.Equals(exists.PrescriptionName, prescriptionName, StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new ArgumentException("处方名称已存在");
+                }
             }
-
-            int prescriptionId;
-            if (!int.TryParse(prescriptionIdText.Trim(), out prescriptionId) || prescriptionId <= 0)
-            {
-                throw new ArgumentException("处方编号必须是正整数");
-            }
-            return prescriptionId;
         }
 
-        /// <summary>
-        /// 校验处方明细
-        /// </summary>
-        /// <param name="patientNo"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentException"></exception>
-        private static string NormalizePatientNo(string patientNo)
+        private static string NormalizeName(string prescriptionName)
         {
-            if (string.IsNullOrWhiteSpace(patientNo))
+            if (string.IsNullOrWhiteSpace(prescriptionName))
             {
-                throw new ArgumentException("请输入患者编号");
+                throw new ArgumentException("请输入处方名称");
             }
 
-            patientNo = patientNo.Trim();
-            if (patientNo.Length > 50)
+            prescriptionName = prescriptionName.Trim();
+            if (prescriptionName.Length > 50)
             {
-                throw new ArgumentException("患者编号不能超过 50 个字符");
+                throw new ArgumentException("处方名称不能超过 50 个字符");
             }
-            return patientNo;
+            return prescriptionName;
         }
 
-        /// <summary>
-        /// 校验处方明细
-        /// </summary>
-        /// <param name="items"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentException"></exception>
         private List<PrescriptionItem> NormalizeItems(IList<PrescriptionItem> items)
         {
             if (items == null || items.Count == 0)
@@ -234,21 +152,21 @@ namespace BLL
                     DrugId = drug.DrugId,
                     DrugName = drug.DrugName,
                     Spec = drug.Spec,
-                    RequiredQty = item.RequiredQty,
-                    Status = "待取药"
+                    RequiredQty = item.RequiredQty
                 });
             }
             return result;
         }
 
-        private static string BuildSubmitContent(int prescriptionId, string patientNo, IList<PrescriptionItem> items)
+        private static string BuildContent(string action, int prescriptionId, string prescriptionName, IList<PrescriptionItem> items)
         {
             StringBuilder content = new StringBuilder();
-            content.Append("提交处方 ");
+            content.Append(action);
+            content.Append(" ");
             content.Append(prescriptionId);
-            content.Append("，患者 ");
-            content.Append(patientNo);
-            content.Append("：");
+            content.Append("【");
+            content.Append(prescriptionName);
+            content.Append("】：");
             for (int i = 0; i < items.Count; i++)
             {
                 if (i > 0)
@@ -262,4 +180,4 @@ namespace BLL
             return content.ToString();
         }
     }
-}
+}

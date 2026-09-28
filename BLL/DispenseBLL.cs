@@ -6,56 +6,56 @@ using System.Collections.Generic;
 namespace BLL
 {
     /// <summary>
-    /// 配药看板业务。只负责读取当前处方和判断能否启动，不直接操作界面。
+    /// 配药看板业务。只负责读取当前待配任务和判断能否启动，不直接操作界面。
     /// </summary>
     public class DispenseBLL
     {
-        private readonly PrescriptionDAL prescriptionDal = new PrescriptionDAL();
+        private readonly DispenseOrderDAL orderDal = new DispenseOrderDAL();
         private readonly StationDAL stationDal = new StationDAL();
         private readonly AppLogBLL logBll = new AppLogBLL();
 
         /// <summary>
-        /// 当前应展示的处方。没有待处理处方时返回 null。
+        /// 当前应展示的待配任务。没有待处理任务时返回 null。
         /// </summary>
-        public Prescription GetCurrentPrescription()
+        public DispenseOrder GetCurrentOrder()
         {
-            return GetCurrentPrescription(0);
+            return GetCurrentOrder(0);
         }
 
         /// <summary>
-        /// 当前应展示的处方。skipPrescriptionId 用于跳过指令不完整、暂时不能配的处方。
+        /// 当前应展示的待配任务。skipOrderId 用于跳过指令不完整、暂时不能配的任务。
         /// </summary>
-        public Prescription GetCurrentPrescription(int skipPrescriptionId)
+        public DispenseOrder GetCurrentOrder(int skipOrderId)
         {
-            return prescriptionDal.GetCurrent(skipPrescriptionId);
+            return orderDal.GetCurrent(skipOrderId);
         }
 
         /// <summary>
-        /// 当前处方的明细。处方不存在时返回空列表。
+        /// 当前任务的明细。任务不存在时返回空列表。
         /// </summary>
-        public List<PrescriptionItem> GetCurrentItems(int prescriptionId)
+        public List<DispenseOrderItem> GetCurrentItems(int orderId)
         {
-            return prescriptionDal.GetItems(prescriptionId);
+            return orderDal.GetItems(orderId);
         }
 
         /// <summary>
         /// 启动前检查工位指令和药品绑定。返回空字符串表示可以启动。
         /// </summary>
-        public string GetStartBlockReason(Prescription prescription, IList<PrescriptionItem> items)
+        public string GetStartBlockReason(DispenseOrder order, IList<DispenseOrderItem> items)
         {
-            if (prescription == null)
+            if (order == null)
             {
-                return "当前没有待配处方";
+                return "当前没有待配任务";
             }
 
-            if (prescription.Status != "待配药" && prescription.Status != "配药中" && prescription.Status != "部分异常")
+            if (order.Status != "待配药" && order.Status != "配药中" && order.Status != "部分异常")
             {
-                return "当前处方不能继续配药";
+                return "当前任务不能继续配药";
             }
 
             if (items == null || items.Count == 0)
             {
-                return "该处方没有药品明细";
+                return "该任务没有药品明细";
             }
 
             Station slot = FindStation(1);
@@ -64,7 +64,7 @@ namespace BLL
                 return "正前分拣槽还没有配置放置指令";
             }
 
-            foreach (PrescriptionItem item in items)
+            foreach (DispenseOrderItem item in items)
             {
                 if (item.StationId != 2 && item.StationId != 3)
                 {
@@ -84,7 +84,7 @@ namespace BLL
         /// <summary>
         /// 已核对通过的明细条数，用于顶部进度。
         /// </summary>
-        public int CountPassed(IList<PrescriptionItem> items)
+        public int CountPassed(IList<DispenseOrderItem> items)
         {
             int count = 0;
             if (items == null)
@@ -92,7 +92,7 @@ namespace BLL
                 return count;
             }
 
-            foreach (PrescriptionItem item in items)
+            foreach (DispenseOrderItem item in items)
             {
                 if (item.Status == "核对通过")
                 {
@@ -103,38 +103,38 @@ namespace BLL
         }
 
         /// <summary>
-        /// 开始一张处方。状态改为配药中，并记下复位动作。
+        /// 开始一个待配任务。状态改为配药中，并记下复位动作。
         /// </summary>
-        public void Start(Prescription prescription)
+        public void Start(DispenseOrder order)
         {
-            if (prescription == null)
+            if (order == null)
             {
-                throw new ArgumentException("当前没有待配处方");
+                throw new ArgumentException("当前没有待配任务");
             }
 
-            bool resume = prescription.Status == "配药中" || prescription.Status == "部分异常";
-            if (prescriptionDal.MarkDispensing(prescription.PrescriptionId) == 0)
+            bool resume = order.Status == "配药中" || order.Status == "部分异常";
+            if (orderDal.MarkDispensing(order.OrderId) == 0)
             {
-                throw new ArgumentException("处方状态已变化，不能启动");
+                throw new ArgumentException("任务状态已变化，不能启动");
             }
 
-            prescription.Status = "配药中";
+            order.Status = "配药中";
             logBll.Add(null, AppLogType.Command, resume
-                ? "处方 " + prescription.PrescriptionId + " 从中断处继续配药"
-                : "处方 " + prescription.PrescriptionId + " 开始配药，下发" + Common.ArmCommandService.StandbyActionName + "待命指令");
+                ? "待配任务 " + order.OrderId + " 从中断处继续配药"
+                : "待配任务 " + order.OrderId + " 开始配药，下发" + Common.ArmCommandService.StandbyActionName + "待命指令");
         }
 
         /// <summary>
         /// 找到下一条还没核对通过的明细。全部完成时返回 null。
         /// </summary>
-        public PrescriptionItem FindNextItem(IList<PrescriptionItem> items)
+        public DispenseOrderItem FindNextItem(IList<DispenseOrderItem> items)
         {
             if (items == null)
             {
                 return null;
             }
 
-            foreach (PrescriptionItem item in items)
+            foreach (DispenseOrderItem item in items)
             {
                 if (item.Status != "核对通过")
                 {
@@ -147,12 +147,12 @@ namespace BLL
         /// <summary>
         /// 记录一次抓取和一次投递，并把抓取次数加一。
         /// </summary>
-        public void RecordGrab(PrescriptionItem item, string grabCommand, string dropCommand)
+        public void RecordGrab(DispenseOrderItem item, string grabCommand, string dropCommand)
         {
             EnsureItem(item);
             item.GrabCount++;
             item.Status = "取药中";
-            if (prescriptionDal.UpdateItemProgress(item.ItemId, item.GrabCount, item.Status) == 0)
+            if (orderDal.UpdateItemProgress(item.ItemId, item.GrabCount, item.Status) == 0)
             {
                 throw new ArgumentException("更新抓取进度失败");
             }
@@ -166,17 +166,17 @@ namespace BLL
         /// <summary>
         /// 抓取次数达到应发数量后，明细进入待核对。
         /// </summary>
-        public void MarkWaitingCheck(PrescriptionItem item)
+        public void MarkWaitingCheck(DispenseOrderItem item)
         {
             EnsureItem(item);
             item.Status = "待核对";
-            prescriptionDal.UpdateItemProgress(item.ItemId, item.GrabCount, item.Status);
+            orderDal.UpdateItemProgress(item.ItemId, item.GrabCount, item.Status);
         }
 
         /// <summary>
         /// 按核对弹窗的决定更新明细。返回还需要补抓的次数，不需要补抓时为 0。
         /// </summary>
-        public int ApplyDecision(PrescriptionItem item, int actualQty, VerifyDecision decision)
+        public int ApplyDecision(DispenseOrderItem item, int actualQty, VerifyDecision decision)
         {
             EnsureItem(item);
             if (actualQty < 0)
@@ -189,7 +189,7 @@ namespace BLL
                 item.GrabCount = 0;
                 item.ActualQty = 0;
                 item.Status = "待取药";
-                prescriptionDal.ResetItem(item.ItemId);
+                orderDal.ResetItem(item.ItemId);
                 logBll.Add(item.ItemId, AppLogType.ExceptionFix, "【" + item.DrugName + "】作废重置，抓取次数已清零");
                 return item.RequiredQty;
             }
@@ -204,7 +204,7 @@ namespace BLL
 
                 item.ActualQty = actualQty;
                 item.Status = "取药中";
-                prescriptionDal.UpdateItemProgress(item.ItemId, item.GrabCount, item.Status);
+                orderDal.UpdateItemProgress(item.ItemId, item.GrabCount, item.Status);
                 logBll.Add(item.ItemId, AppLogType.QuantityCheck,
                     "【" + item.DrugName + "】实收 " + actualQty + "，应发 " + item.RequiredQty + "，补抓 " + shortage);
                 return shortage;
@@ -236,29 +236,29 @@ namespace BLL
         }
 
         /// <summary>
-        /// 如果所有明细都已通过，把处方改为已完成。
+        /// 如果所有明细都已通过，把任务改为已完成。
         /// </summary>
-        public bool TryComplete(Prescription prescription)
+        public bool TryComplete(DispenseOrder order)
         {
-            if (prescription == null)
+            if (order == null)
             {
                 return false;
             }
 
-            if (prescriptionDal.CompleteIfAllPassed(prescription.PrescriptionId) == 0)
+            if (orderDal.CompleteIfAllPassed(order.OrderId) == 0)
             {
                 return false;
             }
 
-            prescription.Status = "已完成";
-            logBll.Add(null, AppLogType.Prescription, "处方 " + prescription.PrescriptionId + " 配药完成");
+            order.Status = "已完成";
+            logBll.Add(null, AppLogType.Prescription, "待配任务 " + order.OrderId + " 配药完成");
             return true;
         }
 
         /// <summary>
         /// 取得药品所在药位。只允许左药位和右药位。
         /// </summary>
-        public Station GetGrabStation(PrescriptionItem item)
+        public Station GetGrabStation(DispenseOrderItem item)
         {
             EnsureItem(item); // 判断处方明细是否有效
             if (item.StationId != 2 && item.StationId != 3)
@@ -287,23 +287,21 @@ namespace BLL
             return station;
         }
 
-        private void Pass(PrescriptionItem item)
+        private void Pass(DispenseOrderItem item)
         {
             item.ActualQty = item.RequiredQty;
             item.Status = "核对通过";
-            prescriptionDal.PassItem(item.ItemId, item.RequiredQty);
+            orderDal.PassItem(item.ItemId, item.RequiredQty);
         }
 
         /// <summary>
-        /// 判断处方明细是否有效
+        /// 判断任务明细是否有效
         /// </summary>
-        /// <param name="item"></param>
-        /// <exception cref="ArgumentException"></exception>
-        private static void EnsureItem(PrescriptionItem item)
+        private static void EnsureItem(DispenseOrderItem item)
         {
             if (item == null || item.ItemId <= 0)
             {
-                throw new ArgumentException("处方明细无效");
+                throw new ArgumentException("任务明细无效");
             }
         }
 

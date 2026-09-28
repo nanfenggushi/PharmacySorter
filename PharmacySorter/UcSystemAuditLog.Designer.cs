@@ -118,7 +118,7 @@ namespace PharmacySorter
             this.lblPrescriptionId.Name = "lblPrescriptionId";
             this.lblPrescriptionId.Size = new System.Drawing.Size(67, 15);
             this.lblPrescriptionId.TabIndex = 4;
-            this.lblPrescriptionId.Text = "处方编号";
+            this.lblPrescriptionId.Text = "任务编号";
             // 
             // dtpEnd
             // 

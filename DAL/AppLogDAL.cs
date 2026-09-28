@@ -32,13 +32,12 @@ VALUES (@ItemId, @LogType, @Content)";
         public List<AppLog> Search(DateTime? startTime, DateTime? endTime, int? prescriptionId, string logType)
         {
             string sql = @"
-SELECT l.LogId, l.ItemId, p.PrescriptionId, l.LogType, l.Content, l.LogTime
+SELECT l.LogId, l.ItemId, i.OrderId AS PrescriptionId, l.LogType, l.Content, l.LogTime
 FROM AppLog l
-LEFT JOIN PrescriptionItem i ON l.ItemId = i.ItemId
-LEFT JOIN Prescription p ON i.PrescriptionId = p.PrescriptionId
+LEFT JOIN DispenseOrderItem i ON l.ItemId = i.ItemId
 WHERE (@StartTime IS NULL OR l.LogTime >= @StartTime)
   AND (@EndTime IS NULL OR l.LogTime < @EndTime)
-  AND (@PrescriptionId IS NULL OR p.PrescriptionId = @PrescriptionId)
+  AND (@PrescriptionId IS NULL OR i.OrderId = @PrescriptionId)
   AND (@LogType IS NULL OR l.LogType = @LogType)
 ORDER BY l.LogTime DESC, l.LogId DESC";
 

@@ -40,7 +40,7 @@ namespace PharmacySorter
             this.lblPrescriptionId.Name = "lblPrescriptionId";
             this.lblPrescriptionId.Size = new System.Drawing.Size(67, 15);
             this.lblPrescriptionId.TabIndex = 8;
-            this.lblPrescriptionId.Text = "处方编号";
+            this.lblPrescriptionId.Text = "任务编号";
             // 
             // txtPrescriptionId
             // 
@@ -110,7 +110,7 @@ namespace PharmacySorter
             this.lblCount.Name = "lblCount";
             this.lblCount.Size = new System.Drawing.Size(61, 15);
             this.lblCount.TabIndex = 1;
-            this.lblCount.Text = "共 0 张";
+            this.lblCount.Text = "共 0 条";
             // 
             // dgvHistory
             // 
@@ -136,8 +136,8 @@ namespace PharmacySorter
             // 
             // Column1
             // 
-            this.Column1.DataPropertyName = "PrescriptionId";
-            this.Column1.HeaderText = "处方号";
+            this.Column1.DataPropertyName = "OrderId";
+            this.Column1.HeaderText = "任务号";
             this.Column1.MinimumWidth = 6;
             this.Column1.Name = "colHistoryId";
             this.Column1.ReadOnly = true;
@@ -152,8 +152,8 @@ namespace PharmacySorter
             // 
             // Column3
             // 
-            this.Column3.DataPropertyName = "ItemCount";
-            this.Column3.HeaderText = "药品数";
+            this.Column3.DataPropertyName = "PrescriptionName";
+            this.Column3.HeaderText = "处方名称";
             this.Column3.MinimumWidth = 6;
             this.Column3.Name = "colHistoryItemCount";
             this.Column3.ReadOnly = true;

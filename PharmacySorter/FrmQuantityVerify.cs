@@ -11,9 +11,9 @@ namespace PharmacySorter
     public partial class FrmQuantityVerify : Form
     {
         /// <summary>
-        /// 当前正在核对的处方明细。
+        /// 当前正在核对的任务明细。
         /// </summary>
-        private readonly PrescriptionItem item;
+        private readonly DispenseOrderItem item;
 
         /// <summary>
         /// 操作员最终选择。关闭窗口前由按钮写入。
@@ -28,7 +28,7 @@ namespace PharmacySorter
             get { return Convert.ToInt32(nudActualQty.Value); }
         }
 
-        public FrmQuantityVerify(PrescriptionItem currentItem)
+        public FrmQuantityVerify(DispenseOrderItem currentItem)
         {
             if (currentItem == null)
             {

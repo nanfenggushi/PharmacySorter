@@ -15,7 +15,9 @@ namespace PharmacySorter
         private UserControl ucDrugStationMapping = null;
         // 药品字典管理
         private UserControl ucDrugDictionary = null;
-        // 处方录入与队列管理
+        // 固定处方维护
+        private UserControl ucPrescriptionCatalog = null;
+        // 待配队列
         private UserControl ucPrescriptionQueue = null;
         // 系统操作日志审计
         private UserControl ucSystemAuditLog = null;
@@ -130,6 +132,7 @@ namespace PharmacySorter
             btnStationMapping.Visible = isAdmin;
             btnDrugDictionary.Visible = isAdmin || isPharmacist;
             btnPrescription.Visible = isAdmin || isPharmacist;
+            btnPrescriptionCatalog.Visible = isAdmin || isPharmacist;
             btnAuditLog.Visible = isAdmin;
             btnUserAdmin.Visible = isAdmin;
             btnDashboard.Visible = true;
@@ -170,10 +173,16 @@ namespace PharmacySorter
             PageHelper.SwitchPage<UcDrugDictionary>(pnlPageContainer, ref ucDrugDictionary);
         }
 
-        // 跳转到处方录入与队列管理
+        // 跳转到待配队列
         private void BtnPrescription_Click(object sender, EventArgs e)
         {
             PageHelper.SwitchPage<UcPrescriptionQueue>(pnlPageContainer, ref ucPrescriptionQueue);
+        }
+
+        // 跳转到固定处方维护
+        private void BtnPrescriptionCatalog_Click(object sender, EventArgs e)
+        {
+            PageHelper.SwitchPage<UcPrescriptionCatalog>(pnlPageContainer, ref ucPrescriptionCatalog);
         }
 
         // 跳转到系统操作日志审计
