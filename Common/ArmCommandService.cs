@@ -221,7 +221,6 @@ namespace Common
 
         /// <summary>
         /// 把 $DGT:起始-结束,次数! 展开成逐帧舵机指令。
-        /// 控制板只认 #000P1500T1000! 这种格式，原样发送 $DGT 它不会动作。
         /// </summary>
         private void SendActionGroup(string command, int waitMilliseconds)
         {

@@ -1,4 +1,3 @@
-using BLL;
 using Common;
 using Model;
 using System;
@@ -58,11 +57,11 @@ namespace PharmacySorter
         /// </summary>
         private void FrmMain_Load(object sender, EventArgs e)
         {
-            clockTimer.Start();
-            ApplyPermissions();
+            clockTimer.Start(); // 启动定时器
+            ApplyPermissions(); // 按角色权限显示不同菜单
             ClockTimer_Tick(this, EventArgs.Empty);
             ShowConnection(false, ConfigurationManager.AppSettings["ArmPortName"]);
-            BtnDashboard_Click(this, EventArgs.Empty);
+            BtnDashboard_Click(this, EventArgs.Empty); // 切换到看板界面
             BeginInvoke(new Action(ConnectArm));
         }
 
@@ -137,6 +136,7 @@ namespace PharmacySorter
             btnEmergencyStop.Visible = true;
         }
 
+        // 跳转到账号与权限管理
         private void BtnUserAdmin_Click(object sender, EventArgs e)
         {
             if (currentUser.RoleName != UserRole.Admin)

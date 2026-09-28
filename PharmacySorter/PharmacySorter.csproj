@@ -109,6 +109,9 @@
     <Compile Include="UcUserAdmin.Designer.cs">
       <DependentUpon>UcUserAdmin.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="FrmLogin.resx">
+      <DependentUpon>FrmLogin.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </EmbeddedResource>
