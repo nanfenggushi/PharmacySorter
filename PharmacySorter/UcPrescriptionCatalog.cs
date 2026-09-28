@@ -18,7 +18,18 @@ namespace PharmacySorter
         public UcPrescriptionCatalog()
         {
             InitializeComponent();
+            ConfigureGrid(dgvItems);
+            ConfigureGrid(dgvList);
             Load += UcPrescriptionCatalog_Load;
+        }
+
+        private static void ConfigureGrid(DataGridView grid)
+        {
+            grid.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
+            grid.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            grid.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            grid.EnableHeadersVisualStyles = false;
+            grid.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.SystemColors.Control;
         }
 
         private void UcPrescriptionCatalog_Load(object sender, EventArgs e)
