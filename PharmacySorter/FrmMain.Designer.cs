@@ -99,7 +99,7 @@ namespace PharmacySorter
             this.pnlNav.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlNav.Location = new System.Drawing.Point(0, 57);
             this.pnlNav.Name = "pnlNav";
-            this.pnlNav.Size = new System.Drawing.Size(156, 721);
+            this.pnlNav.Size = new System.Drawing.Size(166, 721);
             this.pnlNav.TabIndex = 1;
             // 
             // btnEmergencyStop
@@ -113,16 +113,6 @@ namespace PharmacySorter
             this.btnEmergencyStop.UseVisualStyleBackColor = true;
             this.btnEmergencyStop.Click += new System.EventHandler(this.BtnEmergencyStop_Click);
             // 
-            // btnAuditLog
-            // 
-            this.btnAuditLog.Location = new System.Drawing.Point(3, 248);
-            this.btnAuditLog.Name = "btnAuditLog";
-            this.btnAuditLog.Size = new System.Drawing.Size(153, 35);
-            this.btnAuditLog.TabIndex = 4;
-            this.btnAuditLog.Text = "系统操作日志审计";
-            this.btnAuditLog.UseVisualStyleBackColor = true;
-            this.btnAuditLog.Click += new System.EventHandler(this.BtnAuditLog_Click);
-            // 
             // btnUserAdmin
             // 
             this.btnUserAdmin.Location = new System.Drawing.Point(3, 300);
@@ -133,11 +123,21 @@ namespace PharmacySorter
             this.btnUserAdmin.UseVisualStyleBackColor = true;
             this.btnUserAdmin.Click += new System.EventHandler(this.BtnUserAdmin_Click);
             // 
+            // btnAuditLog
+            // 
+            this.btnAuditLog.Location = new System.Drawing.Point(3, 248);
+            this.btnAuditLog.Name = "btnAuditLog";
+            this.btnAuditLog.Size = new System.Drawing.Size(153, 35);
+            this.btnAuditLog.TabIndex = 4;
+            this.btnAuditLog.Text = "系统操作日志审计";
+            this.btnAuditLog.UseVisualStyleBackColor = true;
+            this.btnAuditLog.Click += new System.EventHandler(this.BtnAuditLog_Click);
+            // 
             // btnPrescription
             // 
-            this.btnPrescription.Location = new System.Drawing.Point(3, 194);
+            this.btnPrescription.Location = new System.Drawing.Point(0, 194);
             this.btnPrescription.Name = "btnPrescription";
-            this.btnPrescription.Size = new System.Drawing.Size(150, 31);
+            this.btnPrescription.Size = new System.Drawing.Size(163, 31);
             this.btnPrescription.TabIndex = 3;
             this.btnPrescription.Text = "处方录入与队列管理";
             this.btnPrescription.UseVisualStyleBackColor = true;
@@ -155,9 +155,9 @@ namespace PharmacySorter
             // 
             // btnStationMapping
             // 
-            this.btnStationMapping.Location = new System.Drawing.Point(12, 86);
+            this.btnStationMapping.Location = new System.Drawing.Point(6, 84);
             this.btnStationMapping.Name = "btnStationMapping";
-            this.btnStationMapping.Size = new System.Drawing.Size(124, 31);
+            this.btnStationMapping.Size = new System.Drawing.Size(138, 31);
             this.btnStationMapping.TabIndex = 1;
             this.btnStationMapping.Text = "工位与药品配置";
             this.btnStationMapping.UseVisualStyleBackColor = true;
@@ -176,9 +176,9 @@ namespace PharmacySorter
             // pnlPageContainer
             // 
             this.pnlPageContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlPageContainer.Location = new System.Drawing.Point(156, 57);
+            this.pnlPageContainer.Location = new System.Drawing.Point(166, 57);
             this.pnlPageContainer.Name = "pnlPageContainer";
-            this.pnlPageContainer.Size = new System.Drawing.Size(1283, 721);
+            this.pnlPageContainer.Size = new System.Drawing.Size(1273, 721);
             this.pnlPageContainer.TabIndex = 2;
             // 
             // FrmMain

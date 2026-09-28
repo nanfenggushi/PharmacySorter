@@ -18,11 +18,11 @@ namespace DAL
         public List<Prescription> GetWaitingQueue()
         {
             string sql = @"
-SELECT p.PrescriptionId, p.PatientNo, p.Status, p.CreateTime, p.CompleteTime, p.SortNo,
-       (SELECT COUNT(1) FROM PrescriptionItem i WHERE i.PrescriptionId = p.PrescriptionId) AS ItemCount
-FROM Prescription p
-WHERE p.Status = N'待配药'
-ORDER BY p.SortNo, p.CreateTime, p.PrescriptionId";
+                        SELECT p.PrescriptionId, p.PatientNo, p.Status, p.CreateTime, p.CompleteTime, p.SortNo,
+                               (SELECT COUNT(1) FROM PrescriptionItem i WHERE i.PrescriptionId = p.PrescriptionId) AS ItemCount
+                        FROM Prescription p
+                        WHERE p.Status = N'待配药'
+                        ORDER BY p.SortNo, p.CreateTime, p.PrescriptionId";
             return MapPrescriptions(DbHelper.Find(sql));
         }
 
@@ -41,11 +41,11 @@ ORDER BY p.SortNo, p.CreateTime, p.PrescriptionId";
         public int PreviewNextId()
         {
             object result = DbHelper.Scalar(@"
-                SELECT CASE
-                    WHEN MAX(PrescriptionId) IS NULL THEN CAST(IDENT_SEED('Prescription') AS INT)
-                    ELSE MAX(PrescriptionId) + CAST(IDENT_INCR('Prescription') AS INT)
-                END
-                FROM Prescription");
+                                            SELECT CASE
+                                                WHEN MAX(PrescriptionId) IS NULL THEN CAST(IDENT_SEED('Prescription') AS INT)
+                                                ELSE MAX(PrescriptionId) + CAST(IDENT_INCR('Prescription') AS INT)
+                                            END
+                                            FROM Prescription");
             return Convert.ToInt32(result);
         }
 
@@ -107,10 +107,10 @@ ORDER BY p.SortNo, p.CreateTime, p.PrescriptionId";
         public Prescription GetById(int prescriptionId)
         {
             string sql = @"
-SELECT p.PrescriptionId, p.PatientNo, p.Status, p.CreateTime, p.CompleteTime, p.SortNo,
-       (SELECT COUNT(1) FROM PrescriptionItem i WHERE i.PrescriptionId = p.PrescriptionId) AS ItemCount
-FROM Prescription p
-WHERE p.PrescriptionId = @PrescriptionId";
+                        SELECT p.PrescriptionId, p.PatientNo, p.Status, p.CreateTime, p.CompleteTime, p.SortNo,
+                               (SELECT COUNT(1) FROM PrescriptionItem i WHERE i.PrescriptionId = p.PrescriptionId) AS ItemCount
+                        FROM Prescription p
+                        WHERE p.PrescriptionId = @PrescriptionId";
             List<Prescription> list = MapPrescriptions(DbHelper.Find(sql, new SqlParameter("@PrescriptionId", prescriptionId)));
             return list.Count == 0 ? null : list[0];
         }
@@ -121,13 +121,13 @@ WHERE p.PrescriptionId = @PrescriptionId";
         public List<Prescription> SearchHistory(int? prescriptionId, DateTime? startTime, DateTime? endTime)
         {
             string sql = @"
-SELECT p.PrescriptionId, p.PatientNo, p.Status, p.CreateTime, p.CompleteTime, p.SortNo,
-       (SELECT COUNT(1) FROM PrescriptionItem i WHERE i.PrescriptionId = p.PrescriptionId) AS ItemCount
-FROM Prescription p
-WHERE (@PrescriptionId IS NULL OR p.PrescriptionId = @PrescriptionId)
-  AND (@StartTime IS NULL OR p.CreateTime >= @StartTime)
-  AND (@EndTime IS NULL OR p.CreateTime < @EndTime)
-ORDER BY p.CreateTime DESC, p.PrescriptionId DESC";
+                        SELECT p.PrescriptionId, p.PatientNo, p.Status, p.CreateTime, p.CompleteTime, p.SortNo,
+                               (SELECT COUNT(1) FROM PrescriptionItem i WHERE i.PrescriptionId = p.PrescriptionId) AS ItemCount
+                        FROM Prescription p
+                        WHERE (@PrescriptionId IS NULL OR p.PrescriptionId = @PrescriptionId)
+                          AND (@StartTime IS NULL OR p.CreateTime >= @StartTime)
+                          AND (@EndTime IS NULL OR p.CreateTime < @EndTime)
+                        ORDER BY p.CreateTime DESC, p.PrescriptionId DESC";
             return MapPrescriptions(DbHelper.Find(sql,
                 new SqlParameter("@PrescriptionId", (object)prescriptionId ?? DBNull.Value),
                 new SqlParameter("@StartTime", (object)startTime ?? DBNull.Value),
@@ -148,13 +148,13 @@ ORDER BY p.CreateTime DESC, p.PrescriptionId DESC";
         public Prescription GetCurrent(int skipPrescriptionId)
         {
             string sql = @"
-                SELECT TOP 1 p.PrescriptionId, p.PatientNo, p.Status, p.CreateTime, p.CompleteTime, p.SortNo,
-                       (SELECT COUNT(1) FROM PrescriptionItem i WHERE i.PrescriptionId = p.PrescriptionId) AS ItemCount
-                FROM Prescription p
-                WHERE p.Status IN (N'配药中', N'部分异常', N'待配药')
-                  AND p.PrescriptionId <> @SkipPrescriptionId
-                ORDER BY CASE p.Status WHEN N'配药中' THEN 0 WHEN N'部分异常' THEN 1 ELSE 2 END,
-                         p.SortNo, p.CreateTime, p.PrescriptionId";
+                        SELECT TOP 1 p.PrescriptionId, p.PatientNo, p.Status, p.CreateTime, p.CompleteTime, p.SortNo,
+                               (SELECT COUNT(1) FROM PrescriptionItem i WHERE i.PrescriptionId = p.PrescriptionId) AS ItemCount
+                        FROM Prescription p
+                        WHERE p.Status IN (N'配药中', N'部分异常', N'待配药')
+                          AND p.PrescriptionId <> @SkipPrescriptionId
+                        ORDER BY CASE p.Status WHEN N'配药中' THEN 0 WHEN N'部分异常' THEN 1 ELSE 2 END,
+                                 p.SortNo, p.CreateTime, p.PrescriptionId";
             List<Prescription> list = MapPrescriptions(DbHelper.Find(sql, new SqlParameter("@SkipPrescriptionId", skipPrescriptionId)));
             return list.Count == 0 ? null : list[0];
         }
@@ -165,14 +165,14 @@ ORDER BY p.CreateTime DESC, p.PrescriptionId DESC";
         public List<PrescriptionItem> GetItems(int prescriptionId)
         {
             string sql = @"
-SELECT i.ItemId, i.PrescriptionId, i.DrugId, d.DrugName, d.Spec,
-       i.RequiredQty, i.ActualQty, i.GrabCount, i.Status,
-       d.StationId, s.StationName
-FROM PrescriptionItem i
-INNER JOIN Drug d ON i.DrugId = d.DrugId
-LEFT JOIN StationAction s ON d.StationId = s.StationId
-WHERE i.PrescriptionId = @PrescriptionId
-ORDER BY i.ItemId";
+                        SELECT i.ItemId, i.PrescriptionId, i.DrugId, d.DrugName, d.Spec,
+                               i.RequiredQty, i.ActualQty, i.GrabCount, i.Status,
+                               d.StationId, s.StationName
+                        FROM PrescriptionItem i
+                        INNER JOIN Drug d ON i.DrugId = d.DrugId
+                        LEFT JOIN StationAction s ON d.StationId = s.StationId
+                        WHERE i.PrescriptionId = @PrescriptionId
+                        ORDER BY i.ItemId";
             return MapItems(DbHelper.Find(sql, new SqlParameter("@PrescriptionId", prescriptionId)));
         }
 
@@ -182,8 +182,8 @@ ORDER BY i.ItemId";
         public int MarkDispensing(int prescriptionId)
         {
             string sql = @"UPDATE Prescription
-SET Status = N'配药中', CompleteTime = NULL
-WHERE PrescriptionId = @PrescriptionId AND Status IN (N'待配药', N'配药中', N'部分异常')";
+                        SET Status = N'配药中', CompleteTime = NULL
+                        WHERE PrescriptionId = @PrescriptionId AND Status IN (N'待配药', N'配药中', N'部分异常')";
             return DbHelper.Update(sql, new SqlParameter("@PrescriptionId", prescriptionId));
         }
 
@@ -193,8 +193,8 @@ WHERE PrescriptionId = @PrescriptionId AND Status IN (N'待配药', N'配药中'
         public int UpdateItemProgress(int itemId, int grabCount, string status)
         {
             string sql = @"UPDATE PrescriptionItem
-SET GrabCount = @GrabCount, Status = @Status
-WHERE ItemId = @ItemId";
+                        SET GrabCount = @GrabCount, Status = @Status
+                        WHERE ItemId = @ItemId";
             return DbHelper.Update(sql,
                 new SqlParameter("@GrabCount", grabCount),
                 new SqlParameter("@Status", status),
@@ -207,8 +207,8 @@ WHERE ItemId = @ItemId";
         public int PassItem(int itemId, int actualQty)
         {
             string sql = @"UPDATE PrescriptionItem
-SET ActualQty = @ActualQty, Status = N'核对通过'
-WHERE ItemId = @ItemId";
+                        SET ActualQty = @ActualQty, Status = N'核对通过'
+                        WHERE ItemId = @ItemId";
             return DbHelper.Update(sql,
                 new SqlParameter("@ActualQty", actualQty),
                 new SqlParameter("@ItemId", itemId));
@@ -220,8 +220,8 @@ WHERE ItemId = @ItemId";
         public int ResetItem(int itemId)
         {
             string sql = @"UPDATE PrescriptionItem
-SET GrabCount = 0, ActualQty = 0, Status = N'待取药'
-WHERE ItemId = @ItemId";
+                        SET GrabCount = 0, ActualQty = 0, Status = N'待取药'
+                        WHERE ItemId = @ItemId";
             return DbHelper.Update(sql, new SqlParameter("@ItemId", itemId));
         }
 
@@ -231,11 +231,11 @@ WHERE ItemId = @ItemId";
         public int CompleteIfAllPassed(int prescriptionId)
         {
             string sql = @"UPDATE Prescription
-SET Status = N'已完成', CompleteTime = GETDATE()
-WHERE PrescriptionId = @PrescriptionId
-  AND NOT EXISTS (
-      SELECT 1 FROM PrescriptionItem
-      WHERE PrescriptionId = @PrescriptionId AND Status <> N'核对通过')";
+                        SET Status = N'已完成', CompleteTime = GETDATE()
+                        WHERE PrescriptionId = @PrescriptionId
+                          AND NOT EXISTS (
+                              SELECT 1 FROM PrescriptionItem
+                              WHERE PrescriptionId = @PrescriptionId AND Status <> N'核对通过')";
             return DbHelper.Update(sql, new SqlParameter("@PrescriptionId", prescriptionId));
         }
 
@@ -249,9 +249,9 @@ WHERE PrescriptionId = @PrescriptionId
         private static int InsertPrescription(SqlConnection connection, SqlTransaction transaction, Prescription prescription)
         {
             const string sql = @"
-INSERT INTO Prescription (PatientNo, Status, SortNo)
-VALUES (@PatientNo, N'待配药', @SortNo);
-SELECT CAST(SCOPE_IDENTITY() AS INT);";
+                            INSERT INTO Prescription (PatientNo, Status, SortNo)
+                            VALUES (@PatientNo, N'待配药', @SortNo);
+                            SELECT CAST(SCOPE_IDENTITY() AS INT);";
             using (SqlCommand command = new SqlCommand(sql, connection, transaction))
             {
                 command.Parameters.Add(new SqlParameter("@PatientNo", prescription.PatientNo));
@@ -263,8 +263,8 @@ SELECT CAST(SCOPE_IDENTITY() AS INT);";
         private static void InsertItem(SqlConnection connection, SqlTransaction transaction, int prescriptionId, PrescriptionItem item)
         {
             const string sql = @"
-INSERT INTO PrescriptionItem (PrescriptionId, DrugId, RequiredQty, ActualQty, Status)
-VALUES (@PrescriptionId, @DrugId, @RequiredQty, 0, N'待取药')";
+                            INSERT INTO PrescriptionItem (PrescriptionId, DrugId, RequiredQty, ActualQty, Status)
+                            VALUES (@PrescriptionId, @DrugId, @RequiredQty, 0, N'待取药')";
             using (SqlCommand command = new SqlCommand(sql, connection, transaction))
             {
                 command.Parameters.Add(new SqlParameter("@PrescriptionId", prescriptionId));

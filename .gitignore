@@ -43,3 +43,23 @@ _ReSharper*/
 *.[Rr]e[Ss]harper
 .idea/
 *.rsuser
+
+# 本地敏感配置。数据库连接、串口和操作员配置只留在本机。
+PharmacySorter/App.config
+**/App.config
+*.local.config
+secrets.json
+appsettings.*.json
+!appsettings.example.json
+
+# 本机工具与临时文件
+.vscode/
+*.swp
+*~
+Thumbs.db
+Desktop.ini
+*.bak
+*.orig
+~$*
+Docx/需求说明书/医院药品分拣系统_需求说明书V2.1 - 副本.md
+
