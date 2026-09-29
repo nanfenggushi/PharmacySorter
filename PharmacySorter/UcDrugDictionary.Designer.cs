@@ -89,7 +89,6 @@ namespace PharmacySorter
             // 
             this.dgvMedicineInfo.AllowUserToAddRows = false;
             this.dgvMedicineInfo.AllowUserToDeleteRows = false;
-            this.dgvMedicineInfo.AutoGenerateColumns = false;
             this.dgvMedicineInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));

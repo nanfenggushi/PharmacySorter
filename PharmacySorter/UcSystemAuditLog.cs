@@ -28,6 +28,7 @@ namespace PharmacySorter
         public UcSystemAuditLog()
         {
             InitializeComponent();
+            dgvLog.AutoGenerateColumns = false;
             Load += UcSystemAuditLog_Load;
         }
 

@@ -33,6 +33,7 @@ namespace PharmacySorter
         public UcDrugDictionary()
         {
             InitializeComponent();
+            dgvMedicineInfo.AutoGenerateColumns = false;
             dgvMedicineInfo.CellFormatting += DgvMedicineInfo_CellFormatting;
             dgvMedicineInfo.SelectionChanged += DgvMedicineInfo_SelectionChanged;
             Load += UcDrugDictionary_Load;

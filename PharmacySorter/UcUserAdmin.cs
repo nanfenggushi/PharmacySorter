@@ -26,6 +26,7 @@ namespace PharmacySorter
         public UcUserAdmin()
         {
             InitializeComponent();
+            dgvUsers.AutoGenerateColumns = false;
             cmbRole.Items.AddRange(UserRole.All);
             dgvUsers.SelectionChanged += DgvUsers_SelectionChanged;
             Load += UcUserAdmin_Load;

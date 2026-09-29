@@ -63,6 +63,7 @@ namespace PharmacySorter
         public UcDashboard()
         {
             InitializeComponent();
+            dgvItems.AutoGenerateColumns = false;
             dgvItems.CellFormatting += DgvItems_CellFormatting;
             dgvItems.SelectionChanged += DgvItems_SelectionChanged;
             VisibleChanged += UcDashboard_VisibleChanged;

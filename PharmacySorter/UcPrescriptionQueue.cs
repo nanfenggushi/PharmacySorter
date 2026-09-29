@@ -16,6 +16,8 @@ namespace PharmacySorter
         public UcPrescriptionQueue()
         {
             InitializeComponent();
+            dgvDraft.AutoGenerateColumns = false;
+            dgvQueue.AutoGenerateColumns = false;
             ConfigureGrid(dgvDraft);
             ConfigureGrid(dgvQueue);
             Load += UcPrescriptionQueue_Load;

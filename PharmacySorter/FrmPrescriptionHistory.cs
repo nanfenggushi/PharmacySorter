@@ -19,6 +19,7 @@ namespace PharmacySorter
         public FrmPrescriptionHistory()
         {
             InitializeComponent();
+            dgvHistory.AutoGenerateColumns = false;
             dtpStart.Value = DateTime.Today.AddDays(-30);
             dtpEnd.Value = DateTime.Today;
             Load += FrmPrescriptionHistory_Load;

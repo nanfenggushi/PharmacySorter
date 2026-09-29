@@ -18,6 +18,7 @@ namespace PharmacySorter
         public UcDrugStationMapping()
         {
             InitializeComponent();
+            dgvStation.AutoGenerateColumns = false;
             Load += UcDrugStationMapping_Load;
         }
 

@@ -116,7 +116,6 @@ namespace PharmacySorter
             // 
             this.dgvHistory.AllowUserToAddRows = false;
             this.dgvHistory.AllowUserToDeleteRows = false;
-            this.dgvHistory.AutoGenerateColumns = false;
             this.dgvHistory.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvHistory.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {

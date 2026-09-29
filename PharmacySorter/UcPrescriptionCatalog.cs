@@ -18,6 +18,8 @@ namespace PharmacySorter
         public UcPrescriptionCatalog()
         {
             InitializeComponent();
+            dgvItems.AutoGenerateColumns = false;
+            dgvList.AutoGenerateColumns = false;
             ConfigureGrid(dgvItems);
             ConfigureGrid(dgvList);
             Load += UcPrescriptionCatalog_Load;
