@@ -131,15 +131,15 @@ namespace PharmacySorter
             this.btnAuditLog.Name = "btnAuditLog";
             this.btnAuditLog.Size = new System.Drawing.Size(153, 35);
             this.btnAuditLog.TabIndex = 4;
-            this.btnAuditLog.Text = "系统操作日志审计";
+            this.btnAuditLog.Text = "系统操作日志";
             this.btnAuditLog.UseVisualStyleBackColor = true;
             this.btnAuditLog.Click += new System.EventHandler(this.BtnAuditLog_Click);
             // 
             // btnPrescription
             // 
-            this.btnPrescription.Location = new System.Drawing.Point(0, 194);
+            this.btnPrescription.Location = new System.Drawing.Point(6, 193);
             this.btnPrescription.Name = "btnPrescription";
-            this.btnPrescription.Size = new System.Drawing.Size(163, 31);
+            this.btnPrescription.Size = new System.Drawing.Size(150, 31);
             this.btnPrescription.TabIndex = 3;
             this.btnPrescription.Text = "待配队列";
             this.btnPrescription.UseVisualStyleBackColor = true;
@@ -151,33 +151,33 @@ namespace PharmacySorter
             this.btnPrescriptionCatalog.Name = "btnPrescriptionCatalog";
             this.btnPrescriptionCatalog.Size = new System.Drawing.Size(153, 35);
             this.btnPrescriptionCatalog.TabIndex = 7;
-            this.btnPrescriptionCatalog.Text = "固定处方";
+            this.btnPrescriptionCatalog.Text = "处方管理";
             this.btnPrescriptionCatalog.UseVisualStyleBackColor = true;
             this.btnPrescriptionCatalog.Click += new System.EventHandler(this.BtnPrescriptionCatalog_Click);
             // 
             // btnDrugDictionary
             // 
-            this.btnDrugDictionary.Location = new System.Drawing.Point(12, 140);
+            this.btnDrugDictionary.Location = new System.Drawing.Point(20, 140);
             this.btnDrugDictionary.Name = "btnDrugDictionary";
             this.btnDrugDictionary.Size = new System.Drawing.Size(124, 31);
             this.btnDrugDictionary.TabIndex = 2;
-            this.btnDrugDictionary.Text = "药品字典管理";
+            this.btnDrugDictionary.Text = "药品管理";
             this.btnDrugDictionary.UseVisualStyleBackColor = true;
             this.btnDrugDictionary.Click += new System.EventHandler(this.BtnDrugDictionary_Click);
             // 
             // btnStationMapping
             // 
-            this.btnStationMapping.Location = new System.Drawing.Point(6, 84);
+            this.btnStationMapping.Location = new System.Drawing.Point(12, 84);
             this.btnStationMapping.Name = "btnStationMapping";
             this.btnStationMapping.Size = new System.Drawing.Size(138, 31);
             this.btnStationMapping.TabIndex = 1;
-            this.btnStationMapping.Text = "工位与药品配置";
+            this.btnStationMapping.Text = "工位指令配置";
             this.btnStationMapping.UseVisualStyleBackColor = true;
             this.btnStationMapping.Click += new System.EventHandler(this.BtnStationMapping_Click);
             // 
             // btnDashboard
             // 
-            this.btnDashboard.Location = new System.Drawing.Point(12, 32);
+            this.btnDashboard.Location = new System.Drawing.Point(20, 33);
             this.btnDashboard.Name = "btnDashboard";
             this.btnDashboard.Size = new System.Drawing.Size(124, 31);
             this.btnDashboard.TabIndex = 0;

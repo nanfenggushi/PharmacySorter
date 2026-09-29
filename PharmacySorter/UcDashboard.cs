@@ -55,12 +55,31 @@ namespace PharmacySorter
         /// </summary>
         private bool dispensing;
 
+        /// <summary>
+        /// 是否已经尝试过自动启动。只在程序启动并连上串口后启动一次。
+        /// </summary>
+        private bool autoStartAttempted;
+
         public UcDashboard()
         {
             InitializeComponent();
             dgvItems.CellFormatting += DgvItems_CellFormatting;
             dgvItems.SelectionChanged += DgvItems_SelectionChanged;
             VisibleChanged += UcDashboard_VisibleChanged;
+        }
+
+        /// <summary>
+        /// 串口连接完成后由主窗体调用。只自动启动一次连续配药。
+        /// </summary>
+        public void StartWhenConnected()
+        {
+            if (autoStartAttempted || dispensing || !arm.IsConnected)
+            {
+                return;
+            }
+
+            autoStartAttempted = true;
+            BtnStart_Click(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -551,5 +570,6 @@ namespace PharmacySorter
             }
             return Color.Gray;
         }
+
     }
 }

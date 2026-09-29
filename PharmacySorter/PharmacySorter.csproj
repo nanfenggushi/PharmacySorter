@@ -157,6 +157,7 @@
     <EmbeddedResource Include="UcUserAdmin.resx">
       <DependentUpon>UcUserAdmin.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="App.config.example" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -98,6 +98,11 @@ namespace PharmacySorter
                 // 开机先回到 G0002 待命姿态。串口未打开时 SendStandby 会失败，启动配药会被拦住。
                 arm.SendStandby();
                 ShowConnection(true, arm.PortName);
+                UcDashboard dashboard = ucDashboard as UcDashboard;
+                if (dashboard != null)
+                {
+                    dashboard.StartWhenConnected();
+                }
             }
             catch (Exception)
             {

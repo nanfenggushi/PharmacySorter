@@ -31,6 +31,10 @@ namespace PharmacySorter
             this.grpStationAction = new System.Windows.Forms.GroupBox();
             this.btnSaveStation = new System.Windows.Forms.Button();
             this.dgvStation = new System.Windows.Forms.DataGridView();
+            this.colStationName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colGrabCommand = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDropCommand = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colEstTimeMs = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.grpStationAction.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStation)).BeginInit();
             this.SuspendLayout();
@@ -60,8 +64,15 @@ namespace PharmacySorter
             // 
             this.dgvStation.AllowUserToAddRows = false;
             this.dgvStation.AllowUserToDeleteRows = false;
+            this.dgvStation.AutoGenerateColumns = false;
             this.dgvStation.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvStation.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvStation.ColumnHeadersHeight = 32;
+            this.dgvStation.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dgvStation.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colStationName,
+            this.colGrabCommand,
+            this.colDropCommand,
+            this.colEstTimeMs});
             this.dgvStation.Location = new System.Drawing.Point(47, 37);
             this.dgvStation.MultiSelect = false;
             this.dgvStation.Name = "dgvStation";
@@ -69,8 +80,33 @@ namespace PharmacySorter
             this.dgvStation.RowHeadersWidth = 51;
             this.dgvStation.RowTemplate.Height = 27;
             this.dgvStation.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvStation.Size = new System.Drawing.Size(851, 518);
+            this.dgvStation.Size = new System.Drawing.Size(851, 536);
             this.dgvStation.TabIndex = 0;
+            //
+            // colStationName
+            //
+            this.colStationName.HeaderText = "工位名称";
+            this.colStationName.MinimumWidth = 6;
+            this.colStationName.Name = "colStationName";
+            this.colStationName.ReadOnly = true;
+            //
+            // colGrabCommand
+            //
+            this.colGrabCommand.HeaderText = "抓取触发字符串";
+            this.colGrabCommand.MinimumWidth = 6;
+            this.colGrabCommand.Name = "colGrabCommand";
+            //
+            // colDropCommand
+            //
+            this.colDropCommand.HeaderText = "放置触发字符串";
+            this.colDropCommand.MinimumWidth = 6;
+            this.colDropCommand.Name = "colDropCommand";
+            //
+            // colEstTimeMs
+            //
+            this.colEstTimeMs.HeaderText = "延时设定(毫秒)";
+            this.colEstTimeMs.MinimumWidth = 6;
+            this.colEstTimeMs.Name = "colEstTimeMs";
             // 
             // UcDrugStationMapping
             // 

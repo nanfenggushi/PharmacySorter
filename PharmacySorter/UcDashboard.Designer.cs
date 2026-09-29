@@ -37,6 +37,11 @@ namespace PharmacySorter
             this.tlpBody = new System.Windows.Forms.TableLayoutPanel();
             this.pnlItems = new System.Windows.Forms.Panel();
             this.dgvItems = new System.Windows.Forms.DataGridView();
+            this.colDashDrugName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDashStation = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDashRequiredQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDashGrabCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDashStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lblItems = new System.Windows.Forms.Label();
             this.pnlArm = new System.Windows.Forms.Panel();
             this.lblArmHint = new System.Windows.Forms.Label();
@@ -46,11 +51,6 @@ namespace PharmacySorter
             this.pnlRightStation = new System.Windows.Forms.Panel();
             this.pnlSlot = new System.Windows.Forms.Panel();
             this.pnlLeftStation = new System.Windows.Forms.Panel();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlSummary.SuspendLayout();
             this.pnlBottom.SuspendLayout();
             this.tlpBody.SuspendLayout();
@@ -157,13 +157,14 @@ namespace PharmacySorter
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvItems.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvItems.ColumnHeadersHeight = 32;
+            this.dgvItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvItems.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3,
-            this.Column4,
-            this.Column5});
+            this.colDashDrugName,
+            this.colDashStation,
+            this.colDashRequiredQty,
+            this.colDashGrabCount,
+            this.colDashStatus});
             this.dgvItems.Location = new System.Drawing.Point(12, 48);
             this.dgvItems.MultiSelect = false;
             this.dgvItems.Name = "dgvItems";
@@ -174,6 +175,46 @@ namespace PharmacySorter
             this.dgvItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvItems.Size = new System.Drawing.Size(813, 405);
             this.dgvItems.TabIndex = 1;
+            // 
+            // colDashDrugName
+            // 
+            this.colDashDrugName.DataPropertyName = "DrugName";
+            this.colDashDrugName.HeaderText = "药品名称";
+            this.colDashDrugName.MinimumWidth = 6;
+            this.colDashDrugName.Name = "colDashDrugName";
+            this.colDashDrugName.ReadOnly = true;
+            // 
+            // colDashStation
+            // 
+            this.colDashStation.DataPropertyName = "StationText";
+            this.colDashStation.HeaderText = "目标工位";
+            this.colDashStation.MinimumWidth = 6;
+            this.colDashStation.Name = "colDashStation";
+            this.colDashStation.ReadOnly = true;
+            // 
+            // colDashRequiredQty
+            // 
+            this.colDashRequiredQty.DataPropertyName = "RequiredQty";
+            this.colDashRequiredQty.HeaderText = "应取数量";
+            this.colDashRequiredQty.MinimumWidth = 6;
+            this.colDashRequiredQty.Name = "colDashRequiredQty";
+            this.colDashRequiredQty.ReadOnly = true;
+            // 
+            // colDashGrabCount
+            // 
+            this.colDashGrabCount.DataPropertyName = "GrabCount";
+            this.colDashGrabCount.HeaderText = "已执行抓取次数";
+            this.colDashGrabCount.MinimumWidth = 6;
+            this.colDashGrabCount.Name = "colDashGrabCount";
+            this.colDashGrabCount.ReadOnly = true;
+            // 
+            // colDashStatus
+            // 
+            this.colDashStatus.DataPropertyName = "Status";
+            this.colDashStatus.HeaderText = "当前状态";
+            this.colDashStatus.MinimumWidth = 6;
+            this.colDashStatus.Name = "colDashStatus";
+            this.colDashStatus.ReadOnly = true;
             // 
             // lblItems
             // 
@@ -258,46 +299,6 @@ namespace PharmacySorter
             this.pnlLeftStation.Size = new System.Drawing.Size(110, 90);
             this.pnlLeftStation.TabIndex = 0;
             // 
-            // Column1
-            // 
-            this.Column1.DataPropertyName = "DrugName";
-            this.Column1.HeaderText = "药品名称";
-            this.Column1.MinimumWidth = 6;
-            this.Column1.Name = "colDashDrugName";
-            this.Column1.ReadOnly = true;
-            // 
-            // Column2
-            // 
-            this.Column2.DataPropertyName = "StationText";
-            this.Column2.HeaderText = "目标工位";
-            this.Column2.MinimumWidth = 6;
-            this.Column2.Name = "colDashStation";
-            this.Column2.ReadOnly = true;
-            // 
-            // Column3
-            // 
-            this.Column3.DataPropertyName = "RequiredQty";
-            this.Column3.HeaderText = "应取数量";
-            this.Column3.MinimumWidth = 6;
-            this.Column3.Name = "colDashRequiredQty";
-            this.Column3.ReadOnly = true;
-            // 
-            // Column4
-            // 
-            this.Column4.DataPropertyName = "GrabCount";
-            this.Column4.HeaderText = "已执行抓取次数";
-            this.Column4.MinimumWidth = 6;
-            this.Column4.Name = "colDashGrabCount";
-            this.Column4.ReadOnly = true;
-            // 
-            // Column5
-            // 
-            this.Column5.DataPropertyName = "Status";
-            this.Column5.HeaderText = "当前状态";
-            this.Column5.MinimumWidth = 6;
-            this.Column5.Name = "colDashStatus";
-            this.Column5.ReadOnly = true;
-            // 
             // UcDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -330,11 +331,6 @@ namespace PharmacySorter
         private System.Windows.Forms.DataGridView dgvItems;
         private System.Windows.Forms.Label lblItems;
         private System.Windows.Forms.Panel pnlArm;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.Label lblLeftStation;
         private System.Windows.Forms.Panel pnlRightStation;
         private System.Windows.Forms.Panel pnlSlot;
@@ -344,5 +340,10 @@ namespace PharmacySorter
         private System.Windows.Forms.Label lblArmHint;
         private System.Windows.Forms.Label lblRightStation;
         private System.Windows.Forms.Label lblSlot;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDashDrugName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDashStation;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDashRequiredQty;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDashGrabCount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDashStatus;
     }
 }
