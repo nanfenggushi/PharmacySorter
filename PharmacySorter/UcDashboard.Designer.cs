@@ -173,7 +173,7 @@ namespace PharmacySorter
             this.dgvItems.RowHeadersWidth = 51;
             this.dgvItems.RowTemplate.Height = 27;
             this.dgvItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvItems.Size = new System.Drawing.Size(813, 405);
+            this.dgvItems.Size = new System.Drawing.Size(813, 192);
             this.dgvItems.TabIndex = 1;
             // 
             // colDashDrugName
