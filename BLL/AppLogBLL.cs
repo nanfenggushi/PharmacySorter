@@ -32,19 +32,61 @@ namespace BLL
         }
 
         /// <summary>
-        /// 按界面条件查询。结束日期包含当天整天。
+        /// 每页显示的日志条数。
+        /// </summary>
+        public const int PageSize = 20;
+
+        /// <summary>
+        /// 按界面条件查询指定页。页码从 1 开始，结束日期包含当天整天。
         /// 日期或类型留空表示不按该项过滤。
         /// </summary>
+        public AppLogPage SearchPage(DateTime? startDate, DateTime? endDate, string prescriptionIdText, string logType, int pageIndex)
+        {
+            if (pageIndex < 1)
+            {
+                throw new ArgumentException("页码必须从 1 开始");
+            }
+
+            DateTime? startTime;
+            DateTime? endTime;
+            int? prescriptionId;
+            string normalizedType;
+            PrepareSearch(startDate, endDate, prescriptionIdText, logType, out startTime, out endTime, out prescriptionId, out normalizedType);
+            return dal.SearchPage(startTime, endTime, prescriptionId, normalizedType, pageIndex, PageSize);
+        }
+
+        /// <summary>
+        /// 按界面条件查询全部结果，供导出使用。结束日期包含当天整天。
+        /// </summary>
         public List<AppLog> Search(DateTime? startDate, DateTime? endDate, string prescriptionIdText, string logType)
+        {
+            DateTime? startTime;
+            DateTime? endTime;
+            int? prescriptionId;
+            string normalizedType;
+            PrepareSearch(startDate, endDate, prescriptionIdText, logType, out startTime, out endTime, out prescriptionId, out normalizedType);
+            return dal.Search(startTime, endTime, prescriptionId, normalizedType);
+        }
+
+        private static void PrepareSearch(
+            DateTime? startDate,
+            DateTime? endDate,
+            string prescriptionIdText,
+            string logType,
+            out DateTime? startTime,
+            out DateTime? endTime,
+            out int? prescriptionId,
+            out string normalizedType)
         {
             if (startDate.HasValue && endDate.HasValue && startDate.Value.Date > endDate.Value.Date)
             {
                 throw new ArgumentException("开始时间不能晚于结束时间");
             }
 
-            DateTime? startTime = startDate.HasValue ? startDate.Value.Date : (DateTime?)null;
-            DateTime? endTime = endDate.HasValue ? endDate.Value.Date.AddDays(1) : (DateTime?)null;
-            return dal.Search(startTime, endTime, ParsePrescriptionId(prescriptionIdText), NormalizeType(logType));
+            startTime = startDate.HasValue ? startDate.Value.Date : (DateTime?)null;
+            endTime = endDate.HasValue ? endDate.Value.Date.AddDays(1) : (DateTime?)null;
+            prescriptionId = ParsePrescriptionId(prescriptionIdText);
+            normalizedType = NormalizeType(logType);
         }
 
         /// <summary>

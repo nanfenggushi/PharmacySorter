@@ -40,11 +40,18 @@ namespace PharmacySorter
             this.lblStart = new System.Windows.Forms.Label();
             this.dtpStart = new System.Windows.Forms.DateTimePicker();
             this.dgvLog = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colLogTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colPrescriptionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colLogType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pnlPage = new System.Windows.Forms.Panel();
+            this.btnFirst = new System.Windows.Forms.Button();
+            this.btnPrevious = new System.Windows.Forms.Button();
+            this.lblPage = new System.Windows.Forms.Label();
+            this.btnNext = new System.Windows.Forms.Button();
+            this.btnLast = new System.Windows.Forms.Button();
             this.pnlFilter.SuspendLayout();
+            this.pnlPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).BeginInit();
             this.SuspendLayout();
             // 
@@ -161,10 +168,10 @@ namespace PharmacySorter
             this.dgvLog.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvLog.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvLog.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3,
-            this.Column4});
+            this.colLogTime,
+            this.colPrescriptionId,
+            this.colLogType,
+            this.colContent});
             this.dgvLog.Location = new System.Drawing.Point(27, 101);
             this.dgvLog.MultiSelect = false;
             this.dgvLog.Name = "dgvLog";
@@ -173,51 +180,115 @@ namespace PharmacySorter
             this.dgvLog.RowHeadersWidth = 51;
             this.dgvLog.RowTemplate.Height = 27;
             this.dgvLog.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvLog.Size = new System.Drawing.Size(1140, 574);
+            this.dgvLog.Size = new System.Drawing.Size(1140, 517);
             this.dgvLog.TabIndex = 1;
             // 
-            // Column1
+            // pnlPage
             // 
-            this.Column1.DataPropertyName = "LogTimeText";
-            this.Column1.HeaderText = "时间";
-            this.Column1.MinimumWidth = 6;
-            this.Column1.Name = "colLogTime";
-            this.Column1.ReadOnly = true;
+            this.pnlPage.Controls.Add(this.btnFirst);
+            this.pnlPage.Controls.Add(this.btnPrevious);
+            this.pnlPage.Controls.Add(this.lblPage);
+            this.pnlPage.Controls.Add(this.btnNext);
+            this.pnlPage.Controls.Add(this.btnLast);
+            this.pnlPage.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlPage.Location = new System.Drawing.Point(0, 692);
+            this.pnlPage.Name = "pnlPage";
+            this.pnlPage.Size = new System.Drawing.Size(1192, 50);
+            this.pnlPage.TabIndex = 2;
             // 
-            // Column2
+            // btnFirst
             // 
-            this.Column2.DataPropertyName = "PrescriptionText";
-            this.Column2.HeaderText = "任务编号";
-            this.Column2.MinimumWidth = 6;
-            this.Column2.Name = "colPrescriptionId";
-            this.Column2.ReadOnly = true;
+            this.btnFirst.Location = new System.Drawing.Point(330, 8);
+            this.btnFirst.Name = "btnFirst";
+            this.btnFirst.Size = new System.Drawing.Size(75, 32);
+            this.btnFirst.TabIndex = 0;
+            this.btnFirst.Text = "首页";
+            this.btnFirst.UseVisualStyleBackColor = true;
+            this.btnFirst.Click += new System.EventHandler(this.BtnFirst_Click);
             // 
-            // Column3
+            // btnPrevious
             // 
-            this.Column3.DataPropertyName = "LogType";
-            this.Column3.HeaderText = "日志类型";
-            this.Column3.MinimumWidth = 6;
-            this.Column3.Name = "colLogType";
-            this.Column3.ReadOnly = true;
+            this.btnPrevious.Location = new System.Drawing.Point(420, 8);
+            this.btnPrevious.Name = "btnPrevious";
+            this.btnPrevious.Size = new System.Drawing.Size(75, 32);
+            this.btnPrevious.TabIndex = 1;
+            this.btnPrevious.Text = "上一页";
+            this.btnPrevious.UseVisualStyleBackColor = true;
+            this.btnPrevious.Click += new System.EventHandler(this.BtnPrevious_Click);
             // 
-            // Column4
+            // lblPage
             // 
-            this.Column4.DataPropertyName = "Content";
-            this.Column4.HeaderText = "详细内容";
-            this.Column4.MinimumWidth = 6;
-            this.Column4.Name = "colContent";
-            this.Column4.ReadOnly = true;
+            this.lblPage.Location = new System.Drawing.Point(510, 14);
+            this.lblPage.Name = "lblPage";
+            this.lblPage.Size = new System.Drawing.Size(170, 23);
+            this.lblPage.TabIndex = 2;
+            this.lblPage.Text = "第 1/1 页，共 0 条";
+            this.lblPage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnNext
+            // 
+            this.btnNext.Location = new System.Drawing.Point(695, 8);
+            this.btnNext.Name = "btnNext";
+            this.btnNext.Size = new System.Drawing.Size(75, 32);
+            this.btnNext.TabIndex = 3;
+            this.btnNext.Text = "下一页";
+            this.btnNext.UseVisualStyleBackColor = true;
+            this.btnNext.Click += new System.EventHandler(this.BtnNext_Click);
+            // 
+            // btnLast
+            // 
+            this.btnLast.Location = new System.Drawing.Point(785, 8);
+            this.btnLast.Name = "btnLast";
+            this.btnLast.Size = new System.Drawing.Size(75, 32);
+            this.btnLast.TabIndex = 4;
+            this.btnLast.Text = "末页";
+            this.btnLast.UseVisualStyleBackColor = true;
+            this.btnLast.Click += new System.EventHandler(this.BtnLast_Click);
+            // 
+            // colLogTime
+            // 
+            this.colLogTime.DataPropertyName = "LogTimeText";
+            this.colLogTime.HeaderText = "时间";
+            this.colLogTime.MinimumWidth = 6;
+            this.colLogTime.Name = "colLogTime";
+            this.colLogTime.ReadOnly = true;
+            // 
+            // colPrescriptionId
+            // 
+            this.colPrescriptionId.DataPropertyName = "PrescriptionText";
+            this.colPrescriptionId.HeaderText = "任务编号";
+            this.colPrescriptionId.MinimumWidth = 6;
+            this.colPrescriptionId.Name = "colPrescriptionId";
+            this.colPrescriptionId.ReadOnly = true;
+            // 
+            // colLogType
+            // 
+            this.colLogType.DataPropertyName = "LogType";
+            this.colLogType.HeaderText = "日志类型";
+            this.colLogType.MinimumWidth = 6;
+            this.colLogType.Name = "colLogType";
+            this.colLogType.ReadOnly = true;
+            // 
+            // colContent
+            // 
+            this.colContent.DataPropertyName = "Content";
+            this.colContent.HeaderText = "详细内容";
+            this.colContent.MinimumWidth = 6;
+            this.colContent.Name = "colContent";
+            this.colContent.ReadOnly = true;
             // 
             // UcSystemAuditLog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.dgvLog);
+            this.Controls.Add(this.pnlPage);
             this.Controls.Add(this.pnlFilter);
             this.Name = "UcSystemAuditLog";
             this.Size = new System.Drawing.Size(1192, 742);
             this.pnlFilter.ResumeLayout(false);
             this.pnlFilter.PerformLayout();
+            this.pnlPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).EndInit();
             this.ResumeLayout(false);
 
@@ -241,5 +312,15 @@ namespace PharmacySorter
         private System.Windows.Forms.Button btnExport;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.ComboBox cmbLogType;
+        private System.Windows.Forms.Panel pnlPage;
+        private System.Windows.Forms.Button btnFirst;
+        private System.Windows.Forms.Button btnPrevious;
+        private System.Windows.Forms.Label lblPage;
+        private System.Windows.Forms.Button btnNext;
+        private System.Windows.Forms.Button btnLast;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colLogTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colPrescriptionId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colLogType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colContent;
     }
 }

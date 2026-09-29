@@ -46,6 +46,7 @@
     <Compile Include="Drug.cs" />
     <Compile Include="Station.cs" />
     <Compile Include="AppLog.cs" />
+    <Compile Include="AppLogPage.cs" />
     <Compile Include="Prescription.cs" />
     <Compile Include="PrescriptionItem.cs" />
     <Compile Include="DispenseOrder.cs" />
