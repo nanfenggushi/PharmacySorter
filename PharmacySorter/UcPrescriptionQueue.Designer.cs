@@ -123,6 +123,7 @@ namespace PharmacySorter
             // 
             this.dgvDraft.AllowUserToAddRows = false;
             this.dgvDraft.AllowUserToDeleteRows = false;
+            this.dgvDraft.AutoGenerateColumns = false;
             this.dgvDraft.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvDraft.ColumnHeadersHeight = 32;
             this.dgvDraft.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
@@ -278,6 +279,7 @@ namespace PharmacySorter
             // 
             this.dgvQueue.AllowUserToAddRows = false;
             this.dgvQueue.AllowUserToDeleteRows = false;
+            this.dgvQueue.AutoGenerateColumns = false;
             this.dgvQueue.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvQueue.ColumnHeadersHeight = 32;
             this.dgvQueue.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
@@ -328,6 +330,7 @@ namespace PharmacySorter
             // colQueueCreateTime
             // 
             this.colQueueCreateTime.DataPropertyName = "ItemCount";
+            this.colQueueCreateTime.FillWeight = 100F;
             this.colQueueCreateTime.HeaderText = "药品种类数";
             this.colQueueCreateTime.MinimumWidth = 80;
             this.colQueueCreateTime.Name = "colQueueCreateTime";

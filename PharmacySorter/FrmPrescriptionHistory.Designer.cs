@@ -116,6 +116,7 @@ namespace PharmacySorter
             // 
             this.dgvHistory.AllowUserToAddRows = false;
             this.dgvHistory.AllowUserToDeleteRows = false;
+            this.dgvHistory.AutoGenerateColumns = false;
             this.dgvHistory.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvHistory.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -210,11 +211,6 @@ namespace PharmacySorter
         private System.Windows.Forms.Button btnRequeue;
         private System.Windows.Forms.Label lblCount;
         private System.Windows.Forms.DataGridView dgvHistory;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn colHistoryId;
         private System.Windows.Forms.DataGridViewTextBoxColumn colHistoryPatientNo;
         private System.Windows.Forms.DataGridViewTextBoxColumn colHistoryItemCount;
