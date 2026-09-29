@@ -107,7 +107,7 @@ namespace PharmacySorter
             // btnEmergencyStop
             // 
             this.btnEmergencyStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnEmergencyStop.Location = new System.Drawing.Point(12, 650);
+            this.btnEmergencyStop.Location = new System.Drawing.Point(20, 646);
             this.btnEmergencyStop.Name = "btnEmergencyStop";
             this.btnEmergencyStop.Size = new System.Drawing.Size(124, 50);
             this.btnEmergencyStop.TabIndex = 5;
@@ -117,9 +117,9 @@ namespace PharmacySorter
             // 
             // btnUserAdmin
             // 
-            this.btnUserAdmin.Location = new System.Drawing.Point(5, 358);
+            this.btnUserAdmin.Location = new System.Drawing.Point(20, 356);
             this.btnUserAdmin.Name = "btnUserAdmin";
-            this.btnUserAdmin.Size = new System.Drawing.Size(153, 35);
+            this.btnUserAdmin.Size = new System.Drawing.Size(124, 32);
             this.btnUserAdmin.TabIndex = 6;
             this.btnUserAdmin.Text = "账号管理";
             this.btnUserAdmin.UseVisualStyleBackColor = true;
@@ -127,9 +127,9 @@ namespace PharmacySorter
             // 
             // btnAuditLog
             // 
-            this.btnAuditLog.Location = new System.Drawing.Point(5, 304);
+            this.btnAuditLog.Location = new System.Drawing.Point(20, 304);
             this.btnAuditLog.Name = "btnAuditLog";
-            this.btnAuditLog.Size = new System.Drawing.Size(153, 35);
+            this.btnAuditLog.Size = new System.Drawing.Size(124, 32);
             this.btnAuditLog.TabIndex = 4;
             this.btnAuditLog.Text = "操作日志";
             this.btnAuditLog.UseVisualStyleBackColor = true;
@@ -137,9 +137,9 @@ namespace PharmacySorter
             // 
             // btnPrescription
             // 
-            this.btnPrescription.Location = new System.Drawing.Point(8, 84);
+            this.btnPrescription.Location = new System.Drawing.Point(20, 87);
             this.btnPrescription.Name = "btnPrescription";
-            this.btnPrescription.Size = new System.Drawing.Size(150, 31);
+            this.btnPrescription.Size = new System.Drawing.Size(124, 31);
             this.btnPrescription.TabIndex = 3;
             this.btnPrescription.Text = "待配任务";
             this.btnPrescription.UseVisualStyleBackColor = true;
@@ -147,9 +147,9 @@ namespace PharmacySorter
             // 
             // btnPrescriptionCatalog
             // 
-            this.btnPrescriptionCatalog.Location = new System.Drawing.Point(7, 141);
+            this.btnPrescriptionCatalog.Location = new System.Drawing.Point(20, 142);
             this.btnPrescriptionCatalog.Name = "btnPrescriptionCatalog";
-            this.btnPrescriptionCatalog.Size = new System.Drawing.Size(153, 35);
+            this.btnPrescriptionCatalog.Size = new System.Drawing.Size(124, 32);
             this.btnPrescriptionCatalog.TabIndex = 7;
             this.btnPrescriptionCatalog.Text = "处方模板";
             this.btnPrescriptionCatalog.UseVisualStyleBackColor = true;
@@ -157,7 +157,7 @@ namespace PharmacySorter
             // 
             // btnDrugDictionary
             // 
-            this.btnDrugDictionary.Location = new System.Drawing.Point(20, 199);
+            this.btnDrugDictionary.Location = new System.Drawing.Point(20, 197);
             this.btnDrugDictionary.Name = "btnDrugDictionary";
             this.btnDrugDictionary.Size = new System.Drawing.Size(124, 31);
             this.btnDrugDictionary.TabIndex = 2;
@@ -167,9 +167,9 @@ namespace PharmacySorter
             // 
             // btnStationMapping
             // 
-            this.btnStationMapping.Location = new System.Drawing.Point(12, 252);
+            this.btnStationMapping.Location = new System.Drawing.Point(20, 249);
             this.btnStationMapping.Name = "btnStationMapping";
-            this.btnStationMapping.Size = new System.Drawing.Size(138, 31);
+            this.btnStationMapping.Size = new System.Drawing.Size(124, 31);
             this.btnStationMapping.TabIndex = 1;
             this.btnStationMapping.Text = "工位指令";
             this.btnStationMapping.UseVisualStyleBackColor = true;
@@ -179,7 +179,7 @@ namespace PharmacySorter
             // 
             this.btnDashboard.Location = new System.Drawing.Point(20, 33);
             this.btnDashboard.Name = "btnDashboard";
-            this.btnDashboard.Size = new System.Drawing.Size(124, 31);
+            this.btnDashboard.Size = new System.Drawing.Size(124, 32);
             this.btnDashboard.TabIndex = 0;
             this.btnDashboard.Text = "配药看板";
             this.btnDashboard.UseVisualStyleBackColor = true;
