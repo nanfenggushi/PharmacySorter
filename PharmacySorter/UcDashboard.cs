@@ -21,6 +21,11 @@ namespace PharmacySorter
         private readonly DispenseBLL dispenseBll = new DispenseBLL();
 
         /// <summary>
+        /// 待配任务队列。看板只展示，不在这里加入或撤销任务。
+        /// </summary>
+        private readonly DispenseOrderBLL orderBll = new DispenseOrderBLL();
+
+        /// <summary>
         /// 机械臂指令发送。由主窗体传入，急停和抓取使用同一条串口。
         /// </summary>
         private ArmCommandService arm = new ArmCommandService();
@@ -64,6 +69,7 @@ namespace PharmacySorter
         {
             InitializeComponent();
             dgvItems.AutoGenerateColumns = false;
+            dgvQueue.AutoGenerateColumns = false;
             dgvItems.CellFormatting += DgvItems_CellFormatting;
             dgvItems.SelectionChanged += DgvItems_SelectionChanged;
             VisibleChanged += UcDashboard_VisibleChanged;
@@ -408,6 +414,7 @@ namespace PharmacySorter
 
             BindSummary();
             BindItems();
+            BindQueue();
             ShowActiveStation(null);
         }
 
@@ -468,9 +475,25 @@ namespace PharmacySorter
         private void BindItems()
         {
             int passed = dispenseBll.CountPassed(currentItems);
-            lblItems.Text = "任务明细 " + passed + "/" + currentItems.Count;
+            lblItems.Text = "当前任务明细 " + passed + "/" + currentItems.Count;
             dgvItems.DataSource = null;
             dgvItems.DataSource = currentItems;
+        }
+
+        /// <summary>
+        /// 刷新下方待配任务队列。正在配药的任务已经离开待配状态，所以不会出现在这里。
+        /// </summary>
+        private void BindQueue()
+        {
+            try
+            {
+                dgvQueue.DataSource = null;
+                dgvQueue.DataSource = orderBll.GetWaitingQueue();
+            }
+            catch (Exception ex)
+            {
+                AppendLog("读取待配任务队列失败：" + ex.Message);
+            }
         }
 
         /// <summary>

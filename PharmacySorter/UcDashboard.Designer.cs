@@ -51,12 +51,20 @@ namespace PharmacySorter
             this.pnlRightStation = new System.Windows.Forms.Panel();
             this.pnlSlot = new System.Windows.Forms.Panel();
             this.pnlLeftStation = new System.Windows.Forms.Panel();
+            this.dgvQueue = new System.Windows.Forms.DataGridView();
+            this.colQueueId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colQueuePatientNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colQueueItemCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colQueueCreateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colQueueStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label1 = new System.Windows.Forms.Label();
             this.pnlSummary.SuspendLayout();
             this.pnlBottom.SuspendLayout();
             this.tlpBody.SuspendLayout();
             this.pnlItems.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
             this.pnlArm.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvQueue)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlSummary
@@ -140,6 +148,8 @@ namespace PharmacySorter
             // 
             // pnlItems
             // 
+            this.pnlItems.Controls.Add(this.label1);
+            this.pnlItems.Controls.Add(this.dgvQueue);
             this.pnlItems.Controls.Add(this.dgvItems);
             this.pnlItems.Controls.Add(this.lblItems);
             this.pnlItems.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -220,9 +230,9 @@ namespace PharmacySorter
             this.lblItems.AutoSize = true;
             this.lblItems.Location = new System.Drawing.Point(17, 28);
             this.lblItems.Name = "lblItems";
-            this.lblItems.Size = new System.Drawing.Size(99, 15);
+            this.lblItems.Size = new System.Drawing.Size(129, 15);
             this.lblItems.TabIndex = 0;
-            this.lblItems.Text = "任务明细 0/0";
+            this.lblItems.Text = "当前任务明细 0/0";
             // 
             // pnlArm
             // 
@@ -241,7 +251,7 @@ namespace PharmacySorter
             // 
             // lblArmHint
             // 
-            this.lblArmHint.Location = new System.Drawing.Point(24, 270);
+            this.lblArmHint.Location = new System.Drawing.Point(24, 335);
             this.lblArmHint.Name = "lblArmHint";
             this.lblArmHint.Size = new System.Drawing.Size(370, 40);
             this.lblArmHint.TabIndex = 6;
@@ -249,7 +259,7 @@ namespace PharmacySorter
             // 
             // lblRightStation
             // 
-            this.lblRightStation.Location = new System.Drawing.Point(302, 118);
+            this.lblRightStation.Location = new System.Drawing.Point(302, 183);
             this.lblRightStation.Name = "lblRightStation";
             this.lblRightStation.Size = new System.Drawing.Size(74, 15);
             this.lblRightStation.TabIndex = 5;
@@ -257,7 +267,7 @@ namespace PharmacySorter
             // 
             // lblSlot
             // 
-            this.lblSlot.Location = new System.Drawing.Point(164, 118);
+            this.lblSlot.Location = new System.Drawing.Point(164, 183);
             this.lblSlot.Name = "lblSlot";
             this.lblSlot.Size = new System.Drawing.Size(90, 15);
             this.lblSlot.TabIndex = 4;
@@ -265,7 +275,7 @@ namespace PharmacySorter
             // 
             // lblLeftStation
             // 
-            this.lblLeftStation.Location = new System.Drawing.Point(42, 118);
+            this.lblLeftStation.Location = new System.Drawing.Point(42, 183);
             this.lblLeftStation.Name = "lblLeftStation";
             this.lblLeftStation.Size = new System.Drawing.Size(74, 15);
             this.lblLeftStation.TabIndex = 3;
@@ -275,7 +285,7 @@ namespace PharmacySorter
             // 
             this.pnlRightStation.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pnlRightStation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlRightStation.Location = new System.Drawing.Point(284, 150);
+            this.pnlRightStation.Location = new System.Drawing.Point(284, 215);
             this.pnlRightStation.Name = "pnlRightStation";
             this.pnlRightStation.Size = new System.Drawing.Size(110, 90);
             this.pnlRightStation.TabIndex = 2;
@@ -284,7 +294,7 @@ namespace PharmacySorter
             // 
             this.pnlSlot.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pnlSlot.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlSlot.Location = new System.Drawing.Point(154, 150);
+            this.pnlSlot.Location = new System.Drawing.Point(154, 215);
             this.pnlSlot.Name = "pnlSlot";
             this.pnlSlot.Size = new System.Drawing.Size(110, 90);
             this.pnlSlot.TabIndex = 1;
@@ -293,10 +303,91 @@ namespace PharmacySorter
             // 
             this.pnlLeftStation.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pnlLeftStation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlLeftStation.Location = new System.Drawing.Point(24, 150);
+            this.pnlLeftStation.Location = new System.Drawing.Point(24, 215);
             this.pnlLeftStation.Name = "pnlLeftStation";
             this.pnlLeftStation.Size = new System.Drawing.Size(110, 90);
             this.pnlLeftStation.TabIndex = 0;
+            // 
+            // dgvQueue
+            // 
+            this.dgvQueue.AllowUserToAddRows = false;
+            this.dgvQueue.AllowUserToDeleteRows = false;
+            this.dgvQueue.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvQueue.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvQueue.ColumnHeadersHeight = 32;
+            this.dgvQueue.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dgvQueue.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colQueueId,
+            this.colQueuePatientNo,
+            this.colQueueItemCount,
+            this.colQueueCreateTime,
+            this.colQueueStatus});
+            this.dgvQueue.Location = new System.Drawing.Point(12, 293);
+            this.dgvQueue.MultiSelect = false;
+            this.dgvQueue.Name = "dgvQueue";
+            this.dgvQueue.ReadOnly = true;
+            this.dgvQueue.RowHeadersVisible = false;
+            this.dgvQueue.RowHeadersWidth = 51;
+            this.dgvQueue.RowTemplate.Height = 27;
+            this.dgvQueue.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvQueue.Size = new System.Drawing.Size(813, 248);
+            this.dgvQueue.TabIndex = 2;
+            // 
+            // colQueueId
+            // 
+            this.colQueueId.DataPropertyName = "OrderId";
+            this.colQueueId.FillWeight = 70F;
+            this.colQueueId.HeaderText = "任务号";
+            this.colQueueId.MinimumWidth = 56;
+            this.colQueueId.Name = "colQueueId";
+            this.colQueueId.ReadOnly = true;
+            // 
+            // colQueuePatientNo
+            // 
+            this.colQueuePatientNo.DataPropertyName = "PatientNo";
+            this.colQueuePatientNo.FillWeight = 90F;
+            this.colQueuePatientNo.HeaderText = "患者编号";
+            this.colQueuePatientNo.MinimumWidth = 72;
+            this.colQueuePatientNo.Name = "colQueuePatientNo";
+            this.colQueuePatientNo.ReadOnly = true;
+            // 
+            // colQueueItemCount
+            // 
+            this.colQueueItemCount.DataPropertyName = "PrescriptionName";
+            this.colQueueItemCount.FillWeight = 120F;
+            this.colQueueItemCount.HeaderText = "处方名称";
+            this.colQueueItemCount.MinimumWidth = 72;
+            this.colQueueItemCount.Name = "colQueueItemCount";
+            this.colQueueItemCount.ReadOnly = true;
+            // 
+            // colQueueCreateTime
+            // 
+            this.colQueueCreateTime.DataPropertyName = "ItemCount";
+            this.colQueueCreateTime.FillWeight = 100F;
+            this.colQueueCreateTime.HeaderText = "药品种类数";
+            this.colQueueCreateTime.MinimumWidth = 80;
+            this.colQueueCreateTime.Name = "colQueueCreateTime";
+            this.colQueueCreateTime.ReadOnly = true;
+            // 
+            // colQueueStatus
+            // 
+            this.colQueueStatus.DataPropertyName = "CreateTimeText";
+            this.colQueueStatus.FillWeight = 150F;
+            this.colQueueStatus.HeaderText = "接收时间";
+            this.colQueueStatus.MinimumWidth = 120;
+            this.colQueueStatus.Name = "colQueueStatus";
+            this.colQueueStatus.ReadOnly = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(10, 275);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(97, 15);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "待配任务队列";
             // 
             // UcDashboard
             // 
@@ -315,6 +406,7 @@ namespace PharmacySorter
             this.pnlItems.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).EndInit();
             this.pnlArm.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvQueue)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -344,5 +436,12 @@ namespace PharmacySorter
         private System.Windows.Forms.DataGridViewTextBoxColumn colDashRequiredQty;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDashGrabCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDashStatus;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridView dgvQueue;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colQueueId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colQueuePatientNo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colQueueItemCount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colQueueCreateTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colQueueStatus;
     }
 }
