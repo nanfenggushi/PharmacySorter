@@ -32,6 +32,31 @@ namespace PharmacySorter
         private readonly Timer clockTimer = new Timer();
 
         /// <summary>
+        /// 当前选中的导航按钮。
+        /// </summary>
+        private Button selectedNavButton;
+
+        /// <summary>
+        /// 导航按钮未选中时的背景色。
+        /// </summary>
+        private readonly Color navNormalColor = SystemColors.Control;
+
+        /// <summary>
+        /// 导航按钮未选中时的文字颜色。
+        /// </summary>
+        private readonly Color navNormalTextColor = SystemColors.ControlText;
+
+        /// <summary>
+        /// 当前页面导航按钮的背景色。
+        /// </summary>
+        private readonly Color navSelectedColor = Color.FromArgb(0, 120, 215);
+
+        /// <summary>
+        /// 当前页面导航按钮的文字颜色。
+        /// </summary>
+        private readonly Color navSelectedTextColor = Color.White;
+
+        /// <summary>
         /// 全局机械臂连接。急停和看板抓取共用这一条串口。
         /// </summary>
         private readonly ArmCommandService arm = new ArmCommandService();
@@ -142,6 +167,49 @@ namespace PharmacySorter
             btnUserAdmin.Visible = isAdmin;
             btnDashboard.Visible = true;
             btnEmergencyStop.Visible = true;
+            PrepareNavButtons();
+        }
+
+        /// <summary>
+        /// 关闭导航按钮的系统绘制，否则自定义背景色不会显示。
+        /// </summary>
+        private void PrepareNavButtons()
+        {
+            Button[] buttons = new Button[]
+            {
+                btnDashboard,
+                btnStationMapping,
+                btnDrugDictionary,
+                btnPrescriptionCatalog,
+                btnPrescription,
+                btnAuditLog,
+                btnUserAdmin
+            };
+
+            foreach (Button button in buttons)
+            {
+                button.UseVisualStyleBackColor = false;
+                button.FlatStyle = FlatStyle.Flat;
+                button.FlatAppearance.BorderSize = 0;
+                button.BackColor = navNormalColor;
+                button.ForeColor = navNormalTextColor;
+            }
+        }
+
+        /// <summary>
+        /// 高亮当前页面按钮，并把上一个选中按钮恢复成普通颜色。
+        /// </summary>
+        private void SelectNav(Button button)
+        {
+            if (selectedNavButton != null && selectedNavButton != button)
+            {
+                selectedNavButton.BackColor = navNormalColor;
+                selectedNavButton.ForeColor = navNormalTextColor;
+            }
+
+            selectedNavButton = button;
+            button.BackColor = navSelectedColor;
+            button.ForeColor = navSelectedTextColor;
         }
 
         // 跳转到账号与权限管理
@@ -153,12 +221,14 @@ namespace PharmacySorter
             }
 
             PageHelper.SwitchPage<UcUserAdmin>(pnlPageContainer, ref ucUserAdmin);
+            SelectNav(btnUserAdmin);
         }
 
         // 跳转到配药监控看板
         private void BtnDashboard_Click(object sender, EventArgs e)
         {
             PageHelper.SwitchPage<UcDashboard>(pnlPageContainer, ref ucDashboard);
+            SelectNav(btnDashboard);
             UcDashboard dashboard = ucDashboard as UcDashboard;
             if (dashboard != null)
             {
@@ -170,30 +240,35 @@ namespace PharmacySorter
         private void BtnStationMapping_Click(object sender, EventArgs e)
         {
             PageHelper.SwitchPage<UcDrugStationMapping>(pnlPageContainer, ref ucDrugStationMapping);
+            SelectNav(btnStationMapping);
         }
 
         // 跳转到药品字典管理
         private void BtnDrugDictionary_Click(object sender, EventArgs e)
         {
             PageHelper.SwitchPage<UcDrugDictionary>(pnlPageContainer, ref ucDrugDictionary);
+            SelectNav(btnDrugDictionary);
         }
 
         // 跳转到待配队列
         private void BtnPrescription_Click(object sender, EventArgs e)
         {
             PageHelper.SwitchPage<UcPrescriptionQueue>(pnlPageContainer, ref ucPrescriptionQueue);
+            SelectNav(btnPrescription);
         }
 
         // 跳转到固定处方维护
         private void BtnPrescriptionCatalog_Click(object sender, EventArgs e)
         {
             PageHelper.SwitchPage<UcPrescriptionCatalog>(pnlPageContainer, ref ucPrescriptionCatalog);
+            SelectNav(btnPrescriptionCatalog);
         }
 
         // 跳转到系统操作日志审计
         private void BtnAuditLog_Click(object sender, EventArgs e)
         {
             PageHelper.SwitchPage<UcSystemAuditLog>(pnlPageContainer, ref ucSystemAuditLog);
+            SelectNav(btnAuditLog);
         }
 
         /// <summary>
