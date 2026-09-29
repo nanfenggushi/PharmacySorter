@@ -117,7 +117,7 @@ namespace PharmacySorter
             // 
             // btnUserAdmin
             // 
-            this.btnUserAdmin.Location = new System.Drawing.Point(3, 352);
+            this.btnUserAdmin.Location = new System.Drawing.Point(5, 358);
             this.btnUserAdmin.Name = "btnUserAdmin";
             this.btnUserAdmin.Size = new System.Drawing.Size(153, 35);
             this.btnUserAdmin.TabIndex = 6;
@@ -127,7 +127,7 @@ namespace PharmacySorter
             // 
             // btnAuditLog
             // 
-            this.btnAuditLog.Location = new System.Drawing.Point(3, 300);
+            this.btnAuditLog.Location = new System.Drawing.Point(5, 304);
             this.btnAuditLog.Name = "btnAuditLog";
             this.btnAuditLog.Size = new System.Drawing.Size(153, 35);
             this.btnAuditLog.TabIndex = 4;
@@ -137,17 +137,17 @@ namespace PharmacySorter
             // 
             // btnPrescription
             // 
-            this.btnPrescription.Location = new System.Drawing.Point(6, 193);
+            this.btnPrescription.Location = new System.Drawing.Point(8, 84);
             this.btnPrescription.Name = "btnPrescription";
             this.btnPrescription.Size = new System.Drawing.Size(150, 31);
             this.btnPrescription.TabIndex = 3;
-            this.btnPrescription.Text = "待配队列";
+            this.btnPrescription.Text = "配药任务管理";
             this.btnPrescription.UseVisualStyleBackColor = true;
             this.btnPrescription.Click += new System.EventHandler(this.BtnPrescription_Click);
             // 
             // btnPrescriptionCatalog
             // 
-            this.btnPrescriptionCatalog.Location = new System.Drawing.Point(3, 248);
+            this.btnPrescriptionCatalog.Location = new System.Drawing.Point(7, 141);
             this.btnPrescriptionCatalog.Name = "btnPrescriptionCatalog";
             this.btnPrescriptionCatalog.Size = new System.Drawing.Size(153, 35);
             this.btnPrescriptionCatalog.TabIndex = 7;
@@ -157,7 +157,7 @@ namespace PharmacySorter
             // 
             // btnDrugDictionary
             // 
-            this.btnDrugDictionary.Location = new System.Drawing.Point(20, 140);
+            this.btnDrugDictionary.Location = new System.Drawing.Point(20, 199);
             this.btnDrugDictionary.Name = "btnDrugDictionary";
             this.btnDrugDictionary.Size = new System.Drawing.Size(124, 31);
             this.btnDrugDictionary.TabIndex = 2;
@@ -167,7 +167,7 @@ namespace PharmacySorter
             // 
             // btnStationMapping
             // 
-            this.btnStationMapping.Location = new System.Drawing.Point(12, 84);
+            this.btnStationMapping.Location = new System.Drawing.Point(12, 252);
             this.btnStationMapping.Name = "btnStationMapping";
             this.btnStationMapping.Size = new System.Drawing.Size(138, 31);
             this.btnStationMapping.TabIndex = 1;

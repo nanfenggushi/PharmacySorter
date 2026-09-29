@@ -25,11 +25,11 @@ namespace PharmacySorter
             this.btnRequeue = new System.Windows.Forms.Button();
             this.lblCount = new System.Windows.Forms.Label();
             this.dgvHistory = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colHistoryId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colHistoryPatientNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colHistoryItemCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colHistoryCreateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colHistoryStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHistory)).BeginInit();
             this.SuspendLayout();
             // 
@@ -116,15 +116,14 @@ namespace PharmacySorter
             // 
             this.dgvHistory.AllowUserToAddRows = false;
             this.dgvHistory.AllowUserToDeleteRows = false;
-            this.dgvHistory.AutoGenerateColumns = false;
             this.dgvHistory.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvHistory.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3,
-            this.Column4,
-            this.Column5});
+            this.colHistoryId,
+            this.colHistoryPatientNo,
+            this.colHistoryItemCount,
+            this.colHistoryCreateTime,
+            this.colHistoryStatus});
             this.dgvHistory.Location = new System.Drawing.Point(18, 62);
             this.dgvHistory.Name = "dgvHistory";
             this.dgvHistory.ReadOnly = true;
@@ -134,45 +133,45 @@ namespace PharmacySorter
             this.dgvHistory.Size = new System.Drawing.Size(860, 360);
             this.dgvHistory.TabIndex = 0;
             // 
-            // Column1
+            // colHistoryId
             // 
-            this.Column1.DataPropertyName = "OrderId";
-            this.Column1.HeaderText = "任务号";
-            this.Column1.MinimumWidth = 6;
-            this.Column1.Name = "colHistoryId";
-            this.Column1.ReadOnly = true;
+            this.colHistoryId.DataPropertyName = "OrderId";
+            this.colHistoryId.HeaderText = "任务号";
+            this.colHistoryId.MinimumWidth = 6;
+            this.colHistoryId.Name = "colHistoryId";
+            this.colHistoryId.ReadOnly = true;
             // 
-            // Column2
+            // colHistoryPatientNo
             // 
-            this.Column2.DataPropertyName = "PatientNo";
-            this.Column2.HeaderText = "患者编号";
-            this.Column2.MinimumWidth = 6;
-            this.Column2.Name = "colHistoryPatientNo";
-            this.Column2.ReadOnly = true;
+            this.colHistoryPatientNo.DataPropertyName = "PatientNo";
+            this.colHistoryPatientNo.HeaderText = "患者编号";
+            this.colHistoryPatientNo.MinimumWidth = 6;
+            this.colHistoryPatientNo.Name = "colHistoryPatientNo";
+            this.colHistoryPatientNo.ReadOnly = true;
             // 
-            // Column3
+            // colHistoryItemCount
             // 
-            this.Column3.DataPropertyName = "PrescriptionName";
-            this.Column3.HeaderText = "处方名称";
-            this.Column3.MinimumWidth = 6;
-            this.Column3.Name = "colHistoryItemCount";
-            this.Column3.ReadOnly = true;
+            this.colHistoryItemCount.DataPropertyName = "PrescriptionName";
+            this.colHistoryItemCount.HeaderText = "处方名称";
+            this.colHistoryItemCount.MinimumWidth = 6;
+            this.colHistoryItemCount.Name = "colHistoryItemCount";
+            this.colHistoryItemCount.ReadOnly = true;
             // 
-            // Column4
+            // colHistoryCreateTime
             // 
-            this.Column4.DataPropertyName = "CreateTimeText";
-            this.Column4.HeaderText = "接收时间";
-            this.Column4.MinimumWidth = 6;
-            this.Column4.Name = "colHistoryCreateTime";
-            this.Column4.ReadOnly = true;
+            this.colHistoryCreateTime.DataPropertyName = "CreateTimeText";
+            this.colHistoryCreateTime.HeaderText = "接收时间";
+            this.colHistoryCreateTime.MinimumWidth = 6;
+            this.colHistoryCreateTime.Name = "colHistoryCreateTime";
+            this.colHistoryCreateTime.ReadOnly = true;
             // 
-            // Column5
+            // colHistoryStatus
             // 
-            this.Column5.DataPropertyName = "Status";
-            this.Column5.HeaderText = "状态";
-            this.Column5.MinimumWidth = 6;
-            this.Column5.Name = "colHistoryStatus";
-            this.Column5.ReadOnly = true;
+            this.colHistoryStatus.DataPropertyName = "Status";
+            this.colHistoryStatus.HeaderText = "状态";
+            this.colHistoryStatus.MinimumWidth = 6;
+            this.colHistoryStatus.Name = "colHistoryStatus";
+            this.colHistoryStatus.ReadOnly = true;
             // 
             // FrmPrescriptionHistory
             // 
@@ -194,7 +193,7 @@ namespace PharmacySorter
             this.MinimizeBox = false;
             this.Name = "FrmPrescriptionHistory";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "历史处方查询";
+            this.Text = "历史任务查询";
             ((System.ComponentModel.ISupportInitialize)(this.dgvHistory)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -216,5 +215,10 @@ namespace PharmacySorter
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colHistoryId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colHistoryPatientNo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colHistoryItemCount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colHistoryCreateTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colHistoryStatus;
     }
 }

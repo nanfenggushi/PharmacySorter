@@ -123,7 +123,6 @@ namespace PharmacySorter
             // 
             this.dgvDraft.AllowUserToAddRows = false;
             this.dgvDraft.AllowUserToDeleteRows = false;
-            this.dgvDraft.AutoGenerateColumns = false;
             this.dgvDraft.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvDraft.ColumnHeadersHeight = 32;
             this.dgvDraft.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
@@ -251,7 +250,7 @@ namespace PharmacySorter
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(140, 35);
             this.btnCancel.TabIndex = 2;
-            this.btnCancel.Text = "撤销处方";
+            this.btnCancel.Text = "撤销任务";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
@@ -271,7 +270,7 @@ namespace PharmacySorter
             this.btnHistory.Name = "btnHistory";
             this.btnHistory.Size = new System.Drawing.Size(140, 35);
             this.btnHistory.TabIndex = 3;
-            this.btnHistory.Text = "历史处方";
+            this.btnHistory.Text = "历史任务";
             this.btnHistory.UseVisualStyleBackColor = true;
             this.btnHistory.Click += new System.EventHandler(this.BtnHistory_Click);
             // 
@@ -279,7 +278,6 @@ namespace PharmacySorter
             // 
             this.dgvQueue.AllowUserToAddRows = false;
             this.dgvQueue.AllowUserToDeleteRows = false;
-            this.dgvQueue.AutoGenerateColumns = false;
             this.dgvQueue.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvQueue.ColumnHeadersHeight = 32;
             this.dgvQueue.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
@@ -330,7 +328,6 @@ namespace PharmacySorter
             // colQueueCreateTime
             // 
             this.colQueueCreateTime.DataPropertyName = "ItemCount";
-            this.colQueueCreateTime.FillWeight = 100F;
             this.colQueueCreateTime.HeaderText = "药品种类数";
             this.colQueueCreateTime.MinimumWidth = 80;
             this.colQueueCreateTime.Name = "colQueueCreateTime";
