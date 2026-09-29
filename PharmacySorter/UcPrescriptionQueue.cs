@@ -26,8 +26,7 @@ namespace PharmacySorter
             grid.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
             grid.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             grid.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            grid.EnableHeadersVisualStyles = false;
-            grid.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.SystemColors.Control;
+            grid.EnableHeadersVisualStyles = true;
         }
 
         private void UcPrescriptionQueue_Load(object sender, EventArgs e)

@@ -138,6 +138,7 @@ namespace PharmacySorter
                 await Task.Run(new Action(arm.SendStandby));
                 while (!stopRequested)
                 {
+                    // 判断当前是否有任务可以进行
                     if (!BeginCurrentOrder())
                     {
                         lblStatus.Text = "等待新任务";
@@ -185,12 +186,15 @@ namespace PharmacySorter
                     return false;
                 }
 
+                // 当前任务状态是这两种的话说明需要恢复
                 bool resume = currentOrder.Status == "配药中" || currentOrder.Status == "部分异常";
+                // 当前任务状态"配药中"、"部分异常"、"待配药"这三种都不是说明不能继续任务
                 if (!resume && currentOrder.Status != "待配药")
                 {
                     return false;
                 }
 
+                // 检查任务是否可以进行
                 string reason = dispenseBll.GetStartBlockReason(currentOrder, currentItems);
                 if (!string.IsNullOrEmpty(reason))
                 {
@@ -199,6 +203,7 @@ namespace PharmacySorter
                     continue;
                 }
 
+                // 将当前任务设置为"配药中"
                 dispenseBll.Start(currentOrder);
                 BindSummary();
                 AppendLog((resume ? "继续任务 " : "开始任务 ") + currentOrder.OrderId);
@@ -215,12 +220,15 @@ namespace PharmacySorter
         {
             while (!stopRequested)
             {
+                // 获取下一条还没有核对通过的明细
                 DispenseOrderItem item = dispenseBll.FindNextItem(currentItems);
                 if (item == null)
                 {
+                    // 所有明细都通过，将当前任务状态改成已完成
                     if (dispenseBll.TryComplete(currentOrder))
                     {
                         AppendLog("任务 " + currentOrder.OrderId + " 已完成");
+                        // 将药品取走后机械臂才可以继续
                         if (!ConfirmSlotCleared(currentOrder))
                         {
                             stopRequested = true;
@@ -230,9 +238,11 @@ namespace PharmacySorter
                     return;
                 }
 
+                // 获取当前明细需要抓取的次数
                 int count = item.Status == "待核对" ? 0 : Math.Max(item.RequiredQty - item.GrabCount, 0);
                 if (count > 0)
                 {
+                    //完成当前明细的抓取与放置
                     await GrabTimesAsync(item, count);
                 }
 
@@ -241,6 +251,7 @@ namespace PharmacySorter
                     return;
                 }
 
+                // 当前明细抓取完成后状态变成"待核对"，并且数据更新进数据库
                 dispenseBll.MarkWaitingCheck(item);
                 BindItems();
                 int nextCount = VerifyItem(item);
@@ -310,6 +321,7 @@ namespace PharmacySorter
                 ShowActiveStation(dropStation.StationId);
                 AppendLog("【" + item.DrugName + "】第 " + grabNo + " 次投递 " + dropStation.DropCommand);
                 await SendArmAsync(dropStation.DropCommand, dropStation.EstTimeMs);
+                // 记录一次抓取和一次投递，抓取次数加1，写入数据库
                 dispenseBll.RecordGrab(item, grabStation.GrabCommand, dropStation.DropCommand);
                 BindItems();
             }
@@ -376,7 +388,7 @@ namespace PharmacySorter
         /// <summary>
         /// 读取当前任务和明细，并刷新摘要、进度和工位指示。
         /// </summary>
-        /// <param name="skipOrderId">跳过不能配药的任务，避免反复选中同一条。</param>
+        /// <param name="skipOrderId">跳过不能配药的任务，传入0表示正常的加载队首任务，传入正常任务号表示跳过这个任务</param>
         private void LoadCurrent(int skipOrderId)
         {
             try

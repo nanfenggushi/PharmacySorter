@@ -1,3 +1,4 @@
+using Common;
 using DAL;
 using Model;
 using System;
@@ -113,6 +114,7 @@ namespace BLL
             }
 
             bool resume = order.Status == "配药中" || order.Status == "部分异常";
+            // 修改任务状态
             if (orderDal.MarkDispensing(order.OrderId) == 0)
             {
                 throw new ArgumentException("任务状态已变化，不能启动");
@@ -121,7 +123,7 @@ namespace BLL
             order.Status = "配药中";
             logBll.Add(null, AppLogType.Command, resume
                 ? "待配任务 " + order.OrderId + " 从中断处继续配药"
-                : "待配任务 " + order.OrderId + " 开始配药，下发" + Common.ArmCommandService.StandbyActionName + "待命指令");
+                : "待配任务 " + order.OrderId + " 开始配药，下发" + ArmCommandService.StandbyActionName + "待命指令");
         }
 
         /// <summary>

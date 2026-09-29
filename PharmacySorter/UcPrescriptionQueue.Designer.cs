@@ -125,8 +125,8 @@ namespace PharmacySorter
             this.dgvDraft.AllowUserToDeleteRows = false;
             this.dgvDraft.AutoGenerateColumns = false;
             this.dgvDraft.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvDraft.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvDraft.ColumnHeadersHeight = 32;
+            this.dgvDraft.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvDraft.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colDraftDrugName,
             this.colDraftSpec,
@@ -281,8 +281,8 @@ namespace PharmacySorter
             this.dgvQueue.AllowUserToDeleteRows = false;
             this.dgvQueue.AutoGenerateColumns = false;
             this.dgvQueue.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvQueue.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvQueue.ColumnHeadersHeight = 32;
+            this.dgvQueue.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvQueue.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colQueueId,
             this.colQueuePatientNo,
