@@ -63,7 +63,7 @@ namespace PharmacySorter
             this.lblRequiredQty.Name = "lblRequiredQty";
             this.lblRequiredQty.Size = new System.Drawing.Size(360, 28);
             this.lblRequiredQty.TabIndex = 1;
-            this.lblRequiredQty.Text = "处方应发数量：[ 0 ] 盒";
+            this.lblRequiredQty.Text = "应发数量：[ 0 ] 盒";
             // 
             // lblActualQty
             // 
@@ -148,7 +148,7 @@ namespace PharmacySorter
             this.btnRefill.Name = "btnRefill";
             this.btnRefill.Size = new System.Drawing.Size(390, 42);
             this.btnRefill.TabIndex = 9;
-            this.btnRefill.Text = "让机械臂自动补抓";
+            this.btnRefill.Text = "自动补抓";
             this.btnRefill.UseVisualStyleBackColor = false;
             this.btnRefill.Click += new System.EventHandler(this.BtnRefill_Click);
             // 
@@ -160,7 +160,7 @@ namespace PharmacySorter
             this.lblExcess.Name = "lblExcess";
             this.lblExcess.Size = new System.Drawing.Size(560, 28);
             this.lblExcess.TabIndex = 10;
-            this.lblExcess.Text = "超量抓取！请物理剔除";
+            this.lblExcess.Text = "数量超出，请取走多余药品";
             // 
             // btnCommitQty
             // 
@@ -178,7 +178,7 @@ namespace PharmacySorter
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(210, 42);
             this.btnReset.TabIndex = 11;
-            this.btnReset.Text = "该明细作废，重新抓取";
+            this.btnReset.Text = "本条作废，重新抓取";
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.BtnReset_Click);
             // 
@@ -224,7 +224,7 @@ namespace PharmacySorter
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "FrmQuantityVerify";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "人工数量复核";
+            this.Text = "数量核对";
             ((System.ComponentModel.ISupportInitialize)(this.nudActualQty)).EndInit();
             this.pnlAlert.ResumeLayout(false);
             this.ResumeLayout(false);

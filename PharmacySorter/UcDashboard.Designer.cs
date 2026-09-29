@@ -86,7 +86,7 @@ namespace PharmacySorter
             this.lblSummary.Name = "lblSummary";
             this.lblSummary.Size = new System.Drawing.Size(760, 36);
             this.lblSummary.TabIndex = 0;
-            this.lblSummary.Text = "当前没有待配处方";
+            this.lblSummary.Text = "当前没有待配任务";
             // 
             // pnlBottom
             // 
@@ -119,7 +119,7 @@ namespace PharmacySorter
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(150, 42);
             this.btnStart.TabIndex = 0;
-            this.btnStart.Text = "启动连续配药";
+            this.btnStart.Text = "开始配药";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.BtnStart_Click);
             // 
@@ -187,7 +187,7 @@ namespace PharmacySorter
             // colDashStation
             // 
             this.colDashStation.DataPropertyName = "StationText";
-            this.colDashStation.HeaderText = "目标工位";
+            this.colDashStation.HeaderText = "取药工位";
             this.colDashStation.MinimumWidth = 6;
             this.colDashStation.Name = "colDashStation";
             this.colDashStation.ReadOnly = true;
@@ -203,7 +203,7 @@ namespace PharmacySorter
             // colDashGrabCount
             // 
             this.colDashGrabCount.DataPropertyName = "GrabCount";
-            this.colDashGrabCount.HeaderText = "已执行抓取次数";
+            this.colDashGrabCount.HeaderText = "已抓取次数";
             this.colDashGrabCount.MinimumWidth = 6;
             this.colDashGrabCount.Name = "colDashGrabCount";
             this.colDashGrabCount.ReadOnly = true;
@@ -223,7 +223,7 @@ namespace PharmacySorter
             this.lblItems.Name = "lblItems";
             this.lblItems.Size = new System.Drawing.Size(99, 15);
             this.lblItems.TabIndex = 0;
-            this.lblItems.Text = "处方明细 0/0";
+            this.lblItems.Text = "任务明细 0/0";
             // 
             // pnlArm
             // 

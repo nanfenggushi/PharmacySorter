@@ -112,7 +112,7 @@ namespace PharmacySorter
             this.btnAddItem.Name = "btnAddItem";
             this.btnAddItem.Size = new System.Drawing.Size(90, 31);
             this.btnAddItem.TabIndex = 6;
-            this.btnAddItem.Text = "加入药品";
+            this.btnAddItem.Text = "添加药品";
             this.btnAddItem.UseVisualStyleBackColor = true;
             this.btnAddItem.Click += new System.EventHandler(this.BtnAddItem_Click);
             // 
@@ -122,7 +122,7 @@ namespace PharmacySorter
             this.btnRemoveItem.Name = "btnRemoveItem";
             this.btnRemoveItem.Size = new System.Drawing.Size(90, 31);
             this.btnRemoveItem.TabIndex = 7;
-            this.btnRemoveItem.Text = "移除药品";
+            this.btnRemoveItem.Text = "移除选中";
             this.btnRemoveItem.UseVisualStyleBackColor = true;
             this.btnRemoveItem.Click += new System.EventHandler(this.BtnRemoveItem_Click);
             // 
@@ -186,7 +186,7 @@ namespace PharmacySorter
             this.lblList.Name = "lblList";
             this.lblList.Size = new System.Drawing.Size(82, 15);
             this.lblList.TabIndex = 12;
-            this.lblList.Text = "已保存处方";
+            this.lblList.Text = "已保存的处方模板";
             // 
             // dgvList
             // 

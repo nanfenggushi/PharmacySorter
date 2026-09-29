@@ -195,7 +195,7 @@ namespace PharmacySorter
             this.lblDrugName.Name = "lblDrugName";
             this.lblDrugName.Size = new System.Drawing.Size(67, 15);
             this.lblDrugName.TabIndex = 0;
-            this.lblDrugName.Text = "固定处方";
+            this.lblDrugName.Text = "处方模板";
             // 
             // txtPatientNo
             // 
@@ -261,7 +261,7 @@ namespace PharmacySorter
             this.btnMoveTop.Name = "btnMoveTop";
             this.btnMoveTop.Size = new System.Drawing.Size(140, 35);
             this.btnMoveTop.TabIndex = 1;
-            this.btnMoveTop.Text = "优先处理(置顶)";
+            this.btnMoveTop.Text = "置顶";
             this.btnMoveTop.UseVisualStyleBackColor = true;
             this.btnMoveTop.Click += new System.EventHandler(this.BtnMoveTop_Click);
             // 

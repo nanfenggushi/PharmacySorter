@@ -111,7 +111,7 @@ namespace PharmacySorter
             this.btnEmergencyStop.Name = "btnEmergencyStop";
             this.btnEmergencyStop.Size = new System.Drawing.Size(124, 50);
             this.btnEmergencyStop.TabIndex = 5;
-            this.btnEmergencyStop.Text = "急停 / 软件复位 (G0002)";
+            this.btnEmergencyStop.Text = "急停复位";
             this.btnEmergencyStop.UseVisualStyleBackColor = true;
             this.btnEmergencyStop.Click += new System.EventHandler(this.BtnEmergencyStop_Click);
             // 
@@ -121,7 +121,7 @@ namespace PharmacySorter
             this.btnUserAdmin.Name = "btnUserAdmin";
             this.btnUserAdmin.Size = new System.Drawing.Size(153, 35);
             this.btnUserAdmin.TabIndex = 6;
-            this.btnUserAdmin.Text = "账号与权限管理";
+            this.btnUserAdmin.Text = "账号管理";
             this.btnUserAdmin.UseVisualStyleBackColor = true;
             this.btnUserAdmin.Click += new System.EventHandler(this.BtnUserAdmin_Click);
             // 
@@ -131,7 +131,7 @@ namespace PharmacySorter
             this.btnAuditLog.Name = "btnAuditLog";
             this.btnAuditLog.Size = new System.Drawing.Size(153, 35);
             this.btnAuditLog.TabIndex = 4;
-            this.btnAuditLog.Text = "系统操作日志";
+            this.btnAuditLog.Text = "操作日志";
             this.btnAuditLog.UseVisualStyleBackColor = true;
             this.btnAuditLog.Click += new System.EventHandler(this.BtnAuditLog_Click);
             // 
@@ -141,7 +141,7 @@ namespace PharmacySorter
             this.btnPrescription.Name = "btnPrescription";
             this.btnPrescription.Size = new System.Drawing.Size(150, 31);
             this.btnPrescription.TabIndex = 3;
-            this.btnPrescription.Text = "配药任务管理";
+            this.btnPrescription.Text = "待配任务";
             this.btnPrescription.UseVisualStyleBackColor = true;
             this.btnPrescription.Click += new System.EventHandler(this.BtnPrescription_Click);
             // 
@@ -151,7 +151,7 @@ namespace PharmacySorter
             this.btnPrescriptionCatalog.Name = "btnPrescriptionCatalog";
             this.btnPrescriptionCatalog.Size = new System.Drawing.Size(153, 35);
             this.btnPrescriptionCatalog.TabIndex = 7;
-            this.btnPrescriptionCatalog.Text = "处方管理";
+            this.btnPrescriptionCatalog.Text = "处方模板";
             this.btnPrescriptionCatalog.UseVisualStyleBackColor = true;
             this.btnPrescriptionCatalog.Click += new System.EventHandler(this.BtnPrescriptionCatalog_Click);
             // 
@@ -161,7 +161,7 @@ namespace PharmacySorter
             this.btnDrugDictionary.Name = "btnDrugDictionary";
             this.btnDrugDictionary.Size = new System.Drawing.Size(124, 31);
             this.btnDrugDictionary.TabIndex = 2;
-            this.btnDrugDictionary.Text = "药品管理";
+            this.btnDrugDictionary.Text = "药品字典";
             this.btnDrugDictionary.UseVisualStyleBackColor = true;
             this.btnDrugDictionary.Click += new System.EventHandler(this.BtnDrugDictionary_Click);
             // 
@@ -171,7 +171,7 @@ namespace PharmacySorter
             this.btnStationMapping.Name = "btnStationMapping";
             this.btnStationMapping.Size = new System.Drawing.Size(138, 31);
             this.btnStationMapping.TabIndex = 1;
-            this.btnStationMapping.Text = "工位指令配置";
+            this.btnStationMapping.Text = "工位指令";
             this.btnStationMapping.UseVisualStyleBackColor = true;
             this.btnStationMapping.Click += new System.EventHandler(this.BtnStationMapping_Click);
             // 
@@ -181,7 +181,7 @@ namespace PharmacySorter
             this.btnDashboard.Name = "btnDashboard";
             this.btnDashboard.Size = new System.Drawing.Size(124, 31);
             this.btnDashboard.TabIndex = 0;
-            this.btnDashboard.Text = "配药监控看板";
+            this.btnDashboard.Text = "配药看板";
             this.btnDashboard.UseVisualStyleBackColor = true;
             this.btnDashboard.Click += new System.EventHandler(this.BtnDashboard_Click);
             // 

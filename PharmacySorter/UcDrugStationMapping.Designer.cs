@@ -48,7 +48,7 @@ namespace PharmacySorter
             this.grpStationAction.Size = new System.Drawing.Size(951, 674);
             this.grpStationAction.TabIndex = 0;
             this.grpStationAction.TabStop = false;
-            this.grpStationAction.Text = "工位指令配置表";
+            this.grpStationAction.Text = "工位指令";
             // 
             // btnSaveStation
             // 
@@ -56,7 +56,7 @@ namespace PharmacySorter
             this.btnSaveStation.Name = "btnSaveStation";
             this.btnSaveStation.Size = new System.Drawing.Size(82, 31);
             this.btnSaveStation.TabIndex = 1;
-            this.btnSaveStation.Text = "保存工位";
+            this.btnSaveStation.Text = "保存指令";
             this.btnSaveStation.UseVisualStyleBackColor = true;
             this.btnSaveStation.Click += new System.EventHandler(this.BtnSaveStation_Click);
             // 
@@ -92,19 +92,19 @@ namespace PharmacySorter
             //
             // colGrabCommand
             //
-            this.colGrabCommand.HeaderText = "抓取触发字符串";
+            this.colGrabCommand.HeaderText = "抓取指令";
             this.colGrabCommand.MinimumWidth = 6;
             this.colGrabCommand.Name = "colGrabCommand";
             //
             // colDropCommand
             //
-            this.colDropCommand.HeaderText = "放置触发字符串";
+            this.colDropCommand.HeaderText = "放置指令";
             this.colDropCommand.MinimumWidth = 6;
             this.colDropCommand.Name = "colDropCommand";
             //
             // colEstTimeMs
             //
-            this.colEstTimeMs.HeaderText = "延时设定(毫秒)";
+            this.colEstTimeMs.HeaderText = "动作等待(毫秒)";
             this.colEstTimeMs.MinimumWidth = 6;
             this.colEstTimeMs.Name = "colEstTimeMs";
             // 

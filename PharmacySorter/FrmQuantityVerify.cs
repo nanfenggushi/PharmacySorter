@@ -38,7 +38,7 @@ namespace PharmacySorter
             InitializeComponent();
             item = currentItem;
             lblDrug.Text = "请清点分拣槽内的 【" + item.DrugName + "】";
-            lblRequiredQty.Text = "处方应发数量：[ " + item.RequiredQty + " ] 盒";
+            lblRequiredQty.Text = "应发数量：[ " + item.RequiredQty + " ] 盒";
             nudActualQty.Value = 0;
             RefreshHint();
         }
@@ -142,8 +142,8 @@ namespace PharmacySorter
             else if (shorted)
             {
                 pnlAlert.BackColor = Color.PapayaWhip;
-                lblShortage.Text = "数量短缺！系统计算还差 " + diff + " 盒";
-                btnRefill.Text = "让机械臂自动补抓 " + diff + " 盒";
+                lblShortage.Text = "数量不足，还差 " + diff + " 盒";
+                btnRefill.Text = "自动补抓 " + diff + " 盒";
                 btnConfirm.Visible = false;
                 btnRefill.Visible = true;
                 btnRefill.Enabled = true;
@@ -152,8 +152,8 @@ namespace PharmacySorter
             {
                 pnlAlert.BackColor = Color.MistyRose;
                 int extra = actual - item.RequiredQty;
-                lblExcess.Text = "超量抓取！请物理剔除多余的 " + extra + " 盒";
-                chkExcessCleared.Text = "我已手动从分拣槽拿走多余的 " + extra + " 盒药品并放回原处";
+                lblExcess.Text = "数量超出 " + extra + " 盒，请取走多余药品";
+                chkExcessCleared.Text = "我已从分拣槽取走多余的 " + extra + " 盒并放回原处";
                 btnRefill.Visible = false;
                 btnConfirm.Visible = true;
                 btnConfirm.Enabled = chkExcessCleared.Checked;

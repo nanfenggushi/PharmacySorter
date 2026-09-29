@@ -188,7 +188,7 @@ namespace PharmacySorter
             // Column2
             // 
             this.Column2.DataPropertyName = "PrescriptionText";
-            this.Column2.HeaderText = "处方号";
+            this.Column2.HeaderText = "任务编号";
             this.Column2.MinimumWidth = 6;
             this.Column2.Name = "colPrescriptionId";
             this.Column2.ReadOnly = true;
@@ -196,7 +196,7 @@ namespace PharmacySorter
             // Column3
             // 
             this.Column3.DataPropertyName = "LogType";
-            this.Column3.HeaderText = "事件类型";
+            this.Column3.HeaderText = "日志类型";
             this.Column3.MinimumWidth = 6;
             this.Column3.Name = "colLogType";
             this.Column3.ReadOnly = true;

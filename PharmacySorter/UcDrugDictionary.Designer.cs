@@ -119,7 +119,7 @@ namespace PharmacySorter
             this.lblDrugList.Name = "lblDrugList";
             this.lblDrugList.Size = new System.Drawing.Size(97, 15);
             this.lblDrugList.TabIndex = 4;
-            this.lblDrugList.Text = "所有药品信息";
+            this.lblDrugList.Text = "药品列表";
             // 
             // lblDrugId
             // 
@@ -205,7 +205,7 @@ namespace PharmacySorter
             this.lblStation.Name = "lblStation";
             this.lblStation.Size = new System.Drawing.Size(97, 15);
             this.lblStation.TabIndex = 15;
-            this.lblStation.Text = "当前绑定工位";
+            this.lblStation.Text = "绑定工位";
             // 
             // cmbCurrentWorkstation
             // 
@@ -243,7 +243,7 @@ namespace PharmacySorter
             // Column4
             // 
             this.Column4.DataPropertyName = "StationText";
-            this.Column4.HeaderText = "当前绑定工位";
+            this.Column4.HeaderText = "绑定工位";
             this.Column4.MinimumWidth = 6;
             this.Column4.Name = "colStationText";
             this.Column4.ReadOnly = true;
@@ -251,7 +251,7 @@ namespace PharmacySorter
             // Column5
             // 
             this.Column5.DataPropertyName = "StatusText";
-            this.Column5.HeaderText = "是否启用";
+            this.Column5.HeaderText = "状态";
             this.Column5.MinimumWidth = 6;
             this.Column5.Name = "colIsActive";
             this.Column5.ReadOnly = true;
