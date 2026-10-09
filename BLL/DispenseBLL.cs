@@ -147,14 +147,19 @@ namespace BLL
         }
 
         /// <summary>
-        /// 记录一次抓取和一次投递，并把抓取次数加一。
+        /// 记录一次抓取和一次投递。只有传感器确认落药时，实收数量才加一。
         /// </summary>
-        public void RecordGrab(DispenseOrderItem item, string grabCommand, string dropCommand)
+        public void RecordGrab(DispenseOrderItem item, string grabCommand, string dropCommand, bool dropped)
         {
             EnsureItem(item);
             item.GrabCount++;
-            item.Status = "取药中";
-            if (orderDal.UpdateItemProgress(item.ItemId, item.GrabCount, item.Status) == 0)
+            if (dropped)
+            {
+                item.ActualQty++;
+            }
+
+            item.Status = item.ActualQty >= item.RequiredQty ? "核对通过" : "取药中";
+            if (orderDal.UpdateItemProgress(item.ItemId, item.GrabCount, item.ActualQty, item.Status) == 0)
             {
                 throw new ArgumentException("更新抓取进度失败");
             }
@@ -163,16 +168,23 @@ namespace BLL
                 "【" + item.DrugName + "】第 " + item.GrabCount + " 次抓取 " + grabCommand);
             logBll.Add(item.ItemId, AppLogType.Command,
                 "【" + item.DrugName + "】第 " + item.GrabCount + " 次投递 " + dropCommand);
+            logBll.Add(item.ItemId, dropped ? AppLogType.QuantityCheck : AppLogType.ExceptionFix,
+                dropped
+                    ? "【" + item.DrugName + "】第 " + item.GrabCount + " 次落药确认，实收 " + item.ActualQty
+                    : "【" + item.DrugName + "】第 " + item.GrabCount + " 次未检测到落药，准备补抓");
         }
 
         /// <summary>
-        /// 抓取次数达到应发数量后，明细进入待核对。
+        /// 连续没有检测到落药时，停止这条明细并保留已完成的数量。
         /// </summary>
-        public void MarkWaitingCheck(DispenseOrderItem item)
+        public void MarkSensorFault(DispenseOrderItem item, int consecutiveMisses)
         {
             EnsureItem(item);
-            item.Status = "待核对";
-            orderDal.UpdateItemProgress(item.ItemId, item.GrabCount, item.Status);
+            item.Status = "异常";
+            orderDal.UpdateItemProgress(item.ItemId, item.GrabCount, item.ActualQty, item.Status);
+            orderDal.MarkPartialException(item.OrderId);
+            logBll.Add(item.ItemId, AppLogType.ExceptionFix,
+                "【" + item.DrugName + "】连续 " + consecutiveMisses + " 次未检测到落药，配药已停止");
         }
 
         /// <summary>
@@ -206,7 +218,7 @@ namespace BLL
 
                 item.ActualQty = actualQty;
                 item.Status = "取药中";
-                orderDal.UpdateItemProgress(item.ItemId, item.GrabCount, item.Status);
+                orderDal.UpdateItemProgress(item.ItemId, item.GrabCount, item.ActualQty, item.Status);
                 logBll.Add(item.ItemId, AppLogType.QuantityCheck,
                     "【" + item.DrugName + "】实收 " + actualQty + "，应发 " + item.RequiredQty + "，补抓 " + shortage);
                 return shortage;

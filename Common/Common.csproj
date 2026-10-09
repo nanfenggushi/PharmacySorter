@@ -48,6 +48,10 @@
     <Compile Include="PasswordHasher.cs" />
     <Compile Include="PageHelper.cs" />
     <Compile Include="ArmCommandService.cs" />
+    <Compile Include="IDropDetector.cs" />
+    <Compile Include="SimulatedDropDetector.cs" />
+    <Compile Include="SerialDropDetector.cs" />
+    <Compile Include="DropDetectorFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

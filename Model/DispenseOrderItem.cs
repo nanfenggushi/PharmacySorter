@@ -21,7 +21,7 @@ namespace Model
         public int RequiredQty { get; set; }
 
         /// <summary>
-        /// 人工核对后的实收数量。新建明细默认为 0。
+        /// 传感器确认落进分拣槽的数量。新建明细默认为 0。
         /// </summary>
         public int ActualQty { get; set; }
 

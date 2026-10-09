@@ -195,4 +195,5 @@ namespace PharmacySorter
             dgvList.CurrentCell = null;
         }
     }
-}
+}
+

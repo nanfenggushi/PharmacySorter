@@ -3,6 +3,7 @@ using Common;
 using Model;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -29,6 +30,21 @@ namespace PharmacySorter
         /// 机械臂指令发送。由主窗体传入，急停和抓取使用同一条串口。
         /// </summary>
         private ArmCommandService arm = new ArmCommandService();
+
+        /// <summary>
+        /// 落药检测。配置决定使用真实传感器还是固定模拟结果。
+        /// </summary>
+        private readonly IDropDetector dropDetector = DropDetectorFactory.Create();
+
+        /// <summary>
+        /// 投放结束后等待落药信号的时间。
+        /// </summary>
+        private readonly int dropTimeoutMilliseconds = ReadPositiveSetting("DropTimeoutMs", 1500);
+
+        /// <summary>
+        /// 同一种药连续漏抓的上限。达到后停止，避免传感器故障时机械臂一直抓。
+        /// </summary>
+        private readonly int maxConsecutiveMisses = ReadPositiveSetting("DropMaxConsecutiveMisses", 3);
 
         /// <summary>
         /// 急停后置为 true，当前抓取循环会在下一次动作前停下来。
@@ -221,7 +237,7 @@ namespace PharmacySorter
         }
 
         /// <summary>
-        /// 逐条处理未完成的明细。每条抓满后必须人工核对。
+        /// 逐条处理未完成的明细。每次投放后由落药检测确认，不再人工核对。
         /// </summary>
         private async Task RunOrderAsync()
         {
@@ -246,31 +262,15 @@ namespace PharmacySorter
                 }
 
                 // 获取当前明细需要抓取的次数
-                int count = item.Status == "待核对" ? 0 : Math.Max(item.RequiredQty - item.GrabCount, 0);
+                int count = Math.Max(item.RequiredQty - item.ActualQty, 0);
                 if (count > 0)
                 {
-                    //完成当前明细的抓取与放置
                     await GrabTimesAsync(item, count);
                 }
 
-                if (stopRequested)
+                if (stopRequested || item.Status == "异常")
                 {
                     return;
-                }
-
-                // 当前明细抓取完成后状态变成"待核对"，并且数据更新进数据库
-                dispenseBll.MarkWaitingCheck(item);
-                BindItems();
-                int nextCount = VerifyItem(item);
-                while (nextCount > 0 && !stopRequested)
-                {
-                    await GrabTimesAsync(item, nextCount);
-                    if (stopRequested)
-                    {
-                        return;
-                    }
-
-                    nextCount = VerifyItem(item);
                 }
             }
         }
@@ -301,13 +301,15 @@ namespace PharmacySorter
         }
 
         /// <summary>
-        /// 对一条明细连续抓取指定次数。每次都是先抓药位，再投到分拣槽。
+        /// 对一条明细连续抓取，直到实收数量达到应发数量。每次投放后立刻检测落药。
         /// </summary>
         private async Task GrabTimesAsync(DispenseOrderItem item, int count)
         {
             Station grabStation = dispenseBll.GetGrabStation(item);
             Station dropStation = dispenseBll.GetDropStation();
-            for (int i = 0; i < count; i++)
+            int consecutiveMisses = 0;
+            int remaining = count;
+            while (remaining > 0)
             {
                 if (stopRequested)
                 {
@@ -327,13 +329,78 @@ namespace PharmacySorter
 
                 ShowActiveStation(dropStation.StationId);
                 AppendLog("【" + item.DrugName + "】第 " + grabNo + " 次投递 " + dropStation.DropCommand);
-                await SendArmAsync(dropStation.DropCommand, dropStation.EstTimeMs);
-                // 记录一次抓取和一次投递，抓取次数加1，写入数据库
-                dispenseBll.RecordGrab(item, grabStation.GrabCommand, dropStation.DropCommand);
+                await SendDropAndDetectAsync(dropStation.DropCommand, dropStation.EstTimeMs);
+                if (stopRequested)
+                {
+                    return;
+                }
+
+                bool dropped = await WaitDropAsync();
+                dispenseBll.RecordGrab(item, grabStation.GrabCommand, dropStation.DropCommand, dropped);
                 BindItems();
+                if (dropped)
+                {
+                    consecutiveMisses = 0;
+                    remaining--;
+                    AppendLog("【" + item.DrugName + "】" + dropDetector.SourceName + "确认落药，实收 " + item.ActualQty);
+                }
+                else
+                {
+                    consecutiveMisses++;
+                    AppendLog("【" + item.DrugName + "】未检测到落药，连续漏抓 " + consecutiveMisses + " 次");
+                    if (consecutiveMisses >= maxConsecutiveMisses)
+                    {
+                        dispenseBll.MarkSensorFault(item, consecutiveMisses);
+                        BindItems();
+                        throw new InvalidOperationException("【" + item.DrugName + "】连续 " + consecutiveMisses + " 次未检测到落药，已停止配药");
+                    }
+                }
             }
 
             ShowActiveStation(null);
+        }
+
+        /// <summary>
+        /// 投放前清空旧信号，投放动作结束后再开始计时。
+        /// </summary>
+        private Task SendDropAndDetectAsync(string command, int waitMilliseconds)
+        {
+            string currentCommand = command;
+            int currentWait = waitMilliseconds;
+            IDropDetector detector = dropDetector;
+            return Task.Run(delegate
+            {
+                detector.Open();
+                detector.Arm();
+                arm.Send(currentCommand, currentWait);
+            });
+        }
+
+        /// <summary>
+        /// 在后台等待落药信号，避免检测时间窗卡住界面。
+        /// </summary>
+        private Task<bool> WaitDropAsync()
+        {
+            IDropDetector detector = dropDetector;
+            int timeout = dropTimeoutMilliseconds;
+            return Task.Run(delegate
+            {
+                return detector.WaitForDrop(timeout);
+            });
+        }
+
+        /// <summary>
+        /// 读取正整数配置。配置缺失或不是正整数时使用默认值。
+        /// </summary>
+        private static int ReadPositiveSetting(string key, int defaultValue)
+        {
+            int value;
+            if (int.TryParse(ConfigurationManager.AppSettings[key], out value) && value > 0)
+            {
+                return value;
+            }
+
+            return defaultValue;
         }
 
         /// <summary>

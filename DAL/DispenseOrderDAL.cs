@@ -160,6 +160,14 @@ namespace DAL
             return MapItems(DbHelper.Find(sql, new SqlParameter("@OrderId", orderId)));
         }
 
+        public int MarkPartialException(int orderId)
+        {
+            const string sql = @"UPDATE DispenseOrder
+                        SET Status = N'部分异常'
+                        WHERE OrderId = @OrderId AND Status = N'配药中'";
+            return DbHelper.Update(sql, new SqlParameter("@OrderId", orderId));
+        }
+
         public int MarkDispensing(int orderId)
         {
             const string sql = @"UPDATE DispenseOrder
@@ -168,13 +176,14 @@ namespace DAL
             return DbHelper.Update(sql, new SqlParameter("@OrderId", orderId));
         }
 
-        public int UpdateItemProgress(int itemId, int grabCount, string status)
+        public int UpdateItemProgress(int itemId, int grabCount, int actualQty, string status)
         {
             const string sql = @"UPDATE DispenseOrderItem
-                        SET GrabCount = @GrabCount, Status = @Status
+                        SET GrabCount = @GrabCount, ActualQty = @ActualQty, Status = @Status
                         WHERE ItemId = @ItemId";
             return DbHelper.Update(sql,
                 new SqlParameter("@GrabCount", grabCount),
+                new SqlParameter("@ActualQty", actualQty),
                 new SqlParameter("@Status", status),
                 new SqlParameter("@ItemId", itemId));
         }
