@@ -19,11 +19,8 @@ namespace PharmacySorter
         private UserControl ucPrescriptionCatalog = null;
         // 待配队列
         private UserControl ucPrescriptionQueue = null;
-        // 系统操作日志审计
-        private UserControl ucSystemAuditLog = null;
-
-        // 账号与权限管理
-        private UserControl ucUserAdmin = null;
+        // 系统运维（人员权限与系统日志，Tab 切换）
+        private UserControl ucSystemOps = null;
 
         /// <summary>
         /// 当前登录账号。菜单和操作权限都根据它的角色判断。
@@ -214,8 +211,7 @@ namespace PharmacySorter
             btnDrugDictionary.Visible = isAdmin || isPharmacist;
             btnPrescription.Visible = isAdmin || isPharmacist;
             btnPrescriptionCatalog.Visible = isAdmin || isPharmacist;
-            btnAuditLog.Visible = isAdmin;
-            btnUserAdmin.Visible = isAdmin;
+            btnSystemOps.Visible = isAdmin;
             btnDashboard.Visible = true;
             btnEmergencyStop.Visible = true;
             PrepareNavButtons();
@@ -233,8 +229,7 @@ namespace PharmacySorter
                 btnDrugDictionary,
                 btnPrescriptionCatalog,
                 btnPrescription,
-                btnAuditLog,
-                btnUserAdmin
+                btnSystemOps
             };
 
             foreach (Button button in buttons)
@@ -263,16 +258,16 @@ namespace PharmacySorter
             button.ForeColor = navSelectedTextColor;
         }
 
-        // 跳转到账号与权限管理
-        private void BtnUserAdmin_Click(object sender, EventArgs e)
+        // 跳转到系统运维（人员权限 / 系统日志，Tab 切换）
+        private void BtnSystemOps_Click(object sender, EventArgs e)
         {
             if (currentUser.RoleName != UserRole.Admin)
             {
                 return;
             }
 
-            PageHelper.SwitchPage<UcUserAdmin>(pnlPageContainer, ref ucUserAdmin);
-            SelectNav(btnUserAdmin);
+            PageHelper.SwitchPage<UcSystemOps>(pnlPageContainer, ref ucSystemOps);
+            SelectNav(btnSystemOps);
         }
 
         // 跳转到配药监控看板
@@ -314,13 +309,6 @@ namespace PharmacySorter
         {
             PageHelper.SwitchPage<UcPrescriptionCatalog>(pnlPageContainer, ref ucPrescriptionCatalog);
             SelectNav(btnPrescriptionCatalog);
-        }
-
-        // 跳转到系统操作日志审计
-        private void BtnAuditLog_Click(object sender, EventArgs e)
-        {
-            PageHelper.SwitchPage<UcSystemAuditLog>(pnlPageContainer, ref ucSystemAuditLog);
-            SelectNav(btnAuditLog);
         }
 
         /// <summary>

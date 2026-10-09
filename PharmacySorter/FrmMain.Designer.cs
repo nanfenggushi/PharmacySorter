@@ -30,20 +30,19 @@ namespace PharmacySorter
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.pnlHeader = new System.Windows.Forms.Panel();
+            this.lblSensorStatus = new System.Windows.Forms.Label();
             this.lblConnection = new System.Windows.Forms.Label();
             this.lblClock = new System.Windows.Forms.Label();
             this.lblOperator = new System.Windows.Forms.Label();
             this.pnlNav = new System.Windows.Forms.Panel();
             this.btnEmergencyStop = new System.Windows.Forms.Button();
-            this.btnUserAdmin = new System.Windows.Forms.Button();
-            this.btnAuditLog = new System.Windows.Forms.Button();
+            this.btnSystemOps = new System.Windows.Forms.Button();
             this.btnPrescription = new System.Windows.Forms.Button();
             this.btnPrescriptionCatalog = new System.Windows.Forms.Button();
             this.btnDrugDictionary = new System.Windows.Forms.Button();
             this.btnStationMapping = new System.Windows.Forms.Button();
             this.btnDashboard = new System.Windows.Forms.Button();
             this.pnlPageContainer = new System.Windows.Forms.Panel();
-            this.lblSensorStatus = new System.Windows.Forms.Label();
             this.pnlHeader.SuspendLayout();
             this.pnlNav.SuspendLayout();
             this.SuspendLayout();
@@ -60,6 +59,16 @@ namespace PharmacySorter
             this.pnlHeader.Size = new System.Drawing.Size(1439, 57);
             this.pnlHeader.TabIndex = 0;
             // 
+            // lblSensorStatus
+            // 
+            this.lblSensorStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblSensorStatus.AutoSize = true;
+            this.lblSensorStatus.Location = new System.Drawing.Point(960, 19);
+            this.lblSensorStatus.Name = "lblSensorStatus";
+            this.lblSensorStatus.Size = new System.Drawing.Size(142, 15);
+            this.lblSensorStatus.TabIndex = 4;
+            this.lblSensorStatus.Text = "传感器状态：检测中";
+            // 
             // lblConnection
             // 
             this.lblConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -74,7 +83,7 @@ namespace PharmacySorter
             // 
             this.lblClock.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblClock.AutoSize = true;
-            this.lblClock.Location = new System.Drawing.Point(803, 19);
+            this.lblClock.Location = new System.Drawing.Point(754, 19);
             this.lblClock.Name = "lblClock";
             this.lblClock.Size = new System.Drawing.Size(67, 15);
             this.lblClock.TabIndex = 2;
@@ -93,8 +102,7 @@ namespace PharmacySorter
             // pnlNav
             // 
             this.pnlNav.Controls.Add(this.btnEmergencyStop);
-            this.pnlNav.Controls.Add(this.btnUserAdmin);
-            this.pnlNav.Controls.Add(this.btnAuditLog);
+            this.pnlNav.Controls.Add(this.btnSystemOps);
             this.pnlNav.Controls.Add(this.btnPrescription);
             this.pnlNav.Controls.Add(this.btnPrescriptionCatalog);
             this.pnlNav.Controls.Add(this.btnDrugDictionary);
@@ -117,25 +125,15 @@ namespace PharmacySorter
             this.btnEmergencyStop.UseVisualStyleBackColor = true;
             this.btnEmergencyStop.Click += new System.EventHandler(this.BtnEmergencyStop_Click);
             // 
-            // btnUserAdmin
+            // btnSystemOps
             // 
-            this.btnUserAdmin.Location = new System.Drawing.Point(20, 356);
-            this.btnUserAdmin.Name = "btnUserAdmin";
-            this.btnUserAdmin.Size = new System.Drawing.Size(124, 32);
-            this.btnUserAdmin.TabIndex = 6;
-            this.btnUserAdmin.Text = "账号管理";
-            this.btnUserAdmin.UseVisualStyleBackColor = true;
-            this.btnUserAdmin.Click += new System.EventHandler(this.BtnUserAdmin_Click);
-            // 
-            // btnAuditLog
-            // 
-            this.btnAuditLog.Location = new System.Drawing.Point(20, 304);
-            this.btnAuditLog.Name = "btnAuditLog";
-            this.btnAuditLog.Size = new System.Drawing.Size(124, 32);
-            this.btnAuditLog.TabIndex = 4;
-            this.btnAuditLog.Text = "操作日志";
-            this.btnAuditLog.UseVisualStyleBackColor = true;
-            this.btnAuditLog.Click += new System.EventHandler(this.BtnAuditLog_Click);
+            this.btnSystemOps.Location = new System.Drawing.Point(20, 304);
+            this.btnSystemOps.Name = "btnSystemOps";
+            this.btnSystemOps.Size = new System.Drawing.Size(124, 32);
+            this.btnSystemOps.TabIndex = 4;
+            this.btnSystemOps.Text = "系统运维";
+            this.btnSystemOps.UseVisualStyleBackColor = true;
+            this.btnSystemOps.Click += new System.EventHandler(this.BtnSystemOps_Click);
             // 
             // btnPrescription
             // 
@@ -195,16 +193,6 @@ namespace PharmacySorter
             this.pnlPageContainer.Size = new System.Drawing.Size(1273, 721);
             this.pnlPageContainer.TabIndex = 2;
             // 
-            // lblSensorStatus
-            // 
-            this.lblSensorStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblSensorStatus.AutoSize = true;
-            this.lblSensorStatus.Location = new System.Drawing.Point(1028, 19);
-            this.lblSensorStatus.Name = "lblSensorStatus";
-            this.lblSensorStatus.Size = new System.Drawing.Size(126, 15);
-            this.lblSensorStatus.TabIndex = 4;
-            this.lblSensorStatus.Text = "传感器状态：检测中";
-            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -234,8 +222,7 @@ namespace PharmacySorter
         private System.Windows.Forms.Panel pnlNav;
         private System.Windows.Forms.Panel pnlPageContainer;
         private System.Windows.Forms.Button btnEmergencyStop;
-        private System.Windows.Forms.Button btnAuditLog;
-        private System.Windows.Forms.Button btnUserAdmin;
+        private System.Windows.Forms.Button btnSystemOps;
         private System.Windows.Forms.Button btnPrescription;
         private System.Windows.Forms.Button btnPrescriptionCatalog;
         private System.Windows.Forms.Button btnDrugDictionary;
