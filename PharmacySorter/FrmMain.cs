@@ -61,6 +61,11 @@ namespace PharmacySorter
         /// </summary>
         private readonly ArmCommandService arm = new ArmCommandService();
 
+        /// <summary>
+        /// 全局落药检测。主窗体先打开通道并显示状态，看板配药复用同一通道。
+        /// </summary>
+        private readonly IDropDetector dropDetector = DropDetectorFactory.Create();
+
         public FrmMain(AppUser user)
         {
             if (user == null)
@@ -80,7 +85,7 @@ namespace PharmacySorter
         }
 
         /// <summary>
-        /// 打开默认看板，尝试连接串口，并下发一次开机复位。
+        /// 打开默认看板，尝试连接串口和落药传感器，并下发一次开机复位。
         /// </summary>
         private void FrmMain_Load(object sender, EventArgs e)
         {
@@ -88,18 +93,21 @@ namespace PharmacySorter
             ApplyPermissions(); // 按角色权限显示不同菜单
             ClockTimer_Tick(this, EventArgs.Empty);
             ShowConnection(false, ConfigurationManager.AppSettings["ArmPortName"]);
+            ShowSensorStatus(false, ConfigurationManager.AppSettings["SensorPortName"]);
             BtnDashboard_Click(this, EventArgs.Empty); // 切换到看板界面
             BeginInvoke(new Action(ConnectArm));
+            BeginInvoke(new Action(ConnectSensor));
         }
 
         /// <summary>
-        /// 关闭窗口时释放串口和时钟。
+        /// 关闭窗口时释放串口、落药检测通道和时钟。
         /// </summary>
         private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
             clockTimer.Stop();
             clockTimer.Dispose();
             arm.Disconnect();
+            dropDetector.Close();
         }
 
         /// <summary>
@@ -150,6 +158,49 @@ namespace PharmacySorter
             string name = string.IsNullOrWhiteSpace(portName) ? "未配置" : portName.Trim();
             lblConnection.Text = "通信状态：未连接 " + name;
             lblConnection.ForeColor = Color.Firebrick;
+        }
+
+        /// <summary>
+        /// 按配置打开落药检测通道。打不开时界面显示未连接，配药环节检测到未连接会停止。
+        /// </summary>
+        private void ConnectSensor()
+        {
+            string portName = ConfigurationManager.AppSettings["SensorPortName"];
+            try
+            {
+                dropDetector.Open();
+                ShowSensorStatus(true, portName);
+            }
+            catch (Exception)
+            {
+                ShowSensorStatus(false, portName);
+            }
+        }
+
+        /// <summary>
+        /// 更新传感器状态标签。模拟模式显示检测器自带的说明（含成功率），
+        /// 真实传感器模式已连接为绿色，未连接为红色。
+        /// </summary>
+        private void ShowSensorStatus(bool connected, string portName)
+        {
+            string name = string.IsNullOrWhiteSpace(portName) ? "未配置" : portName.Trim();
+
+            if (connected && dropDetector is SimulatedDropDetector)
+            {
+                lblSensorStatus.Text = "传感器状态：" + dropDetector.SourceName;
+                lblSensorStatus.ForeColor = Color.SeaGreen;
+                return;
+            }
+
+            if (connected)
+            {
+                lblSensorStatus.Text = "传感器状态：已连接 " + name;
+                lblSensorStatus.ForeColor = Color.SeaGreen;
+                return;
+            }
+
+            lblSensorStatus.Text = "传感器状态：未连接 " + name;
+            lblSensorStatus.ForeColor = Color.Firebrick;
         }
 
         /// <summary>
@@ -233,6 +284,7 @@ namespace PharmacySorter
             if (dashboard != null)
             {
                 dashboard.BindArm(arm);
+                dashboard.BindDropDetector(dropDetector);
             }
         }
 

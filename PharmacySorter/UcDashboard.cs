@@ -32,9 +32,9 @@ namespace PharmacySorter
         private ArmCommandService arm = new ArmCommandService();
 
         /// <summary>
-        /// 落药检测。配置决定使用真实传感器还是固定模拟结果。
+        /// 落药检测。主窗体先打开通道并传入，状态显示和配药使用同一通道；未传入时按配置自建。
         /// </summary>
-        private readonly IDropDetector dropDetector = DropDetectorFactory.Create();
+        private IDropDetector dropDetector = DropDetectorFactory.Create();
 
         /// <summary>
         /// 投放结束后等待落药信号的时间。
@@ -113,6 +113,17 @@ namespace PharmacySorter
             if (commandService != null)
             {
                 arm = commandService;
+            }
+        }
+
+        /// <summary>
+        /// 绑定主窗体已经打开的落药检测通道。状态显示和配药检测必须使用同一通道。
+        /// </summary>
+        public void BindDropDetector(IDropDetector detector)
+        {
+            if (detector != null)
+            {
+                dropDetector = detector;
             }
         }
 

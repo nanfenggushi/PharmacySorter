@@ -43,14 +43,14 @@ namespace PharmacySorter
             this.btnStationMapping = new System.Windows.Forms.Button();
             this.btnDashboard = new System.Windows.Forms.Button();
             this.pnlPageContainer = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblSensorStatus = new System.Windows.Forms.Label();
             this.pnlHeader.SuspendLayout();
             this.pnlNav.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlHeader
             // 
-            this.pnlHeader.Controls.Add(this.label1);
+            this.pnlHeader.Controls.Add(this.lblSensorStatus);
             this.pnlHeader.Controls.Add(this.lblConnection);
             this.pnlHeader.Controls.Add(this.lblClock);
             this.pnlHeader.Controls.Add(this.lblOperator);
@@ -195,15 +195,15 @@ namespace PharmacySorter
             this.pnlPageContainer.Size = new System.Drawing.Size(1273, 721);
             this.pnlPageContainer.TabIndex = 2;
             // 
-            // label1
+            // lblSensorStatus
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(1028, 19);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(82, 15);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "传感器状态";
+            this.lblSensorStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblSensorStatus.AutoSize = true;
+            this.lblSensorStatus.Location = new System.Drawing.Point(1028, 19);
+            this.lblSensorStatus.Name = "lblSensorStatus";
+            this.lblSensorStatus.Size = new System.Drawing.Size(126, 15);
+            this.lblSensorStatus.TabIndex = 4;
+            this.lblSensorStatus.Text = "传感器状态：检测中";
             // 
             // FrmMain
             // 
@@ -241,7 +241,7 @@ namespace PharmacySorter
         private System.Windows.Forms.Button btnDrugDictionary;
         private System.Windows.Forms.Button btnStationMapping;
         private System.Windows.Forms.Button btnDashboard;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblSensorStatus;
     }
 }
 
