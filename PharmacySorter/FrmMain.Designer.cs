@@ -37,7 +37,6 @@ namespace PharmacySorter
             this.pnlNav = new System.Windows.Forms.Panel();
             this.btnEmergencyStop = new System.Windows.Forms.Button();
             this.btnSystemOps = new System.Windows.Forms.Button();
-            this.btnPrescription = new System.Windows.Forms.Button();
             this.btnPrescriptionCatalog = new System.Windows.Forms.Button();
             this.btnDrugStation = new System.Windows.Forms.Button();
             this.btnDashboard = new System.Windows.Forms.Button();
@@ -102,7 +101,6 @@ namespace PharmacySorter
             // 
             this.pnlNav.Controls.Add(this.btnEmergencyStop);
             this.pnlNav.Controls.Add(this.btnSystemOps);
-            this.pnlNav.Controls.Add(this.btnPrescription);
             this.pnlNav.Controls.Add(this.btnPrescriptionCatalog);
             this.pnlNav.Controls.Add(this.btnDrugStation);
             this.pnlNav.Controls.Add(this.btnDashboard);
@@ -124,45 +122,35 @@ namespace PharmacySorter
             this.btnEmergencyStop.Click += new System.EventHandler(this.BtnEmergencyStop_Click);
             // 
             // btnSystemOps
-            // 
-            this.btnSystemOps.Location = new System.Drawing.Point(20, 304);
+            //
+            this.btnSystemOps.Location = new System.Drawing.Point(20, 197);
             this.btnSystemOps.Name = "btnSystemOps";
             this.btnSystemOps.Size = new System.Drawing.Size(124, 32);
             this.btnSystemOps.TabIndex = 4;
-            this.btnSystemOps.Text = "系统运维";
+            this.btnSystemOps.Text = "系统日志";
             this.btnSystemOps.UseVisualStyleBackColor = true;
             this.btnSystemOps.Click += new System.EventHandler(this.BtnSystemOps_Click);
-            // 
-            // btnPrescription
-            // 
-            this.btnPrescription.Location = new System.Drawing.Point(20, 87);
-            this.btnPrescription.Name = "btnPrescription";
-            this.btnPrescription.Size = new System.Drawing.Size(124, 31);
-            this.btnPrescription.TabIndex = 3;
-            this.btnPrescription.Text = "待配任务";
-            this.btnPrescription.UseVisualStyleBackColor = true;
-            this.btnPrescription.Click += new System.EventHandler(this.BtnPrescription_Click);
-            // 
+            //
             // btnPrescriptionCatalog
-            // 
-            this.btnPrescriptionCatalog.Location = new System.Drawing.Point(20, 142);
+            //
+            this.btnPrescriptionCatalog.Location = new System.Drawing.Point(20, 87);
             this.btnPrescriptionCatalog.Name = "btnPrescriptionCatalog";
             this.btnPrescriptionCatalog.Size = new System.Drawing.Size(124, 32);
             this.btnPrescriptionCatalog.TabIndex = 7;
             this.btnPrescriptionCatalog.Text = "处方模板";
             this.btnPrescriptionCatalog.UseVisualStyleBackColor = true;
             this.btnPrescriptionCatalog.Click += new System.EventHandler(this.BtnPrescriptionCatalog_Click);
-            // 
+            //
             // btnDrugStation
-            // 
-            this.btnDrugStation.Location = new System.Drawing.Point(20, 197);
+            //
+            this.btnDrugStation.Location = new System.Drawing.Point(20, 142);
             this.btnDrugStation.Name = "btnDrugStation";
             this.btnDrugStation.Size = new System.Drawing.Size(124, 31);
             this.btnDrugStation.TabIndex = 2;
             this.btnDrugStation.Text = "药品与工位";
             this.btnDrugStation.UseVisualStyleBackColor = true;
             this.btnDrugStation.Click += new System.EventHandler(this.BtnDrugStation_Click);
-            // 
+            //
             // btnDashboard
             // 
             this.btnDashboard.Location = new System.Drawing.Point(20, 33);
@@ -211,7 +199,6 @@ namespace PharmacySorter
         private System.Windows.Forms.Panel pnlPageContainer;
         private System.Windows.Forms.Button btnEmergencyStop;
         private System.Windows.Forms.Button btnSystemOps;
-        private System.Windows.Forms.Button btnPrescription;
         private System.Windows.Forms.Button btnPrescriptionCatalog;
         private System.Windows.Forms.Button btnDrugStation;
         private System.Windows.Forms.Button btnDashboard;

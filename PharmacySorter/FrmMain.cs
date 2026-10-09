@@ -15,13 +15,11 @@ namespace PharmacySorter
         private UserControl ucDrugStation = null;
         // 固定处方维护
         private UserControl ucPrescriptionCatalog = null;
-        // 待配队列
-        private UserControl ucPrescriptionQueue = null;
-        // 系统运维（人员权限与系统日志，Tab 切换）
+        // 系统运维（系统日志）
         private UserControl ucSystemOps = null;
 
         /// <summary>
-        /// 当前登录账号。菜单和操作权限都根据它的角色判断。
+        /// 当前登录账号。顶栏显示其姓名与角色。
         /// </summary>
         private readonly AppUser currentUser;
         private readonly Timer clockTimer = new Timer();
@@ -85,7 +83,7 @@ namespace PharmacySorter
         private void FrmMain_Load(object sender, EventArgs e)
         {
             clockTimer.Start(); // 启动定时器
-            ApplyPermissions(); // 按角色权限显示不同菜单
+            PrepareNavButtons(); // 初始化导航按钮样式
             ClockTimer_Tick(this, EventArgs.Empty);
             ShowConnection(false, ConfigurationManager.AppSettings["ArmPortName"]);
             ShowSensorStatus(false, ConfigurationManager.AppSettings["SensorPortName"]);
@@ -199,23 +197,7 @@ namespace PharmacySorter
         }
 
         /// <summary>
-        /// 按角色显示菜单。管理员拥有全部权限，药师维护药品和处方，操作员负责配药。
-        /// </summary>
-        private void ApplyPermissions()
-        {
-            bool isAdmin = currentUser.RoleName == UserRole.Admin;
-            bool isPharmacist = currentUser.RoleName == UserRole.Pharmacist;
-            btnDrugStation.Visible = isAdmin || isPharmacist;
-            btnPrescription.Visible = isAdmin || isPharmacist;
-            btnPrescriptionCatalog.Visible = isAdmin || isPharmacist;
-            btnSystemOps.Visible = isAdmin;
-            btnDashboard.Visible = true;
-            btnEmergencyStop.Visible = true;
-            PrepareNavButtons();
-        }
-
-        /// <summary>
-        /// 关闭导航按钮的系统绘制，否则自定义背景色不会显示。
+        /// 准备导航按钮样式。单人使用的上位机不再区分角色，全部菜单可用。
         /// </summary>
         private void PrepareNavButtons()
         {
@@ -224,7 +206,6 @@ namespace PharmacySorter
                 btnDashboard,
                 btnDrugStation,
                 btnPrescriptionCatalog,
-                btnPrescription,
                 btnSystemOps
             };
 
@@ -254,14 +235,9 @@ namespace PharmacySorter
             button.ForeColor = navSelectedTextColor;
         }
 
-        // 跳转到系统运维（人员权限 / 系统日志，Tab 切换）
+        // 跳转到系统运维（系统日志）
         private void BtnSystemOps_Click(object sender, EventArgs e)
         {
-            if (currentUser.RoleName != UserRole.Admin)
-            {
-                return;
-            }
-
             PageHelper.SwitchPage<UcSystemOps>(pnlPageContainer, ref ucSystemOps);
             SelectNav(btnSystemOps);
         }
@@ -279,23 +255,17 @@ namespace PharmacySorter
             }
         }
 
-        // 跳转到药品与工位（上方药品字典，下方工位指令；工位指令区仅管理员可见）
+        // 跳转到药品与工位（上方药品字典，下方工位指令）
         private void BtnDrugStation_Click(object sender, EventArgs e)
         {
             PageHelper.SwitchPage<UcDrugStation>(pnlPageContainer, ref ucDrugStation);
             UcDrugStation page = ucDrugStation as UcDrugStation;
             if (page != null)
             {
-                page.SetStationCommandsVisible(currentUser.RoleName == UserRole.Admin);
+                // 单人管理员使用，工位指令区始终显示。
+                page.SetStationCommandsVisible(true);
             }
             SelectNav(btnDrugStation);
-        }
-
-        // 跳转到待配队列
-        private void BtnPrescription_Click(object sender, EventArgs e)
-        {
-            PageHelper.SwitchPage<UcPrescriptionQueue>(pnlPageContainer, ref ucPrescriptionQueue);
-            SelectNav(btnPrescription);
         }
 
         // 跳转到固定处方维护

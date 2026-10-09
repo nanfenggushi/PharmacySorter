@@ -11,8 +11,9 @@ using System.Windows.Forms;
 namespace PharmacySorter
 {
     /// <summary>
-    /// 配药监控看板。展示当前处方、明细进度和机械臂作业方向。
-    /// 启动后按明细循环抓取，次数达到应发数量时弹出数量核对。
+    /// 配药监控看板。展示当前处方、明细进度和待配任务队列，
+    /// 并直接在录入区把固定处方加入队列、置顶、撤销和查询历史。
+    /// 启动后按明细循环抓取，每次投放由落药检测自动确认。
     /// </summary>
     public partial class UcDashboard : UserControl
     {
@@ -22,9 +23,14 @@ namespace PharmacySorter
         private readonly DispenseBLL dispenseBll = new DispenseBLL();
 
         /// <summary>
-        /// 待配任务队列。看板只展示，不在这里加入或撤销任务。
+        /// 待配任务队列。加入队列、置顶、撤销和历史查询都在看板操作。
         /// </summary>
         private readonly DispenseOrderBLL orderBll = new DispenseOrderBLL();
+
+        /// <summary>
+        /// 固定处方业务。录入区的处方下拉和明细预览使用。
+        /// </summary>
+        private readonly PrescriptionBLL prescriptionBll = new PrescriptionBLL();
 
         /// <summary>
         /// 机械臂指令发送。由主窗体传入，急停和抓取使用同一条串口。
@@ -67,11 +73,6 @@ namespace PharmacySorter
         private List<DispenseOrderItem> currentItems = new List<DispenseOrderItem>();
 
         /// <summary>
-        /// 工位指示的常态颜色。动作中再改成高亮色。
-        /// </summary>
-        private readonly Color stationIdleColor = Color.WhiteSmoke;
-
-        /// <summary>
         /// 正在自动配药。切回看板时不能把进行中的处方刷新成空闲。
         /// </summary>
         private bool dispensing;
@@ -86,9 +87,16 @@ namespace PharmacySorter
             InitializeComponent();
             dgvItems.AutoGenerateColumns = false;
             dgvQueue.AutoGenerateColumns = false;
+            dgvDraft.AutoGenerateColumns = false;
             dgvItems.CellFormatting += DgvItems_CellFormatting;
             dgvItems.SelectionChanged += DgvItems_SelectionChanged;
             VisibleChanged += UcDashboard_VisibleChanged;
+            Load += UcDashboard_Load;
+            cmbDrug.SelectedIndexChanged += CmbDrug_SelectedIndexChanged;
+            btnSubmit.Click += BtnSubmit_Click;
+            btnMoveTop.Click += BtnMoveTop_Click;
+            btnCancel.Click += BtnCancel_Click;
+            btnHistory.Click += BtnHistory_Click;
         }
 
         /// <summary>
@@ -135,7 +143,6 @@ namespace PharmacySorter
             stopRequested = true;
             paused = true;
             AppendLog("急停，当前抓取循环已中断");
-            ShowActiveStation(null);
             ShowPausedStatus();
         }
 
@@ -203,7 +210,6 @@ namespace PharmacySorter
             finally
             {
                 dispensing = false;
-                ShowActiveStation(null);
                 LoadCurrent();
             }
         }
@@ -328,9 +334,8 @@ namespace PharmacySorter
                     return;
                 }
 
-                ShowActiveStation(grabStation.StationId);
                 int grabNo = item.GrabCount + 1;
-                AppendLog("【" + item.DrugName + "】第 " + grabNo + " 次抓取 " + grabStation.GrabCommand);
+                AppendLog("【" + item.DrugName + "】第 " + grabNo + " 次抓取（" + grabStation.StationName + "）" + grabStation.GrabCommand);
                 await SendArmAsync(grabStation.GrabCommand, grabStation.EstTimeMs);
 
                 if (stopRequested)
@@ -338,8 +343,7 @@ namespace PharmacySorter
                     return;
                 }
 
-                ShowActiveStation(dropStation.StationId);
-                AppendLog("【" + item.DrugName + "】第 " + grabNo + " 次投递 " + dropStation.DropCommand);
+                AppendLog("【" + item.DrugName + "】第 " + grabNo + " 次投递（" + dropStation.StationName + "）" + dropStation.DropCommand);
                 await SendDropAndDetectAsync(dropStation.DropCommand, dropStation.EstTimeMs);
                 if (stopRequested)
                 {
@@ -367,8 +371,6 @@ namespace PharmacySorter
                     }
                 }
             }
-
-            ShowActiveStation(null);
         }
 
         /// <summary>
@@ -450,7 +452,6 @@ namespace PharmacySorter
             BindSummary();
             BindItems();
             BindQueue();
-            ShowActiveStation(null);
         }
 
         /// <summary>
@@ -532,6 +533,209 @@ namespace PharmacySorter
         }
 
         /// <summary>
+        /// 首次加载时绑定固定处方下拉，并预览第一张处方的明细。
+        /// </summary>
+        private void UcDashboard_Load(object sender, EventArgs e)
+        {
+            BindPrescriptions();
+        }
+
+        /// <summary>
+        /// 录入区的处方下拉只列已保存的固定处方。
+        /// </summary>
+        private void BindPrescriptions()
+        {
+            try
+            {
+                cmbDrug.DisplayMember = "PrescriptionName";
+                cmbDrug.ValueMember = "PrescriptionId";
+                cmbDrug.DataSource = prescriptionBll.GetAll();
+                ShowPrescriptionItems();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "读取处方失败", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        /// <summary>
+        /// 切换处方模板时刷新下方的明细预览。
+        /// </summary>
+        private void CmbDrug_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ShowPrescriptionItems();
+        }
+
+        /// <summary>
+        /// 预览选中固定处方的药品明细，加入队列时按这份明细复制。
+        /// </summary>
+        private void ShowPrescriptionItems()
+        {
+            Prescription prescription = cmbDrug.SelectedItem as Prescription;
+            dgvDraft.DataSource = null;
+            if (prescription == null)
+            {
+                return;
+            }
+
+            try
+            {
+                dgvDraft.DataSource = prescriptionBll.GetItems(prescription.PrescriptionId);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "读取处方明细失败", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        /// <summary>
+        /// 按选中的固定处方生成一条待配任务。配药进行中只刷新队列，不打断当前任务。
+        /// </summary>
+        private void BtnSubmit_Click(object sender, EventArgs e)
+        {
+            Prescription prescription = cmbDrug.SelectedItem as Prescription;
+            if (prescription == null)
+            {
+                MessageBox.Show("请选择固定处方", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            try
+            {
+                int orderId = orderBll.AddToQueue(txtPatientNo.Text, prescription.PrescriptionId);
+                txtPatientNo.Text = string.Empty;
+                if (dispensing)
+                {
+                    BindQueue();
+                }
+                else
+                {
+                    LoadCurrent();
+                }
+                SelectOrder(orderId);
+                AppendLog("已加入待配队列，任务号：" + orderId);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "加入失败", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        /// <summary>
+        /// 把选中的待配任务移到队首。
+        /// </summary>
+        private void BtnMoveTop_Click(object sender, EventArgs e)
+        {
+            DispenseOrder order = SelectedQueueOrder();
+            if (order == null)
+            {
+                MessageBox.Show("请先选择一条待配任务", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            try
+            {
+                orderBll.MoveToTop(order.OrderId);
+                BindQueue();
+                SelectOrder(order.OrderId);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "置顶失败", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        /// <summary>
+        /// 撤销选中的待配任务。只有待配药状态的任务可以撤销。
+        /// </summary>
+        private void BtnCancel_Click(object sender, EventArgs e)
+        {
+            DispenseOrder order = SelectedQueueOrder();
+            if (order == null)
+            {
+                MessageBox.Show("请先选择一条待配任务", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            DialogResult confirm = MessageBox.Show(
+                "确定撤销任务 " + order.OrderId + " 吗？撤销后不再配药。",
+                "撤销确认",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+            if (confirm != DialogResult.Yes)
+            {
+                return;
+            }
+
+            try
+            {
+                orderBll.Cancel(order.OrderId);
+                if (dispensing)
+                {
+                    BindQueue();
+                }
+                else
+                {
+                    LoadCurrent();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "撤销失败", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        /// <summary>
+        /// 打开历史任务查询窗口。历史任务再次配药后刷新队列。
+        /// </summary>
+        private void BtnHistory_Click(object sender, EventArgs e)
+        {
+            using (FrmPrescriptionHistory dialog = new FrmPrescriptionHistory())
+            {
+                if (dialog.ShowDialog(FindForm()) == DialogResult.OK)
+                {
+                    if (dispensing)
+                    {
+                        BindQueue();
+                    }
+                    else
+                    {
+                        LoadCurrent();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 待配队列表格当前选中的任务。
+        /// </summary>
+        private DispenseOrder SelectedQueueOrder()
+        {
+            if (dgvQueue.CurrentRow == null)
+            {
+                return null;
+            }
+            return dgvQueue.CurrentRow.DataBoundItem as DispenseOrder;
+        }
+
+        /// <summary>
+        /// 加入队列或置顶后，让该任务在队列表格中保持选中。
+        /// </summary>
+        private void SelectOrder(int orderId)
+        {
+            foreach (DataGridViewRow row in dgvQueue.Rows)
+            {
+                DispenseOrder order = row.DataBoundItem as DispenseOrder;
+                if (order != null && order.OrderId == orderId)
+                {
+                    row.Selected = true;
+                    dgvQueue.CurrentCell = row.Cells[0];
+                    return;
+                }
+            }
+        }
+
+        /// <summary>
         /// 正在处理的行用黄色，核对通过的行用绿色，异常行用红色。
         /// </summary>
         private void DgvItems_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -579,34 +783,6 @@ namespace PharmacySorter
             {
                 dgvItems.ClearSelection();
                 dgvItems.CurrentCell = null;
-            }
-        }
-
-        /// <summary>
-        /// 点亮正在作业的工位。传入空值时三个工位都恢复常态。
-        /// </summary>
-        /// <param name="stationId">1 正前分拣槽，2 左侧药位，3 右侧药位。</param>
-        private void ShowActiveStation(int? stationId)
-        {
-            pnlLeftStation.BackColor = stationId == 2 ? Color.Gold : stationIdleColor;
-            pnlSlot.BackColor = stationId == 1 ? Color.DeepSkyBlue : stationIdleColor;
-            pnlRightStation.BackColor = stationId == 3 ? Color.Gold : stationIdleColor;
-
-            if (stationId == 2)
-            {
-                lblArmHint.Text = "机械臂正在左侧药位作业";
-            }
-            else if (stationId == 3)
-            {
-                lblArmHint.Text = "机械臂正在右侧药位作业";
-            }
-            else if (stationId == 1)
-            {
-                lblArmHint.Text = "机械臂正在正前分拣槽投递";
-            }
-            else
-            {
-                lblArmHint.Text = "机械臂待命";
             }
         }
 
