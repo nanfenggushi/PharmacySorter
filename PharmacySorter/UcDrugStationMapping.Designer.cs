@@ -43,6 +43,7 @@ namespace PharmacySorter
             // 
             this.grpStationAction.Controls.Add(this.btnSaveStation);
             this.grpStationAction.Controls.Add(this.dgvStation);
+            this.grpStationAction.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpStationAction.Location = new System.Drawing.Point(43, 12);
             this.grpStationAction.Name = "grpStationAction";
             this.grpStationAction.Size = new System.Drawing.Size(951, 674);
@@ -52,6 +53,7 @@ namespace PharmacySorter
             // 
             // btnSaveStation
             // 
+            this.btnSaveStation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSaveStation.Location = new System.Drawing.Point(816, 595);
             this.btnSaveStation.Name = "btnSaveStation";
             this.btnSaveStation.Size = new System.Drawing.Size(82, 31);
@@ -64,6 +66,9 @@ namespace PharmacySorter
             // 
             this.dgvStation.AllowUserToAddRows = false;
             this.dgvStation.AllowUserToDeleteRows = false;
+            this.dgvStation.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvStation.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvStation.ColumnHeadersHeight = 32;
             this.dgvStation.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;

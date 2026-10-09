@@ -11,10 +11,8 @@ namespace PharmacySorter
     {
         // 配药监控看板
         private UserControl ucDashboard = null;
-        // 工位与药品配置
-        private UserControl ucDrugStationMapping = null;
-        // 药品字典管理
-        private UserControl ucDrugDictionary = null;
+        // 药品与工位（上：药品字典，下：工位指令，分区权限）
+        private UserControl ucDrugStation = null;
         // 固定处方维护
         private UserControl ucPrescriptionCatalog = null;
         // 待配队列
@@ -207,8 +205,7 @@ namespace PharmacySorter
         {
             bool isAdmin = currentUser.RoleName == UserRole.Admin;
             bool isPharmacist = currentUser.RoleName == UserRole.Pharmacist;
-            btnStationMapping.Visible = isAdmin;
-            btnDrugDictionary.Visible = isAdmin || isPharmacist;
+            btnDrugStation.Visible = isAdmin || isPharmacist;
             btnPrescription.Visible = isAdmin || isPharmacist;
             btnPrescriptionCatalog.Visible = isAdmin || isPharmacist;
             btnSystemOps.Visible = isAdmin;
@@ -225,8 +222,7 @@ namespace PharmacySorter
             Button[] buttons = new Button[]
             {
                 btnDashboard,
-                btnStationMapping,
-                btnDrugDictionary,
+                btnDrugStation,
                 btnPrescriptionCatalog,
                 btnPrescription,
                 btnSystemOps
@@ -283,18 +279,16 @@ namespace PharmacySorter
             }
         }
 
-        // 跳转到工位与药品配置
-        private void BtnStationMapping_Click(object sender, EventArgs e)
+        // 跳转到药品与工位（上方药品字典，下方工位指令；工位指令区仅管理员可见）
+        private void BtnDrugStation_Click(object sender, EventArgs e)
         {
-            PageHelper.SwitchPage<UcDrugStationMapping>(pnlPageContainer, ref ucDrugStationMapping);
-            SelectNav(btnStationMapping);
-        }
-
-        // 跳转到药品字典管理
-        private void BtnDrugDictionary_Click(object sender, EventArgs e)
-        {
-            PageHelper.SwitchPage<UcDrugDictionary>(pnlPageContainer, ref ucDrugDictionary);
-            SelectNav(btnDrugDictionary);
+            PageHelper.SwitchPage<UcDrugStation>(pnlPageContainer, ref ucDrugStation);
+            UcDrugStation page = ucDrugStation as UcDrugStation;
+            if (page != null)
+            {
+                page.SetStationCommandsVisible(currentUser.RoleName == UserRole.Admin);
+            }
+            SelectNav(btnDrugStation);
         }
 
         // 跳转到待配队列
