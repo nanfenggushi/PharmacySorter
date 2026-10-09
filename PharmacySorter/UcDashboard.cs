@@ -350,7 +350,7 @@ namespace PharmacySorter
                     AppendLog("【" + item.DrugName + "】未检测到落药，连续漏抓 " + consecutiveMisses + " 次");
                     if (consecutiveMisses >= maxConsecutiveMisses)
                     {
-                        dispenseBll.MarkSensorFault(item, consecutiveMisses);
+                        dispenseBll.MarkSensorFault(currentOrder, item, consecutiveMisses);
                         BindItems();
                         throw new InvalidOperationException("【" + item.DrugName + "】连续 " + consecutiveMisses + " 次未检测到落药，已停止配药");
                     }
@@ -414,49 +414,6 @@ namespace PharmacySorter
             {
                 arm.Send(currentCommand, currentWait);
             });
-        }
-
-        /// <summary>
-        /// 弹出数量核对。返回还要补抓的次数，取消、急停或已经通过时返回 0。
-        /// </summary>
-        private int VerifyItem(DispenseOrderItem item)
-        {
-            using (FrmQuantityVerify dialog = new FrmQuantityVerify(item))
-            {
-                if (dialog.ShowDialog(FindForm()) != DialogResult.OK)
-                {
-                    stopRequested = true;
-                    paused = true;
-                    AppendLog("数量核对已取消，配药已暂停");
-                    return 0;
-                }
-
-                // 核对弹窗是模态的，急停当时清不掉这里的循环标记，关闭后再补一次。
-                if (stopRequested)
-                {
-                    paused = true;
-                    AppendLog("急停后不再继续当前药品");
-                    return 0;
-                }
-
-                int nextCount = dispenseBll.ApplyDecision(item, dialog.ActualQty, dialog.Decision);
-                BindItems();
-                if (nextCount <= 0)
-                {
-                    return 0;
-                }
-
-                if (dialog.Decision == VerifyDecision.Reset)
-                {
-                    AppendLog("【" + item.DrugName + "】已作废，重新抓取");
-                }
-                else
-                {
-                    AppendLog("【" + item.DrugName + "】补抓 " + nextCount + " 盒");
-                }
-
-                return nextCount;
-            }
         }
 
         /// <summary>

@@ -188,24 +188,6 @@ namespace DAL
                 new SqlParameter("@ItemId", itemId));
         }
 
-        public int PassItem(int itemId, int actualQty)
-        {
-            const string sql = @"UPDATE DispenseOrderItem
-                        SET ActualQty = @ActualQty, Status = N'核对通过'
-                        WHERE ItemId = @ItemId";
-            return DbHelper.Update(sql,
-                new SqlParameter("@ActualQty", actualQty),
-                new SqlParameter("@ItemId", itemId));
-        }
-
-        public int ResetItem(int itemId)
-        {
-            const string sql = @"UPDATE DispenseOrderItem
-                        SET GrabCount = 0, ActualQty = 0, Status = N'待取药'
-                        WHERE ItemId = @ItemId";
-            return DbHelper.Update(sql, new SqlParameter("@ItemId", itemId));
-        }
-
         public int CompleteIfAllPassed(int orderId)
         {
             const string sql = @"UPDATE DispenseOrder

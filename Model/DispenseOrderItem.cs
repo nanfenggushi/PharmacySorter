@@ -49,7 +49,7 @@ namespace Model
         }
 
         /// <summary>
-        /// 待取药、取药中、待核对、核对通过、异常。
+        /// 待取药、取药中、核对通过、异常。
         /// </summary>
         public string Status { get; set; }
     }

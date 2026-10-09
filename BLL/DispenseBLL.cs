@@ -177,76 +177,17 @@ namespace BLL
         /// <summary>
         /// 连续没有检测到落药时，停止这条明细并保留已完成的数量。
         /// </summary>
-        public void MarkSensorFault(DispenseOrderItem item, int consecutiveMisses)
+        public void MarkSensorFault(DispenseOrder order, DispenseOrderItem item, int consecutiveMisses)
         {
             EnsureItem(item);
             item.Status = "异常";
             orderDal.UpdateItemProgress(item.ItemId, item.GrabCount, item.ActualQty, item.Status);
-            orderDal.MarkPartialException(item.OrderId);
+            if (orderDal.MarkPartialException(item.OrderId) > 0 && order != null)
+            {
+                order.Status = "部分异常";
+            }
             logBll.Add(item.ItemId, AppLogType.ExceptionFix,
                 "【" + item.DrugName + "】连续 " + consecutiveMisses + " 次未检测到落药，配药已停止");
-        }
-
-        /// <summary>
-        /// 按核对弹窗的决定更新明细。返回还需要补抓的次数，不需要补抓时为 0。
-        /// </summary>
-        public int ApplyDecision(DispenseOrderItem item, int actualQty, VerifyDecision decision)
-        {
-            EnsureItem(item);
-            if (actualQty < 0)
-            {
-                throw new ArgumentException("实收数量不能小于 0");
-            }
-
-            if (decision == VerifyDecision.Reset)
-            {
-                item.GrabCount = 0;
-                item.ActualQty = 0;
-                item.Status = "待取药";
-                orderDal.ResetItem(item.ItemId);
-                logBll.Add(item.ItemId, AppLogType.ExceptionFix, "【" + item.DrugName + "】作废重置，抓取次数已清零");
-                return item.RequiredQty;
-            }
-
-            if (decision == VerifyDecision.Refill)
-            {
-                int shortage = item.RequiredQty - actualQty;
-                if (shortage <= 0)
-                {
-                    throw new ArgumentException("实收数量没有短少，不能补抓");
-                }
-
-                item.ActualQty = actualQty;
-                item.Status = "取药中";
-                orderDal.UpdateItemProgress(item.ItemId, item.GrabCount, item.ActualQty, item.Status);
-                logBll.Add(item.ItemId, AppLogType.QuantityCheck,
-                    "【" + item.DrugName + "】实收 " + actualQty + "，应发 " + item.RequiredQty + "，补抓 " + shortage);
-                return shortage;
-            }
-
-            if (decision == VerifyDecision.ReleaseExcess)
-            {
-                int extra = actualQty - item.RequiredQty;
-                if (extra <= 0)
-                {
-                    throw new ArgumentException("实收数量没有超出，不能按超量放行");
-                }
-
-                Pass(item);
-                logBll.Add(item.ItemId, AppLogType.ExceptionFix,
-                    "【" + item.DrugName + "】实收 " + actualQty + "，应发 " + item.RequiredQty + "，已确认剔除多余 " + extra + " 盒");
-                return 0;
-            }
-
-            if (actualQty != item.RequiredQty)
-            {
-                throw new ArgumentException("数量不一致，不能确认通过");
-            }
-
-            Pass(item);
-            logBll.Add(item.ItemId, AppLogType.QuantityCheck,
-                "【" + item.DrugName + "】实收 " + actualQty + "，与应发数量一致");
-            return 0;
         }
 
         /// <summary>
@@ -299,13 +240,6 @@ namespace BLL
                 throw new ArgumentException("正前分拣槽还没有配置放置指令");
             }
             return station;
-        }
-
-        private void Pass(DispenseOrderItem item)
-        {
-            item.ActualQty = item.RequiredQty;
-            item.Status = "核对通过";
-            orderDal.PassItem(item.ItemId, item.RequiredQty);
         }
 
         /// <summary>
