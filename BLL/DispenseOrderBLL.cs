@@ -19,6 +19,14 @@ namespace BLL
             return dal.GetWaitingQueue();
         }
 
+        /// <summary>
+        /// 导航栏“今日统计”。待配任务数是实时值，其余按当天零点起算。
+        /// </summary>
+        public TodayStats GetTodayStats()
+        {
+            return dal.GetTodayStats(DateTime.Today);
+        }
+
         public List<DispenseOrder> SearchHistory(string orderIdText, string prescriptionName, DateTime? startDate, DateTime? endDate)
         {
             if (startDate.HasValue && endDate.HasValue && startDate.Value.Date > endDate.Value.Date)
@@ -126,4 +134,4 @@ namespace BLL
             return patientNo;
         }
     }
-}
+}

@@ -37,6 +37,33 @@ namespace DAL
             return Convert.ToInt32(result);
         }
 
+        /// <summary>
+        /// 读取导航栏“今日统计”的一组数字。todayStart 为当天零点。
+        /// </summary>
+        public TodayStats GetTodayStats(DateTime todayStart)
+        {
+            const string sql = @"
+                        SELECT
+                            (SELECT COUNT(1) FROM DispenseOrder WHERE Status = N'待配药') AS WaitingCount,
+                            (SELECT COUNT(1) FROM DispenseOrder
+                               WHERE Status = N'已完成' AND CompleteTime >= @TodayStart) AS CompletedToday,
+                            (SELECT ISNULL(SUM(i.ActualQty), 0)
+                               FROM DispenseOrderItem i
+                               INNER JOIN DispenseOrder o ON i.OrderId = o.OrderId
+                               WHERE o.CreateTime >= @TodayStart) AS DroppedToday,
+                            (SELECT COUNT(1) FROM DispenseOrder
+                               WHERE Status = N'部分异常' AND CreateTime >= @TodayStart) AS AbnormalToday";
+            DataSet dataSet = DbHelper.Find(sql, new SqlParameter("@TodayStart", todayStart));
+            DataRow row = dataSet.Tables[0].Rows[0];
+            return new TodayStats
+            {
+                WaitingCount = Convert.ToInt32(row["WaitingCount"]),
+                CompletedToday = Convert.ToInt32(row["CompletedToday"]),
+                DroppedToday = Convert.ToInt32(row["DroppedToday"]),
+                AbnormalToday = Convert.ToInt32(row["AbnormalToday"])
+            };
+        }
+
         public int AddFromPrescription(int prescriptionId, string patientNo, int sortNo)
         {
             using (SqlConnection connection = OpenConnection())
@@ -260,4 +287,4 @@ namespace DAL
             return list;
         }
     }
-}
+}

@@ -1,3 +1,4 @@
+using BLL;
 using Common;
 using Model;
 using System;
@@ -61,6 +62,16 @@ namespace PharmacySorter
         /// </summary>
         private readonly IDropDetector dropDetector = DropDetectorFactory.Create();
 
+        /// <summary>
+        /// 待配任务业务。导航栏“今日统计”使用。
+        /// </summary>
+        private readonly DispenseOrderBLL orderBll = new DispenseOrderBLL();
+
+        /// <summary>
+        /// 导航栏统计的定时刷新。切换页面时也会立即刷新一次。
+        /// </summary>
+        private readonly Timer statsTimer = new Timer();
+
         public FrmMain(AppUser user)
         {
             if (user == null)
@@ -75,6 +86,9 @@ namespace PharmacySorter
             btnEmergencyStop.ForeColor = Color.White;
             clockTimer.Interval = 1000;
             clockTimer.Tick += ClockTimer_Tick;
+            statsTimer.Interval = 15000;
+            statsTimer.Tick += StatsTimer_Tick;
+            statsTimer.Start();
             Load += FrmMain_Load;
             FormClosed += FrmMain_FormClosed;
         }
@@ -95,12 +109,14 @@ namespace PharmacySorter
         }
 
         /// <summary>
-        /// 关闭窗口时释放串口、落药检测通道和时钟。
+        /// 关闭窗口时释放串口、落药检测通道、时钟和统计定时器。
         /// </summary>
         private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
             clockTimer.Stop();
             clockTimer.Dispose();
+            statsTimer.Stop();
+            statsTimer.Dispose();
             arm.Disconnect();
             dropDetector.Close();
         }
@@ -224,6 +240,7 @@ namespace PharmacySorter
 
         /// <summary>
         /// 高亮当前页面按钮，并把上一个选中按钮恢复成普通颜色。
+        /// 每次切换页面都刷新一次导航栏统计，让数字紧跟最新操作。
         /// </summary>
         private void SelectNav(Button button)
         {
@@ -236,6 +253,33 @@ namespace PharmacySorter
             selectedNavButton = button;
             button.BackColor = navSelectedColor;
             button.ForeColor = navSelectedTextColor;
+            RefreshStats();
+        }
+
+        /// <summary>
+        /// 定时刷新导航栏“今日统计”，兜住不切页面时的数据变化。
+        /// </summary>
+        private void StatsTimer_Tick(object sender, EventArgs e)
+        {
+            RefreshStats();
+        }
+
+        /// <summary>
+        /// 刷新导航栏“今日统计”。数据库读不到时保留上一次的数字，不影响主流程。
+        /// </summary>
+        private void RefreshStats()
+        {
+            try
+            {
+                TodayStats stats = orderBll.GetTodayStats();
+                lblStatWaitingValue.Text = stats.WaitingCount + " 单";
+                lblStatCompletedValue.Text = stats.CompletedToday + " 单";
+                lblStatDroppedValue.Text = stats.DroppedToday + " 盒";
+                lblStatAbnormalValue.Text = stats.AbnormalToday + " 单";
+            }
+            catch (Exception)
+            {
+            }
         }
 
         // 跳转到系统运维（系统日志）

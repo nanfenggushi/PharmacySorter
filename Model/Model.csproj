@@ -51,6 +51,7 @@
     <Compile Include="PrescriptionItem.cs" />
     <Compile Include="DispenseOrder.cs" />
     <Compile Include="DispenseOrderItem.cs" />
+    <Compile Include="TodayStats.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
