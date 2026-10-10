@@ -65,6 +65,7 @@ namespace PharmacySorter
             this.colDashGrabCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDashStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lblItems = new System.Windows.Forms.Label();
+            this.prgItems = new System.Windows.Forms.ProgressBar();
             this.pnlSummary.SuspendLayout();
             this.pnlBottom.SuspendLayout();
             this.tlpBody.SuspendLayout();
@@ -182,7 +183,7 @@ namespace PharmacySorter
             this.grpEntry.Text = "添加任务";
             // 
             // btnSubmit
-            //
+            // 
             this.btnSubmit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnSubmit.Location = new System.Drawing.Point(168, 515);
             this.btnSubmit.Name = "btnSubmit";
@@ -195,8 +196,8 @@ namespace PharmacySorter
             // 
             this.dgvDraft.AllowUserToAddRows = false;
             this.dgvDraft.AllowUserToDeleteRows = false;
-            this.dgvDraft.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.dgvDraft.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvDraft.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvDraft.ColumnHeadersHeight = 32;
@@ -289,6 +290,7 @@ namespace PharmacySorter
             // 
             // pnlItems
             // 
+            this.pnlItems.Controls.Add(this.prgItems);
             this.pnlItems.Controls.Add(this.btnHistory);
             this.pnlItems.Controls.Add(this.btnCancel);
             this.pnlItems.Controls.Add(this.btnMoveTop);
@@ -303,7 +305,7 @@ namespace PharmacySorter
             this.pnlItems.TabIndex = 0;
             // 
             // btnHistory
-            //
+            // 
             this.btnHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnHistory.Location = new System.Drawing.Point(644, 515);
             this.btnHistory.Name = "btnHistory";
@@ -313,7 +315,7 @@ namespace PharmacySorter
             this.btnHistory.UseVisualStyleBackColor = true;
             // 
             // btnCancel
-            //
+            // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnCancel.Location = new System.Drawing.Point(337, 515);
             this.btnCancel.Name = "btnCancel";
@@ -323,7 +325,7 @@ namespace PharmacySorter
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
             // btnMoveTop
-            //
+            // 
             this.btnMoveTop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnMoveTop.Location = new System.Drawing.Point(43, 515);
             this.btnMoveTop.Name = "btnMoveTop";
@@ -488,6 +490,13 @@ namespace PharmacySorter
             this.lblItems.TabIndex = 0;
             this.lblItems.Text = "当前任务明细 0/0";
             // 
+            // prgItems
+            //
+            this.prgItems.Location = new System.Drawing.Point(164, 0);
+            this.prgItems.Name = "prgItems";
+            this.prgItems.Size = new System.Drawing.Size(300, 15);
+            this.prgItems.TabIndex = 7;
+            // 
             // UcDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -552,5 +561,6 @@ namespace PharmacySorter
         private System.Windows.Forms.Label lblDrugName;
         private System.Windows.Forms.TextBox txtPatientNo;
         private System.Windows.Forms.Label lblPatientNo;
+        private System.Windows.Forms.ProgressBar prgItems;
     }
 }

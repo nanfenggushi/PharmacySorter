@@ -506,12 +506,14 @@ namespace PharmacySorter
         }
 
         /// <summary>
-        /// 绑定明细表，并在标题上显示已核对条数和总条数。
+        /// 绑定明细表，并在标题上显示已核对条数和总条数，进度条同步该比例。
         /// </summary>
         private void BindItems()
         {
             int passed = dispenseBll.CountPassed(currentItems);
             lblItems.Text = "当前任务明细 " + passed + "/" + currentItems.Count;
+            prgItems.Maximum = Math.Max(currentItems.Count, 1);
+            prgItems.Value = Math.Min(passed, prgItems.Maximum);
             dgvItems.DataSource = null;
             dgvItems.DataSource = currentItems;
         }
