@@ -169,7 +169,7 @@ namespace PharmacySorter
             this.btnDashboard.Name = "btnDashboard";
             this.btnDashboard.Size = new System.Drawing.Size(124, 32);
             this.btnDashboard.TabIndex = 0;
-            this.btnDashboard.Text = "配药看板";
+            this.btnDashboard.Text = "配药工作台";
             this.btnDashboard.UseVisualStyleBackColor = true;
             this.btnDashboard.Click += new System.EventHandler(this.BtnDashboard_Click);
             // 

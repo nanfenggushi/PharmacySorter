@@ -11,19 +11,19 @@ using System.Windows.Forms;
 namespace PharmacySorter
 {
     /// <summary>
-    /// 配药监控看板。展示当前处方、明细进度和待配任务队列，
+    /// 配药工作台。展示当前处方、明细进度和待配任务队列，
     /// 并直接在录入区把固定处方加入队列、置顶、撤销和查询历史。
     /// 启动后按明细循环抓取，每次投放由落药检测自动确认。
     /// </summary>
     public partial class UcDashboard : UserControl
     {
         /// <summary>
-        /// 看板业务。界面不直接查询数据库。
+        /// 工作台业务。界面不直接查询数据库。
         /// </summary>
         private readonly DispenseBLL dispenseBll = new DispenseBLL();
 
         /// <summary>
-        /// 待配任务队列。加入队列、置顶、撤销和历史查询都在看板操作。
+        /// 待配任务队列。加入队列、置顶、撤销和历史查询都在工作台操作。
         /// </summary>
         private readonly DispenseOrderBLL orderBll = new DispenseOrderBLL();
 
@@ -73,7 +73,7 @@ namespace PharmacySorter
         private List<DispenseOrderItem> currentItems = new List<DispenseOrderItem>();
 
         /// <summary>
-        /// 正在自动配药。切回看板时不能把进行中的处方刷新成空闲。
+        /// 正在自动配药。切回工作台时不能把进行中的处方刷新成空闲。
         /// </summary>
         private bool dispensing;
 
@@ -147,7 +147,7 @@ namespace PharmacySorter
         }
 
         /// <summary>
-        /// 每次重新显示看板都读取最新队列。配药过程中不打断当前处方。
+        /// 每次重新显示工作台都读取最新队列。配药过程中不打断当前处方。
         /// </summary>
         private void UcDashboard_VisibleChanged(object sender, EventArgs e)
         {
@@ -446,7 +446,7 @@ namespace PharmacySorter
             {
                 currentOrder = null;
                 currentItems = new List<DispenseOrderItem>();
-                AppendLog("读取看板数据失败：" + ex.Message);
+                AppendLog("读取工作台数据失败：" + ex.Message);
             }
 
             BindSummary();

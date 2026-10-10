@@ -9,7 +9,7 @@ namespace PharmacySorter
 {
     public partial class FrmMain : Form
     {
-        // 配药监控看板
+        // 配药工作台
         private UserControl ucDashboard = null;
         // 药品字典维护
         private UserControl ucDrugDictionary = null;
@@ -52,12 +52,12 @@ namespace PharmacySorter
         private readonly Color navSelectedTextColor = Color.White;
 
         /// <summary>
-        /// 全局机械臂连接。急停和看板抓取共用这一条串口。
+        /// 全局机械臂连接。急停和工作台抓取共用这一条串口。
         /// </summary>
         private readonly ArmCommandService arm = new ArmCommandService();
 
         /// <summary>
-        /// 全局落药检测。主窗体先打开通道并显示状态，看板配药复用同一通道。
+        /// 全局落药检测。主窗体先打开通道并显示状态，工作台配药复用同一通道。
         /// </summary>
         private readonly IDropDetector dropDetector = DropDetectorFactory.Create();
 
@@ -80,7 +80,7 @@ namespace PharmacySorter
         }
 
         /// <summary>
-        /// 打开默认看板，尝试连接串口和落药传感器，并下发一次开机复位。
+        /// 打开默认工作台，尝试连接串口和落药传感器，并下发一次开机复位。
         /// </summary>
         private void FrmMain_Load(object sender, EventArgs e)
         {
@@ -89,7 +89,7 @@ namespace PharmacySorter
             ClockTimer_Tick(this, EventArgs.Empty);
             ShowConnection(false, ConfigurationManager.AppSettings["ArmPortName"]);
             ShowSensorStatus(false, ConfigurationManager.AppSettings["SensorPortName"]);
-            BtnDashboard_Click(this, EventArgs.Empty); // 切换到看板界面
+            BtnDashboard_Click(this, EventArgs.Empty); // 切换到工作台界面
             BeginInvoke(new Action(ConnectArm));
             BeginInvoke(new Action(ConnectSensor));
         }
@@ -245,7 +245,7 @@ namespace PharmacySorter
             SelectNav(btnSystemOps);
         }
 
-        // 跳转到配药监控看板
+        // 跳转到配药工作台
         private void BtnDashboard_Click(object sender, EventArgs e)
         {
             PageHelper.SwitchPage<UcDashboard>(pnlPageContainer, ref ucDashboard);

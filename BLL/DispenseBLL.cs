@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace BLL
 {
     /// <summary>
-    /// 配药看板业务。只负责读取当前待配任务和判断能否启动，不直接操作界面。
+    /// 配药工作台业务。只负责读取当前待配任务和判断能否启动，不直接操作界面。
     /// </summary>
     public class DispenseBLL
     {
