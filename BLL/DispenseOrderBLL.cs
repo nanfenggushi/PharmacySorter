@@ -12,6 +12,7 @@ namespace BLL
     {
         private readonly DispenseOrderDAL dal = new DispenseOrderDAL();
         private readonly PrescriptionDAL prescriptionDal = new PrescriptionDAL();
+        private readonly DrugDAL drugDal = new DrugDAL();
         private readonly AppLogBLL logBll = new AppLogBLL();
 
         public List<DispenseOrder> GetWaitingQueue()
@@ -47,15 +48,37 @@ namespace BLL
             {
                 throw new ArgumentException("请选择固定处方");
             }
-            if (prescriptionDal.GetItems(prescriptionId).Count == 0)
+            List<PrescriptionItem> items = prescriptionDal.GetItems(prescriptionId);
+            if (items.Count == 0)
             {
                 throw new ArgumentException("该处方没有药品明细");
             }
+            EnsureItemsDispensable(items);
 
             int orderId = dal.AddFromPrescription(prescriptionId, patientNo, dal.GetNextSortNo());
             logBll.Add(null, AppLogType.Prescription,
                 "加入待配队列 " + orderId + "，患者 " + patientNo + "，处方 " + prescription.PrescriptionName);
             return orderId;
+        }
+
+        /// <summary>
+        /// 处方保存时校验过药品可用，但之后药品可能被停用或改绑。
+        /// 入队前再校验一次，不通过就拒绝加入，避免生成一条永远配不了的任务。
+        /// </summary>
+        private void EnsureItemsDispensable(IList<PrescriptionItem> items)
+        {
+            foreach (PrescriptionItem item in items)
+            {
+                Drug drug = drugDal.GetById(item.DrugId);
+                if (drug == null || !drug.IsActive)
+                {
+                    throw new ArgumentException("【" + item.DrugName + "】已停用或不存在，请先在药品字典中处理后再加入队列");
+                }
+                if (drug.StationId != 2 && drug.StationId != 3)
+                {
+                    throw new ArgumentException("【" + item.DrugName + "】没有绑定左侧或右侧药位，请先在药品字典中绑定后再加入队列");
+                }
+            }
         }
 
         public void MoveToTop(int orderId)

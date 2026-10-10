@@ -63,6 +63,7 @@ CREATE TABLE DispenseOrderItem (
     ActualQty INT NOT NULL DEFAULT 0,
     GrabCount INT NOT NULL CONSTRAINT DF_DispenseOrderItem_GrabCount DEFAULT 0,
     Status NVARCHAR(20) NOT NULL DEFAULT N'待取药', -- 待取药 / 取药中 / 待核对 / 核对通过 / 异常
+    StationId INT NULL,                             -- 入队时药品绑定的药位快照。之后改绑/解绑不影响已入队任务；旧数据为 NULL 时按药品当前绑定取
     CONSTRAINT FK_OrderItem_Order FOREIGN KEY (OrderId) REFERENCES DispenseOrder(OrderId),
     CONSTRAINT FK_OrderItem_Drug FOREIGN KEY (DrugId) REFERENCES Drug(DrugId)
 );
@@ -212,6 +213,10 @@ IF OBJECT_ID('DispenseOrder', 'U') IS NOT NULL
 -- 已有明细增加已执行抓取次数。看板用它显示进度，补抓时继续累加。
 IF OBJECT_ID('DispenseOrderItem', 'U') IS NOT NULL AND COL_LENGTH('DispenseOrderItem', 'GrabCount') IS NULL
     ALTER TABLE DispenseOrderItem ADD GrabCount INT NOT NULL CONSTRAINT DF_DispenseOrderItem_GrabCount DEFAULT 0;
+
+-- 已有明细增加工位快照列。新任务入队时写入当时的药品绑定；旧行为 NULL，按药品当前绑定取。
+IF OBJECT_ID('DispenseOrderItem', 'U') IS NOT NULL AND COL_LENGTH('DispenseOrderItem', 'StationId') IS NULL
+    ALTER TABLE DispenseOrderItem ADD StationId INT NULL;
 
 -- 旧库的动作等待偏短。一组动作约 5 到 8 秒，低于 6000ms 的记录补到 6000ms。
 -- 界面里已经手工改得更长的延时保持不动。

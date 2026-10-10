@@ -85,10 +85,11 @@ namespace DAL
                     }
 
                     const string itemSql = @"
-                            INSERT INTO DispenseOrderItem (OrderId, DrugId, RequiredQty, ActualQty, GrabCount, Status)
-                            SELECT @OrderId, DrugId, RequiredQty, 0, 0, N'待取药'
-                            FROM PrescriptionItem
-                            WHERE PrescriptionId = @PrescriptionId";
+                            INSERT INTO DispenseOrderItem (OrderId, DrugId, RequiredQty, ActualQty, GrabCount, Status, StationId)
+                            SELECT @OrderId, pi.DrugId, pi.RequiredQty, 0, 0, N'待取药', d.StationId
+                            FROM PrescriptionItem pi
+                            INNER JOIN Drug d ON pi.DrugId = d.DrugId
+                            WHERE pi.PrescriptionId = @PrescriptionId";
                     using (SqlCommand command = new SqlCommand(itemSql, connection, transaction))
                     {
                         command.Parameters.Add(new SqlParameter("@OrderId", orderId));
@@ -184,13 +185,14 @@ namespace DAL
 
         public List<DispenseOrderItem> GetItems(int orderId)
         {
+            // 工位优先取入队时的快照，之后改绑/解绑不影响已入队任务；快照为空的旧明细退回药品当前绑定。
             const string sql = @"
                         SELECT i.ItemId, i.OrderId, i.DrugId, d.DrugName, d.Spec,
                                i.RequiredQty, i.ActualQty, i.GrabCount, i.Status,
-                               d.StationId, s.StationName
+                               ISNULL(i.StationId, d.StationId) AS StationId, s.StationName
                         FROM DispenseOrderItem i
                         INNER JOIN Drug d ON i.DrugId = d.DrugId
-                        LEFT JOIN StationAction s ON d.StationId = s.StationId
+                        LEFT JOIN StationAction s ON s.StationId = ISNULL(i.StationId, d.StationId)
                         WHERE i.OrderId = @OrderId
                         ORDER BY i.ItemId";
             return MapItems(DbHelper.Find(sql, new SqlParameter("@OrderId", orderId)));
