@@ -239,7 +239,7 @@ namespace PharmacySorter
         }
 
         /// <summary>
-        /// 更新传感器状态标签。模拟模式显示检测器自带的说明（含成功率），
+        /// 更新传感器状态标签。模拟模式用橙色警示并注明未接真实传感器（落药全部按模拟判定），
         /// 真实传感器模式已连接为绿色，未连接为红色。
         /// </summary>
         private void ShowSensorStatus(bool connected, string portName)
@@ -248,8 +248,8 @@ namespace PharmacySorter
 
             if (connected && dropDetector is SimulatedDropDetector)
             {
-                lblSensorStatus.Text = "传感器状态：" + dropDetector.SourceName;
-                lblSensorStatus.ForeColor = Color.SeaGreen;
+                lblSensorStatus.Text = "传感器状态：" + dropDetector.SourceName + "（模拟模式，未接真实传感器）";
+                lblSensorStatus.ForeColor = Color.DarkOrange;
                 return;
             }
 
