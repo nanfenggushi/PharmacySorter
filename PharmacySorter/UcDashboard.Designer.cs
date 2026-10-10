@@ -31,9 +31,11 @@ namespace PharmacySorter
             this.pnlSummary = new System.Windows.Forms.Panel();
             this.lblStatus = new System.Windows.Forms.Label();
             this.lblSummary = new System.Windows.Forms.Label();
+            this.lblBlockReason = new System.Windows.Forms.Label();
             this.pnlBottom = new System.Windows.Forms.Panel();
             this.txtLog = new System.Windows.Forms.TextBox();
             this.btnStart = new System.Windows.Forms.Button();
+            this.btnAbandon = new System.Windows.Forms.Button();
             this.tlpBody = new System.Windows.Forms.TableLayoutPanel();
             this.pnlArm = new System.Windows.Forms.Panel();
             this.grpEntry = new System.Windows.Forms.GroupBox();
@@ -78,13 +80,14 @@ namespace PharmacySorter
             this.SuspendLayout();
             // 
             // pnlSummary
-            // 
+            //
+            this.pnlSummary.Controls.Add(this.lblBlockReason);
             this.pnlSummary.Controls.Add(this.lblStatus);
             this.pnlSummary.Controls.Add(this.lblSummary);
             this.pnlSummary.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlSummary.Location = new System.Drawing.Point(0, 0);
             this.pnlSummary.Name = "pnlSummary";
-            this.pnlSummary.Size = new System.Drawing.Size(1285, 63);
+            this.pnlSummary.Size = new System.Drawing.Size(1285, 92);
             this.pnlSummary.TabIndex = 0;
             // 
             // lblStatus
@@ -105,10 +108,22 @@ namespace PharmacySorter
             this.lblSummary.Size = new System.Drawing.Size(760, 36);
             this.lblSummary.TabIndex = 0;
             this.lblSummary.Text = "当前没有待配任务";
-            // 
+            //
+            // lblBlockReason
+            //
+            this.lblBlockReason.AutoEllipsis = true;
+            this.lblBlockReason.Font = new System.Drawing.Font("Microsoft YaHei UI", 10.5F, System.Drawing.FontStyle.Bold);
+            this.lblBlockReason.ForeColor = System.Drawing.Color.Firebrick;
+            this.lblBlockReason.Location = new System.Drawing.Point(13, 54);
+            this.lblBlockReason.Name = "lblBlockReason";
+            this.lblBlockReason.Size = new System.Drawing.Size(1237, 30);
+            this.lblBlockReason.TabIndex = 2;
+            this.lblBlockReason.Text = "";
+            //
             // pnlBottom
-            // 
+            //
             this.pnlBottom.Controls.Add(this.txtLog);
+            this.pnlBottom.Controls.Add(this.btnAbandon);
             this.pnlBottom.Controls.Add(this.btnStart);
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlBottom.Location = new System.Drawing.Point(0, 644);
@@ -123,16 +138,16 @@ namespace PharmacySorter
             this.txtLog.BackColor = System.Drawing.Color.Black;
             this.txtLog.Font = new System.Drawing.Font("Consolas", 10F);
             this.txtLog.ForeColor = System.Drawing.Color.Lime;
-            this.txtLog.Location = new System.Drawing.Point(180, 12);
+            this.txtLog.Location = new System.Drawing.Point(292, 12);
             this.txtLog.Multiline = true;
             this.txtLog.Name = "txtLog";
             this.txtLog.ReadOnly = true;
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog.Size = new System.Drawing.Size(1070, 70);
+            this.txtLog.Size = new System.Drawing.Size(958, 70);
             this.txtLog.TabIndex = 1;
-            // 
+            //
             // btnStart
-            // 
+            //
             this.btnStart.Location = new System.Drawing.Point(16, 26);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(150, 42);
@@ -140,6 +155,16 @@ namespace PharmacySorter
             this.btnStart.Text = "开始配药";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.BtnStart_Click);
+            //
+            // btnAbandon
+            //
+            this.btnAbandon.Location = new System.Drawing.Point(172, 26);
+            this.btnAbandon.Name = "btnAbandon";
+            this.btnAbandon.Size = new System.Drawing.Size(110, 42);
+            this.btnAbandon.TabIndex = 2;
+            this.btnAbandon.Text = "作废任务";
+            this.btnAbandon.UseVisualStyleBackColor = true;
+            this.btnAbandon.Click += new System.EventHandler(this.BtnAbandon_Click);
             // 
             // tlpBody
             // 
@@ -527,6 +552,8 @@ namespace PharmacySorter
         private System.Windows.Forms.Panel pnlSummary;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Label lblSummary;
+        private System.Windows.Forms.Label lblBlockReason;
+        private System.Windows.Forms.Button btnAbandon;
         private System.Windows.Forms.Panel pnlBottom;
         private System.Windows.Forms.TableLayoutPanel tlpBody;
         private System.Windows.Forms.Panel pnlItems;

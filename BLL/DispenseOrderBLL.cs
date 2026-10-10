@@ -90,6 +90,29 @@ namespace BLL
             return dal.GetItems(orderId);
         }
 
+        /// <summary>
+        /// 作废当前任务。配药中或部分异常的任务配不下去时用它让出队首，
+        /// 剩余明细保留原进度，历史查询仍能看到这条记录。
+        /// </summary>
+        public void Abandon(int orderId)
+        {
+            DispenseOrder order = dal.GetById(orderId);
+            if (order == null)
+            {
+                throw new ArgumentException("待配任务不存在");
+            }
+            if (order.Status != "待配药" && order.Status != "配药中" && order.Status != "部分异常")
+            {
+                throw new ArgumentException("该任务当前状态不能作废");
+            }
+            if (dal.Abandon(orderId) == 0)
+            {
+                throw new ArgumentException("任务状态已变化，不能作废");
+            }
+            logBll.Add(null, AppLogType.Prescription,
+                "作废任务 " + order.OrderId + "，患者 " + order.PatientNo + "，处方 " + order.PrescriptionName);
+        }
+
         private DispenseOrder EnsureWaiting(int orderId)
         {
             DispenseOrder order = dal.GetById(orderId);

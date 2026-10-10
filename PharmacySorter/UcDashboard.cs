@@ -82,6 +82,16 @@ namespace PharmacySorter
         /// </summary>
         private bool autoStartAttempted;
 
+        /// <summary>
+        /// 本轮连续配药跳过的任务及原因。与上一轮相同的不重复写日志，避免同一行每秒刷屏。
+        /// </summary>
+        private readonly List<string> skipMessages = new List<string>();
+
+        /// <summary>
+        /// 上一轮跳过的任务及原因，用于比较这一轮跳过的内容是否发生了变化。
+        /// </summary>
+        private List<string> lastSkipMessages = new List<string>();
+
         public UcDashboard()
         {
             InitializeComponent();
@@ -97,6 +107,7 @@ namespace PharmacySorter
             btnMoveTop.Click += BtnMoveTop_Click;
             btnCancel.Click += BtnCancel_Click;
             btnHistory.Click += BtnHistory_Click;
+            btnAbandon.Click += BtnAbandon_Click;
         }
 
         /// <summary>
@@ -167,6 +178,7 @@ namespace PharmacySorter
             paused = false;
             dispensing = true;
             arm.ClearStop();
+            lastSkipMessages.Clear();
             try
             {
                 if (!arm.IsConnected)
@@ -182,16 +194,21 @@ namespace PharmacySorter
                     // 判断当前是否有任务可以进行
                     if (!BeginCurrentOrder())
                     {
-                        lblStatus.Text = "等待新任务";
-                        lblStatus.ForeColor = Color.Gray;
-                        await Task.Delay(1000);
-                        if (!stopRequested)
+                        // 队列空了，或剩下的任务全都配不了。先把队首任务和原因显示出来，再放慢轮询。
+                        LogSkipsOnce();
+                        LoadCurrent();
+                        bool blocked = skipMessages.Count > 0;
+                        lblStatus.Text = blocked ? "任务被阻塞" : "等待新任务";
+                        lblStatus.ForeColor = blocked ? Color.Firebrick : Color.Gray;
+                        // 有配不了的任务时每 5 秒重试一次，避免每秒重查数据库并刷日志。
+                        // 按 1 秒切片等待，急停后不用等满 5 秒就能退出循环。
+                        int waitSeconds = blocked ? 5 : 1;
+                        for (int i = 0; i < waitSeconds && !stopRequested; i++)
                         {
-                            LoadCurrent();
+                            await Task.Delay(1000);
                         }
                         continue;
                     }
-
                     await RunOrderAsync();
                     if (stopRequested)
                     {
@@ -219,6 +236,7 @@ namespace PharmacySorter
         /// </summary>
         private bool BeginCurrentOrder()
         {
+            skipMessages.Clear();
             while (!stopRequested)
             {
                 if (currentOrder == null)
@@ -238,7 +256,7 @@ namespace PharmacySorter
                 string reason = dispenseBll.GetStartBlockReason(currentOrder, currentItems);
                 if (!string.IsNullOrEmpty(reason))
                 {
-                    AppendLog("跳过任务 " + currentOrder.OrderId + "：" + reason);
+                    RememberSkip("跳过任务 " + currentOrder.OrderId + "：" + reason);
                     LoadCurrent(currentOrder.OrderId);
                     continue;
                 }
@@ -247,10 +265,95 @@ namespace PharmacySorter
                 dispenseBll.Start(currentOrder);
                 BindSummary();
                 AppendLog((resume ? "继续任务 " : "开始任务 ") + currentOrder.OrderId);
+                // 找到能配的任务前跳过的任务也要让操作员知道，并且之后同样的阻塞要重新提示。
+                lastSkipMessages.Clear();
+                LogSkipsOnce();
                 return true;
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// 记录一条跳过信息。同一轮里重复出现只记一次，统一在轮末输出。
+        /// </summary>
+        private void RememberSkip(string message)
+        {
+            if (!skipMessages.Contains(message))
+            {
+                skipMessages.Add(message);
+            }
+        }
+
+        /// <summary>
+        /// 输出本轮跳过的任务。与上一轮完全相同时不重复写，避免日志被同一行刷屏。
+        /// </summary>
+        private void LogSkipsOnce()
+        {
+            if (skipMessages.Count == 0 || SameMessages(skipMessages, lastSkipMessages))
+            {
+                return;
+            }
+
+            foreach (string message in skipMessages)
+            {
+                AppendLog(message);
+            }
+            lastSkipMessages = new List<string>(skipMessages);
+        }
+
+        /// <summary>
+        /// 比较两份跳过信息是否完全相同。
+        /// </summary>
+        private static bool SameMessages(IList<string> left, IList<string> right)
+        {
+            if (left.Count != right.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < left.Count; i++)
+            {
+                if (!string.Equals(left[i], right[i], StringComparison.Ordinal))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 作废当前任务。配不下去的任务（缺药、传感器故障）作废后让出队首，不再阻塞队列。
+        /// 剩余明细保留当前进度，历史查询仍能看到这条记录。
+        /// </summary>
+        private void BtnAbandon_Click(object sender, EventArgs e)
+        {
+            if (currentOrder == null)
+            {
+                MessageBox.Show("当前没有任务可作废", "作废任务", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            DialogResult confirm = MessageBox.Show(
+                "确定作废任务 " + currentOrder.OrderId + "（患者 " + currentOrder.PatientNo + "，处方 " + currentOrder.PrescriptionName + "）吗？\r\n作废后不再配药，剩余明细保留当前进度。",
+                "作废确认",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+            if (confirm != DialogResult.Yes)
+            {
+                return;
+            }
+
+            try
+            {
+                orderBll.Abandon(currentOrder.OrderId);
+                AppendLog("已作废任务 " + currentOrder.OrderId);
+                LoadCurrent();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "作废失败", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         /// <summary>
@@ -472,7 +575,9 @@ namespace PharmacySorter
                 lblSummary.Text = "当前没有待配任务";
                 lblStatus.Text = "空闲";
                 lblStatus.ForeColor = Color.Gray;
+                lblBlockReason.Text = string.Empty;
                 btnStart.Enabled = !dispensing;
+                btnAbandon.Enabled = false;
                 return;
             }
 
@@ -494,6 +599,29 @@ namespace PharmacySorter
                 lblStatus.ForeColor = GetStatusColor(currentOrder.Status);
             }
             btnStart.Enabled = !dispensing;
+            btnAbandon.Enabled = !dispensing;
+            UpdateBlockReason();
+        }
+
+        /// <summary>
+        /// 不在配药时，把当前任务不能开始配药的原因直接显示在摘要下方，操作员不用去翻日志。
+        /// </summary>
+        private void UpdateBlockReason()
+        {
+            if (dispensing || currentOrder == null)
+            {
+                lblBlockReason.Text = string.Empty;
+                return;
+            }
+
+            try
+            {
+                lblBlockReason.Text = dispenseBll.GetStartBlockReason(currentOrder, currentItems);
+            }
+            catch (Exception)
+            {
+                lblBlockReason.Text = string.Empty;
+            }
         }
 
         /// <summary>

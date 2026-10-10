@@ -124,6 +124,15 @@ namespace DAL
             return DbHelper.Update(sql, new SqlParameter("@OrderId", orderId));
         }
 
+        /// <summary>
+        /// 作废一个还没配完的任务。配不下去的任务作废后让出队首，不再被连续配药取到。
+        /// </summary>
+        public int Abandon(int orderId)
+        {
+            const string sql = "UPDATE DispenseOrder SET Status = N'已撤销' WHERE OrderId = @OrderId AND Status IN (N'待配药', N'配药中', N'部分异常')";
+            return DbHelper.Update(sql, new SqlParameter("@OrderId", orderId));
+        }
+
         public DispenseOrder GetById(int orderId)
         {
             const string sql = @"
