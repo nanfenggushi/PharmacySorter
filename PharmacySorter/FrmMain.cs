@@ -336,6 +336,11 @@ namespace PharmacySorter
         private void BtnSystemOps_Click(object sender, EventArgs e)
         {
             PageHelper.SwitchPage<UcSystemOps>(pnlPageContainer, ref ucSystemOps);
+            UcSystemOps systemOps = ucSystemOps as UcSystemOps;
+            if (systemOps != null)
+            {
+                systemOps.BindUser(currentUser);
+            }
             SelectNav(btnSystemOps);
         }
 
