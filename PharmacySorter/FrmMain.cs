@@ -72,6 +72,21 @@ namespace PharmacySorter
         /// </summary>
         private readonly Timer statsTimer = new Timer();
 
+        /// <summary>
+        /// 落药检测通道当前是否打开。模拟模式始终为 true。
+        /// </summary>
+        private bool sensorConnected;
+
+        /// <summary>
+        /// 最近一次机械臂串口连接失败的异常信息，手动重连失败时提示给操作员。
+        /// </summary>
+        private string armConnectError;
+
+        /// <summary>
+        /// 最近一次落药传感器连接失败的异常信息。
+        /// </summary>
+        private string sensorConnectError;
+
         public FrmMain(AppUser user)
         {
             if (user == null)
@@ -141,6 +156,7 @@ namespace PharmacySorter
                 arm.Connect(portName);
                 // 开机先回到 G0002 待命姿态。串口未打开时 SendStandby 会失败，启动配药会被拦住。
                 arm.SendStandby();
+                armConnectError = null;
                 ShowConnection(true, arm.PortName);
                 UcDashboard dashboard = ucDashboard as UcDashboard;
                 if (dashboard != null)
@@ -148,8 +164,9 @@ namespace PharmacySorter
                     dashboard.StartWhenConnected();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                armConnectError = ex.Message;
                 ShowConnection(false, portName);
             }
         }
@@ -180,11 +197,44 @@ namespace PharmacySorter
             try
             {
                 dropDetector.Open();
+                sensorConnected = true;
+                sensorConnectError = null;
                 ShowSensorStatus(true, portName);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                sensorConnected = false;
+                sensorConnectError = ex.Message;
                 ShowSensorStatus(false, portName);
+            }
+        }
+
+        /// <summary>
+        /// 手动重连机械臂和落药传感器串口。配药中掉线后不用重启程序，
+        /// 重连成功后由操作员在工作台点“开始配药”续接任务。
+        /// </summary>
+        private void BtnReconnect_Click(object sender, EventArgs e)
+        {
+            // 先关再开：串口被其他程序占用后释放、或换口后插回时都能恢复。
+            arm.Disconnect();
+            dropDetector.Close();
+            ConnectArm();
+            ConnectSensor();
+
+            System.Text.StringBuilder message = new System.Text.StringBuilder();
+            if (!arm.IsConnected)
+            {
+                message.AppendLine("机械臂串口连接失败：" + armConnectError);
+            }
+            if (!sensorConnected)
+            {
+                message.AppendLine("落药传感器连接失败：" + sensorConnectError);
+            }
+            if (message.Length > 0)
+            {
+                message.AppendLine();
+                message.Append("请检查线缆和 App.config 中的串口配置后重试。");
+                MessageBox.Show(message.ToString(), "重新连接", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 

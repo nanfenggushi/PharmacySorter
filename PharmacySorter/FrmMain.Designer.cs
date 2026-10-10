@@ -34,6 +34,7 @@ namespace PharmacySorter
             this.lblConnection = new System.Windows.Forms.Label();
             this.lblClock = new System.Windows.Forms.Label();
             this.lblOperator = new System.Windows.Forms.Label();
+            this.btnReconnect = new System.Windows.Forms.Button();
             this.pnlNav = new System.Windows.Forms.Panel();
             this.btnEmergencyStop = new System.Windows.Forms.Button();
             this.btnSystemOps = new System.Windows.Forms.Button();
@@ -62,6 +63,7 @@ namespace PharmacySorter
             // 
             this.pnlHeader.Controls.Add(this.lblSensorStatus);
             this.pnlHeader.Controls.Add(this.lblConnection);
+            this.pnlHeader.Controls.Add(this.btnReconnect);
             this.pnlHeader.Controls.Add(this.lblClock);
             this.pnlHeader.Controls.Add(this.lblOperator);
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
@@ -99,7 +101,18 @@ namespace PharmacySorter
             this.lblClock.Size = new System.Drawing.Size(67, 15);
             this.lblClock.TabIndex = 2;
             this.lblClock.Text = "系统时间";
-            // 
+            //
+            // btnReconnect
+            //
+            this.btnReconnect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnReconnect.Location = new System.Drawing.Point(849, 13);
+            this.btnReconnect.Name = "btnReconnect";
+            this.btnReconnect.Size = new System.Drawing.Size(90, 28);
+            this.btnReconnect.TabIndex = 5;
+            this.btnReconnect.Text = "重新连接";
+            this.btnReconnect.UseVisualStyleBackColor = true;
+            this.btnReconnect.Click += new System.EventHandler(this.BtnReconnect_Click);
+            //
             // lblOperator
             // 
             this.lblOperator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -346,6 +359,7 @@ namespace PharmacySorter
         private System.Windows.Forms.Label lblConnection;
         private System.Windows.Forms.Label lblClock;
         private System.Windows.Forms.Label lblOperator;
+        private System.Windows.Forms.Button btnReconnect;
         private System.Windows.Forms.Panel pnlNav;
         private System.Windows.Forms.Panel pnlPageContainer;
         private System.Windows.Forms.Button btnEmergencyStop;
