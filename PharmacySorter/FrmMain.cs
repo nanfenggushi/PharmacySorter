@@ -11,8 +11,10 @@ namespace PharmacySorter
     {
         // 配药监控看板
         private UserControl ucDashboard = null;
-        // 药品与工位（上：药品字典，下：工位指令，分区权限）
-        private UserControl ucDrugStation = null;
+        // 药品字典维护
+        private UserControl ucDrugDictionary = null;
+        // 工位指令配置
+        private UserControl ucStationMapping = null;
         // 固定处方维护
         private UserControl ucPrescriptionCatalog = null;
         // 系统运维（系统日志）
@@ -204,7 +206,8 @@ namespace PharmacySorter
             Button[] buttons = new Button[]
             {
                 btnDashboard,
-                btnDrugStation,
+                btnDrugDictionary,
+                btnStationMapping,
                 btnPrescriptionCatalog,
                 btnSystemOps
             };
@@ -255,17 +258,18 @@ namespace PharmacySorter
             }
         }
 
-        // 跳转到药品与工位（上方药品字典，下方工位指令）
-        private void BtnDrugStation_Click(object sender, EventArgs e)
+        // 跳转到药品字典维护
+        private void BtnDrugDictionary_Click(object sender, EventArgs e)
         {
-            PageHelper.SwitchPage<UcDrugStation>(pnlPageContainer, ref ucDrugStation);
-            UcDrugStation page = ucDrugStation as UcDrugStation;
-            if (page != null)
-            {
-                // 单人管理员使用，工位指令区始终显示。
-                page.SetStationCommandsVisible(true);
-            }
-            SelectNav(btnDrugStation);
+            PageHelper.SwitchPage<UcDrugDictionary>(pnlPageContainer, ref ucDrugDictionary);
+            SelectNav(btnDrugDictionary);
+        }
+
+        // 跳转到工位指令配置
+        private void BtnStationMapping_Click(object sender, EventArgs e)
+        {
+            PageHelper.SwitchPage<UcDrugStationMapping>(pnlPageContainer, ref ucStationMapping);
+            SelectNav(btnStationMapping);
         }
 
         // 跳转到固定处方维护

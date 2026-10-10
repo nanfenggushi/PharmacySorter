@@ -38,7 +38,8 @@ namespace PharmacySorter
             this.btnEmergencyStop = new System.Windows.Forms.Button();
             this.btnSystemOps = new System.Windows.Forms.Button();
             this.btnPrescriptionCatalog = new System.Windows.Forms.Button();
-            this.btnDrugStation = new System.Windows.Forms.Button();
+            this.btnStationMapping = new System.Windows.Forms.Button();
+            this.btnDrugDictionary = new System.Windows.Forms.Button();
             this.btnDashboard = new System.Windows.Forms.Button();
             this.pnlPageContainer = new System.Windows.Forms.Panel();
             this.pnlHeader.SuspendLayout();
@@ -102,7 +103,8 @@ namespace PharmacySorter
             this.pnlNav.Controls.Add(this.btnEmergencyStop);
             this.pnlNav.Controls.Add(this.btnSystemOps);
             this.pnlNav.Controls.Add(this.btnPrescriptionCatalog);
-            this.pnlNav.Controls.Add(this.btnDrugStation);
+            this.pnlNav.Controls.Add(this.btnStationMapping);
+            this.pnlNav.Controls.Add(this.btnDrugDictionary);
             this.pnlNav.Controls.Add(this.btnDashboard);
             this.pnlNav.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlNav.Location = new System.Drawing.Point(0, 57);
@@ -120,10 +122,10 @@ namespace PharmacySorter
             this.btnEmergencyStop.Text = "急停复位";
             this.btnEmergencyStop.UseVisualStyleBackColor = true;
             this.btnEmergencyStop.Click += new System.EventHandler(this.BtnEmergencyStop_Click);
-            // 
+            //
             // btnSystemOps
             //
-            this.btnSystemOps.Location = new System.Drawing.Point(20, 197);
+            this.btnSystemOps.Location = new System.Drawing.Point(20, 252);
             this.btnSystemOps.Name = "btnSystemOps";
             this.btnSystemOps.Size = new System.Drawing.Size(124, 32);
             this.btnSystemOps.TabIndex = 4;
@@ -141,15 +143,25 @@ namespace PharmacySorter
             this.btnPrescriptionCatalog.UseVisualStyleBackColor = true;
             this.btnPrescriptionCatalog.Click += new System.EventHandler(this.BtnPrescriptionCatalog_Click);
             //
-            // btnDrugStation
+            // btnDrugDictionary
             //
-            this.btnDrugStation.Location = new System.Drawing.Point(20, 142);
-            this.btnDrugStation.Name = "btnDrugStation";
-            this.btnDrugStation.Size = new System.Drawing.Size(124, 31);
-            this.btnDrugStation.TabIndex = 2;
-            this.btnDrugStation.Text = "药品与工位";
-            this.btnDrugStation.UseVisualStyleBackColor = true;
-            this.btnDrugStation.Click += new System.EventHandler(this.BtnDrugStation_Click);
+            this.btnDrugDictionary.Location = new System.Drawing.Point(20, 142);
+            this.btnDrugDictionary.Name = "btnDrugDictionary";
+            this.btnDrugDictionary.Size = new System.Drawing.Size(124, 31);
+            this.btnDrugDictionary.TabIndex = 2;
+            this.btnDrugDictionary.Text = "药品字典";
+            this.btnDrugDictionary.UseVisualStyleBackColor = true;
+            this.btnDrugDictionary.Click += new System.EventHandler(this.BtnDrugDictionary_Click);
+            //
+            // btnStationMapping
+            //
+            this.btnStationMapping.Location = new System.Drawing.Point(20, 197);
+            this.btnStationMapping.Name = "btnStationMapping";
+            this.btnStationMapping.Size = new System.Drawing.Size(124, 31);
+            this.btnStationMapping.TabIndex = 3;
+            this.btnStationMapping.Text = "工位指令";
+            this.btnStationMapping.UseVisualStyleBackColor = true;
+            this.btnStationMapping.Click += new System.EventHandler(this.BtnStationMapping_Click);
             //
             // btnDashboard
             // 
@@ -200,7 +212,8 @@ namespace PharmacySorter
         private System.Windows.Forms.Button btnEmergencyStop;
         private System.Windows.Forms.Button btnSystemOps;
         private System.Windows.Forms.Button btnPrescriptionCatalog;
-        private System.Windows.Forms.Button btnDrugStation;
+        private System.Windows.Forms.Button btnStationMapping;
+        private System.Windows.Forms.Button btnDrugDictionary;
         private System.Windows.Forms.Button btnDashboard;
         private System.Windows.Forms.Label lblSensorStatus;
     }
