@@ -39,6 +39,8 @@ namespace DAL
 
         /// <summary>
         /// 读取导航栏“今日统计”的一组数字。todayStart 为当天零点。
+        /// 待配为实时值；已完成和落药按任务完成时间归属当天；
+        /// 异常按传感器故障发生时间（“异常纠偏”日志里的“配药已停止”事件）归属当天。
         /// </summary>
         public TodayStats GetTodayStats(DateTime todayStart)
         {
@@ -50,9 +52,13 @@ namespace DAL
                             (SELECT ISNULL(SUM(i.ActualQty), 0)
                                FROM DispenseOrderItem i
                                INNER JOIN DispenseOrder o ON i.OrderId = o.OrderId
-                               WHERE o.CreateTime >= @TodayStart) AS DroppedToday,
-                            (SELECT COUNT(1) FROM DispenseOrder
-                               WHERE Status = N'部分异常' AND CreateTime >= @TodayStart) AS AbnormalToday";
+                               WHERE o.Status = N'已完成' AND o.CompleteTime >= @TodayStart) AS DroppedToday,
+                            (SELECT COUNT(DISTINCT i.OrderId)
+                               FROM AppLog l
+                               INNER JOIN DispenseOrderItem i ON l.ItemId = i.ItemId
+                               WHERE l.LogType = N'异常纠偏'
+                                 AND l.LogTime >= @TodayStart
+                                 AND l.Content LIKE N'%配药已停止%') AS AbnormalToday";
             DataSet dataSet = DbHelper.Find(sql, new SqlParameter("@TodayStart", todayStart));
             DataRow row = dataSet.Tables[0].Rows[0];
             return new TodayStats

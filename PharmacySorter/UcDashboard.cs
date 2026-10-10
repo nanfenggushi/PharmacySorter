@@ -78,6 +78,14 @@ namespace PharmacySorter
         private bool dispensing;
 
         /// <summary>
+        /// 当前是否正在连续配药。主窗体用它判断复位按钮是否可用。
+        /// </summary>
+        public bool IsDispensing
+        {
+            get { return dispensing; }
+        }
+
+        /// <summary>
         /// 是否已经尝试过自动启动。只在程序启动并连上串口后启动一次。
         /// </summary>
         private bool autoStartAttempted;

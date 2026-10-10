@@ -22,10 +22,9 @@ namespace PharmacySorter
         private UserControl ucSystemOps = null;
 
         /// <summary>
-        /// 当前登录账号。顶栏显示其姓名与角色。
+        /// 当前登录账号。
         /// </summary>
         private readonly AppUser currentUser;
-        private readonly Timer clockTimer = new Timer();
 
         /// <summary>
         /// 当前选中的导航按钮。
@@ -96,11 +95,8 @@ namespace PharmacySorter
 
             currentUser = user;
             InitializeComponent();
-            lblOperator.Text = user.DisplayName + "（" + user.RoleName + "）";
             btnEmergencyStop.BackColor = Color.Firebrick;
             btnEmergencyStop.ForeColor = Color.White;
-            clockTimer.Interval = 1000;
-            clockTimer.Tick += ClockTimer_Tick;
             statsTimer.Interval = 15000;
             statsTimer.Tick += StatsTimer_Tick;
             statsTimer.Start();
@@ -113,23 +109,20 @@ namespace PharmacySorter
         /// </summary>
         private void FrmMain_Load(object sender, EventArgs e)
         {
-            clockTimer.Start(); // 启动定时器
             PrepareNavButtons(); // 初始化导航按钮样式
-            ClockTimer_Tick(this, EventArgs.Empty);
             ShowConnection(false, ConfigurationManager.AppSettings["ArmPortName"]);
             ShowSensorStatus(false, ConfigurationManager.AppSettings["SensorPortName"]);
             BtnDashboard_Click(this, EventArgs.Empty); // 切换到工作台界面
             BeginInvoke(new Action(ConnectArm));
             BeginInvoke(new Action(ConnectSensor));
+            BeginInvoke(new Action(NotifySimulatedDrop));
         }
 
         /// <summary>
-        /// 关闭窗口时释放串口、落药检测通道、时钟和统计定时器。
+        /// 关闭窗口时释放串口、落药检测通道和统计定时器。
         /// </summary>
         private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
-            clockTimer.Stop();
-            clockTimer.Dispose();
             statsTimer.Stop();
             statsTimer.Dispose();
             arm.Disconnect();
@@ -137,11 +130,18 @@ namespace PharmacySorter
         }
 
         /// <summary>
-        /// 刷新右上角系统时间。
+        /// 模拟落药模式下登录后提醒一次：不接真实传感器，投放按成功率判定，仅用于开发测试。
         /// </summary>
-        private void ClockTimer_Tick(object sender, EventArgs e)
+        private void NotifySimulatedDrop()
         {
-            lblClock.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            if (dropDetector is SimulatedDropDetector)
+            {
+                MessageBox.Show(
+                    "当前使用模拟落药模式：不连接真实传感器，每次投放按配置成功率自动判定。\r\n该模式仅用于开发测试，正式使用前请把 App.config 中的 DropSimulate 改为 false。",
+                    "模拟落药模式",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
         }
 
         /// <summary>
@@ -239,7 +239,7 @@ namespace PharmacySorter
         }
 
         /// <summary>
-        /// 更新传感器状态标签。模拟模式用橙色警示并注明未接真实传感器（落药全部按模拟判定），
+        /// 更新传感器状态标签。模拟模式用橙色短提示（登录时另有弹窗提醒），
         /// 真实传感器模式已连接为绿色，未连接为红色。
         /// </summary>
         private void ShowSensorStatus(bool connected, string portName)
@@ -248,7 +248,7 @@ namespace PharmacySorter
 
             if (connected && dropDetector is SimulatedDropDetector)
             {
-                lblSensorStatus.Text = "传感器状态：" + dropDetector.SourceName + "（模拟模式，未接真实传感器）";
+                lblSensorStatus.Text = "传感器状态：" + dropDetector.SourceName;
                 lblSensorStatus.ForeColor = Color.DarkOrange;
                 return;
             }
@@ -381,6 +381,10 @@ namespace PharmacySorter
         /// <summary>
         /// 急停。先打断正在等待的动作，再下发 G0002，让机械臂抬起并张开夹爪。
         /// </summary>
+        /// <summary>
+        /// 急停：只中断当前动作等待和配药循环，机械臂停在当前位置，不下发任何指令。
+        /// 确认现场安全后再点【复位】让机械臂回到待命姿态。
+        /// </summary>
         private void BtnEmergencyStop_Click(object sender, EventArgs e)
         {
             arm.RequestStop();
@@ -388,6 +392,20 @@ namespace PharmacySorter
             if (dashboard != null)
             {
                 dashboard.RequestStop();
+            }
+        }
+
+        /// <summary>
+        /// 复位：清除急停标记并下发 G0002，让机械臂回到待命姿态。
+        /// 配药进行中不允许复位，请先急停。
+        /// </summary>
+        private void BtnResetArm_Click(object sender, EventArgs e)
+        {
+            UcDashboard dashboard = ucDashboard as UcDashboard;
+            if (dashboard != null && dashboard.IsDispensing)
+            {
+                MessageBox.Show("配药进行中，请先急停再复位。", "复位", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
             }
 
             try
@@ -398,7 +416,7 @@ namespace PharmacySorter
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "急停复位失败", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(ex.Message, "复位失败", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

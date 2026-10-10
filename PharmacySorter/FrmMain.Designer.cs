@@ -32,17 +32,8 @@ namespace PharmacySorter
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblSensorStatus = new System.Windows.Forms.Label();
             this.lblConnection = new System.Windows.Forms.Label();
-            this.lblClock = new System.Windows.Forms.Label();
-            this.lblOperator = new System.Windows.Forms.Label();
             this.btnReconnect = new System.Windows.Forms.Button();
             this.pnlNav = new System.Windows.Forms.Panel();
-            this.btnEmergencyStop = new System.Windows.Forms.Button();
-            this.btnSystemOps = new System.Windows.Forms.Button();
-            this.btnPrescriptionCatalog = new System.Windows.Forms.Button();
-            this.btnStationMapping = new System.Windows.Forms.Button();
-            this.btnDrugDictionary = new System.Windows.Forms.Button();
-            this.btnDashboard = new System.Windows.Forms.Button();
-            this.pnlPageContainer = new System.Windows.Forms.Panel();
             this.grpStats = new System.Windows.Forms.GroupBox();
             this.tlpStats = new System.Windows.Forms.TableLayoutPanel();
             this.lblStatWaiting = new System.Windows.Forms.Label();
@@ -53,6 +44,14 @@ namespace PharmacySorter
             this.lblStatDroppedValue = new System.Windows.Forms.Label();
             this.lblStatAbnormal = new System.Windows.Forms.Label();
             this.lblStatAbnormalValue = new System.Windows.Forms.Label();
+            this.btnEmergencyStop = new System.Windows.Forms.Button();
+            this.btnSystemOps = new System.Windows.Forms.Button();
+            this.btnPrescriptionCatalog = new System.Windows.Forms.Button();
+            this.btnStationMapping = new System.Windows.Forms.Button();
+            this.btnDrugDictionary = new System.Windows.Forms.Button();
+            this.btnDashboard = new System.Windows.Forms.Button();
+            this.pnlPageContainer = new System.Windows.Forms.Panel();
+            this.btnResetArm = new System.Windows.Forms.Button();
             this.pnlHeader.SuspendLayout();
             this.pnlNav.SuspendLayout();
             this.grpStats.SuspendLayout();
@@ -61,11 +60,11 @@ namespace PharmacySorter
             // 
             // pnlHeader
             // 
+            this.pnlHeader.Controls.Add(this.btnResetArm);
             this.pnlHeader.Controls.Add(this.lblSensorStatus);
+            this.pnlHeader.Controls.Add(this.btnEmergencyStop);
             this.pnlHeader.Controls.Add(this.lblConnection);
             this.pnlHeader.Controls.Add(this.btnReconnect);
-            this.pnlHeader.Controls.Add(this.lblClock);
-            this.pnlHeader.Controls.Add(this.lblOperator);
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlHeader.Location = new System.Drawing.Point(0, 0);
             this.pnlHeader.Name = "pnlHeader";
@@ -76,7 +75,7 @@ namespace PharmacySorter
             // 
             this.lblSensorStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblSensorStatus.AutoSize = true;
-            this.lblSensorStatus.Location = new System.Drawing.Point(960, 19);
+            this.lblSensorStatus.Location = new System.Drawing.Point(715, 19);
             this.lblSensorStatus.Name = "lblSensorStatus";
             this.lblSensorStatus.Size = new System.Drawing.Size(142, 15);
             this.lblSensorStatus.TabIndex = 4;
@@ -92,41 +91,20 @@ namespace PharmacySorter
             this.lblConnection.TabIndex = 3;
             this.lblConnection.Text = "通信状态：正在连接";
             // 
-            // lblClock
-            // 
-            this.lblClock.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblClock.AutoSize = true;
-            this.lblClock.Location = new System.Drawing.Point(754, 19);
-            this.lblClock.Name = "lblClock";
-            this.lblClock.Size = new System.Drawing.Size(67, 15);
-            this.lblClock.TabIndex = 2;
-            this.lblClock.Text = "系统时间";
-            //
             // btnReconnect
-            //
+            // 
             this.btnReconnect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReconnect.Location = new System.Drawing.Point(849, 13);
+            this.btnReconnect.Location = new System.Drawing.Point(399, 12);
             this.btnReconnect.Name = "btnReconnect";
             this.btnReconnect.Size = new System.Drawing.Size(90, 28);
             this.btnReconnect.TabIndex = 5;
             this.btnReconnect.Text = "重新连接";
             this.btnReconnect.UseVisualStyleBackColor = true;
             this.btnReconnect.Click += new System.EventHandler(this.BtnReconnect_Click);
-            //
-            // lblOperator
-            // 
-            this.lblOperator.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblOperator.AutoSize = true;
-            this.lblOperator.Location = new System.Drawing.Point(24, 19);
-            this.lblOperator.Name = "lblOperator";
-            this.lblOperator.Size = new System.Drawing.Size(52, 15);
-            this.lblOperator.TabIndex = 1;
-            this.lblOperator.Text = "操作员";
             // 
             // pnlNav
             // 
             this.pnlNav.Controls.Add(this.grpStats);
-            this.pnlNav.Controls.Add(this.btnEmergencyStop);
             this.pnlNav.Controls.Add(this.btnSystemOps);
             this.pnlNav.Controls.Add(this.btnPrescriptionCatalog);
             this.pnlNav.Controls.Add(this.btnStationMapping);
@@ -138,14 +116,138 @@ namespace PharmacySorter
             this.pnlNav.Size = new System.Drawing.Size(166, 721);
             this.pnlNav.TabIndex = 1;
             // 
+            // grpStats
+            // 
+            this.grpStats.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.grpStats.Controls.Add(this.tlpStats);
+            this.grpStats.Location = new System.Drawing.Point(20, 319);
+            this.grpStats.Name = "grpStats";
+            this.grpStats.Size = new System.Drawing.Size(124, 284);
+            this.grpStats.TabIndex = 8;
+            this.grpStats.TabStop = false;
+            this.grpStats.Text = "今日统计";
+            // 
+            // tlpStats
+            // 
+            this.tlpStats.ColumnCount = 2;
+            this.tlpStats.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 58F));
+            this.tlpStats.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 42F));
+            this.tlpStats.Controls.Add(this.lblStatWaiting, 0, 0);
+            this.tlpStats.Controls.Add(this.lblStatWaitingValue, 1, 0);
+            this.tlpStats.Controls.Add(this.lblStatCompleted, 0, 1);
+            this.tlpStats.Controls.Add(this.lblStatCompletedValue, 1, 1);
+            this.tlpStats.Controls.Add(this.lblStatDropped, 0, 2);
+            this.tlpStats.Controls.Add(this.lblStatDroppedValue, 1, 2);
+            this.tlpStats.Controls.Add(this.lblStatAbnormal, 0, 3);
+            this.tlpStats.Controls.Add(this.lblStatAbnormalValue, 1, 3);
+            this.tlpStats.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpStats.Location = new System.Drawing.Point(3, 21);
+            this.tlpStats.Name = "tlpStats";
+            this.tlpStats.RowCount = 4;
+            this.tlpStats.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpStats.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpStats.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpStats.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlpStats.Size = new System.Drawing.Size(118, 260);
+            this.tlpStats.TabIndex = 0;
+            // 
+            // lblStatWaiting
+            // 
+            this.lblStatWaiting.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblStatWaiting.Location = new System.Drawing.Point(3, 0);
+            this.lblStatWaiting.Name = "lblStatWaiting";
+            this.lblStatWaiting.Size = new System.Drawing.Size(62, 65);
+            this.lblStatWaiting.TabIndex = 0;
+            this.lblStatWaiting.Text = "待配任务";
+            this.lblStatWaiting.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblStatWaitingValue
+            // 
+            this.lblStatWaitingValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblStatWaitingValue.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblStatWaitingValue.ForeColor = System.Drawing.Color.DarkOrange;
+            this.lblStatWaitingValue.Location = new System.Drawing.Point(71, 0);
+            this.lblStatWaitingValue.Name = "lblStatWaitingValue";
+            this.lblStatWaitingValue.Size = new System.Drawing.Size(44, 65);
+            this.lblStatWaitingValue.TabIndex = 1;
+            this.lblStatWaitingValue.Text = "0 单";
+            this.lblStatWaitingValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblStatCompleted
+            // 
+            this.lblStatCompleted.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblStatCompleted.Location = new System.Drawing.Point(3, 65);
+            this.lblStatCompleted.Name = "lblStatCompleted";
+            this.lblStatCompleted.Size = new System.Drawing.Size(62, 65);
+            this.lblStatCompleted.TabIndex = 2;
+            this.lblStatCompleted.Text = "今日完成";
+            this.lblStatCompleted.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblStatCompletedValue
+            // 
+            this.lblStatCompletedValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblStatCompletedValue.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblStatCompletedValue.ForeColor = System.Drawing.Color.SeaGreen;
+            this.lblStatCompletedValue.Location = new System.Drawing.Point(71, 65);
+            this.lblStatCompletedValue.Name = "lblStatCompletedValue";
+            this.lblStatCompletedValue.Size = new System.Drawing.Size(44, 65);
+            this.lblStatCompletedValue.TabIndex = 3;
+            this.lblStatCompletedValue.Text = "0 单";
+            this.lblStatCompletedValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblStatDropped
+            // 
+            this.lblStatDropped.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblStatDropped.Location = new System.Drawing.Point(3, 130);
+            this.lblStatDropped.Name = "lblStatDropped";
+            this.lblStatDropped.Size = new System.Drawing.Size(62, 65);
+            this.lblStatDropped.TabIndex = 4;
+            this.lblStatDropped.Text = "今日落药";
+            this.lblStatDropped.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblStatDroppedValue
+            // 
+            this.lblStatDroppedValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblStatDroppedValue.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblStatDroppedValue.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.lblStatDroppedValue.Location = new System.Drawing.Point(71, 130);
+            this.lblStatDroppedValue.Name = "lblStatDroppedValue";
+            this.lblStatDroppedValue.Size = new System.Drawing.Size(44, 65);
+            this.lblStatDroppedValue.TabIndex = 5;
+            this.lblStatDroppedValue.Text = "0 盒";
+            this.lblStatDroppedValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblStatAbnormal
+            // 
+            this.lblStatAbnormal.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblStatAbnormal.Location = new System.Drawing.Point(3, 195);
+            this.lblStatAbnormal.Name = "lblStatAbnormal";
+            this.lblStatAbnormal.Size = new System.Drawing.Size(62, 65);
+            this.lblStatAbnormal.TabIndex = 6;
+            this.lblStatAbnormal.Text = "今日异常";
+            this.lblStatAbnormal.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblStatAbnormalValue
+            // 
+            this.lblStatAbnormalValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblStatAbnormalValue.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblStatAbnormalValue.ForeColor = System.Drawing.Color.Firebrick;
+            this.lblStatAbnormalValue.Location = new System.Drawing.Point(71, 195);
+            this.lblStatAbnormalValue.Name = "lblStatAbnormalValue";
+            this.lblStatAbnormalValue.Size = new System.Drawing.Size(44, 65);
+            this.lblStatAbnormalValue.TabIndex = 7;
+            this.lblStatAbnormalValue.Text = "0 单";
+            this.lblStatAbnormalValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // btnEmergencyStop
             // 
             this.btnEmergencyStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnEmergencyStop.Location = new System.Drawing.Point(20, 646);
+            this.btnEmergencyStop.Location = new System.Drawing.Point(44, 12);
             this.btnEmergencyStop.Name = "btnEmergencyStop";
-            this.btnEmergencyStop.Size = new System.Drawing.Size(124, 50);
+            this.btnEmergencyStop.Size = new System.Drawing.Size(94, 28);
             this.btnEmergencyStop.TabIndex = 5;
-            this.btnEmergencyStop.Text = "急停复位";
+            this.btnEmergencyStop.Text = "急停";
             this.btnEmergencyStop.UseVisualStyleBackColor = true;
             this.btnEmergencyStop.Click += new System.EventHandler(this.BtnEmergencyStop_Click);
             // 
@@ -207,130 +309,17 @@ namespace PharmacySorter
             this.pnlPageContainer.Size = new System.Drawing.Size(1273, 721);
             this.pnlPageContainer.TabIndex = 2;
             //
-            // grpStats
+            // btnResetArm
             //
-            this.grpStats.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.grpStats.Controls.Add(this.tlpStats);
-            this.grpStats.Location = new System.Drawing.Point(20, 319);
-            this.grpStats.Name = "grpStats";
-            this.grpStats.Size = new System.Drawing.Size(124, 284);
-            this.grpStats.TabIndex = 8;
-            this.grpStats.TabStop = false;
-            this.grpStats.Text = "今日统计";
-            //
-            // tlpStats
-            //
-            this.tlpStats.ColumnCount = 2;
-            this.tlpStats.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 58F));
-            this.tlpStats.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 42F));
-            this.tlpStats.Controls.Add(this.lblStatWaiting, 0, 0);
-            this.tlpStats.Controls.Add(this.lblStatWaitingValue, 1, 0);
-            this.tlpStats.Controls.Add(this.lblStatCompleted, 0, 1);
-            this.tlpStats.Controls.Add(this.lblStatCompletedValue, 1, 1);
-            this.tlpStats.Controls.Add(this.lblStatDropped, 0, 2);
-            this.tlpStats.Controls.Add(this.lblStatDroppedValue, 1, 2);
-            this.tlpStats.Controls.Add(this.lblStatAbnormal, 0, 3);
-            this.tlpStats.Controls.Add(this.lblStatAbnormalValue, 1, 3);
-            this.tlpStats.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpStats.Location = new System.Drawing.Point(3, 17);
-            this.tlpStats.Name = "tlpStats";
-            this.tlpStats.RowCount = 4;
-            this.tlpStats.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpStats.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpStats.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpStats.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpStats.Size = new System.Drawing.Size(118, 264);
-            this.tlpStats.TabIndex = 0;
-            //
-            // lblStatWaiting
-            //
-            this.lblStatWaiting.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblStatWaiting.Location = new System.Drawing.Point(3, 0);
-            this.lblStatWaiting.Name = "lblStatWaiting";
-            this.lblStatWaiting.Size = new System.Drawing.Size(62, 66);
-            this.lblStatWaiting.TabIndex = 0;
-            this.lblStatWaiting.Text = "待配任务";
-            this.lblStatWaiting.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            //
-            // lblStatWaitingValue
-            //
-            this.lblStatWaitingValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblStatWaitingValue.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblStatWaitingValue.ForeColor = System.Drawing.Color.DarkOrange;
-            this.lblStatWaitingValue.Location = new System.Drawing.Point(71, 0);
-            this.lblStatWaitingValue.Name = "lblStatWaitingValue";
-            this.lblStatWaitingValue.Size = new System.Drawing.Size(44, 66);
-            this.lblStatWaitingValue.TabIndex = 1;
-            this.lblStatWaitingValue.Text = "0 单";
-            this.lblStatWaitingValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            //
-            // lblStatCompleted
-            //
-            this.lblStatCompleted.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblStatCompleted.Location = new System.Drawing.Point(3, 66);
-            this.lblStatCompleted.Name = "lblStatCompleted";
-            this.lblStatCompleted.Size = new System.Drawing.Size(62, 66);
-            this.lblStatCompleted.TabIndex = 2;
-            this.lblStatCompleted.Text = "今日完成";
-            this.lblStatCompleted.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            //
-            // lblStatCompletedValue
-            //
-            this.lblStatCompletedValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblStatCompletedValue.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblStatCompletedValue.ForeColor = System.Drawing.Color.SeaGreen;
-            this.lblStatCompletedValue.Location = new System.Drawing.Point(71, 66);
-            this.lblStatCompletedValue.Name = "lblStatCompletedValue";
-            this.lblStatCompletedValue.Size = new System.Drawing.Size(44, 66);
-            this.lblStatCompletedValue.TabIndex = 3;
-            this.lblStatCompletedValue.Text = "0 单";
-            this.lblStatCompletedValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            //
-            // lblStatDropped
-            //
-            this.lblStatDropped.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblStatDropped.Location = new System.Drawing.Point(3, 132);
-            this.lblStatDropped.Name = "lblStatDropped";
-            this.lblStatDropped.Size = new System.Drawing.Size(62, 66);
-            this.lblStatDropped.TabIndex = 4;
-            this.lblStatDropped.Text = "今日落药";
-            this.lblStatDropped.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            //
-            // lblStatDroppedValue
-            //
-            this.lblStatDroppedValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblStatDroppedValue.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblStatDroppedValue.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.lblStatDroppedValue.Location = new System.Drawing.Point(71, 132);
-            this.lblStatDroppedValue.Name = "lblStatDroppedValue";
-            this.lblStatDroppedValue.Size = new System.Drawing.Size(44, 66);
-            this.lblStatDroppedValue.TabIndex = 5;
-            this.lblStatDroppedValue.Text = "0 盒";
-            this.lblStatDroppedValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            //
-            // lblStatAbnormal
-            //
-            this.lblStatAbnormal.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblStatAbnormal.Location = new System.Drawing.Point(3, 198);
-            this.lblStatAbnormal.Name = "lblStatAbnormal";
-            this.lblStatAbnormal.Size = new System.Drawing.Size(62, 66);
-            this.lblStatAbnormal.TabIndex = 6;
-            this.lblStatAbnormal.Text = "今日异常";
-            this.lblStatAbnormal.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            //
-            // lblStatAbnormalValue
-            //
-            this.lblStatAbnormalValue.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblStatAbnormalValue.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblStatAbnormalValue.ForeColor = System.Drawing.Color.Firebrick;
-            this.lblStatAbnormalValue.Location = new System.Drawing.Point(71, 198);
-            this.lblStatAbnormalValue.Name = "lblStatAbnormalValue";
-            this.lblStatAbnormalValue.Size = new System.Drawing.Size(44, 66);
-            this.lblStatAbnormalValue.TabIndex = 7;
-            this.lblStatAbnormalValue.Text = "0 单";
-            this.lblStatAbnormalValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            //
+            this.btnResetArm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnResetArm.Location = new System.Drawing.Point(210, 12);
+            this.btnResetArm.Name = "btnResetArm";
+            this.btnResetArm.Size = new System.Drawing.Size(94, 28);
+            this.btnResetArm.TabIndex = 6;
+            this.btnResetArm.Text = "复位";
+            this.btnResetArm.UseVisualStyleBackColor = true;
+            this.btnResetArm.Click += new System.EventHandler(this.BtnResetArm_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -357,8 +346,6 @@ namespace PharmacySorter
 
         private System.Windows.Forms.Panel pnlHeader;
         private System.Windows.Forms.Label lblConnection;
-        private System.Windows.Forms.Label lblClock;
-        private System.Windows.Forms.Label lblOperator;
         private System.Windows.Forms.Button btnReconnect;
         private System.Windows.Forms.Panel pnlNav;
         private System.Windows.Forms.Panel pnlPageContainer;
@@ -379,6 +366,7 @@ namespace PharmacySorter
         private System.Windows.Forms.Label lblStatDroppedValue;
         private System.Windows.Forms.Label lblStatAbnormal;
         private System.Windows.Forms.Label lblStatAbnormalValue;
+        private System.Windows.Forms.Button btnResetArm;
     }
 }
 
