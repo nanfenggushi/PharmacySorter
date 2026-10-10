@@ -6,8 +6,8 @@ using System.Windows.Forms;
 namespace PharmacySorter
 {
     /// <summary>
-    /// 系统运维模块。单人使用的上位机不再维护账号列表，
-    /// 页面保留系统日志查询和当前账号的密码修改。
+    /// 系统运维模块。页面为 Tab 结构，含“系统日志”和“修改密码”两个可切换页签：
+    /// 日志查询在系统日志页，单人使用的上位机仅保留当前账号的改密入口。
     /// </summary>
     public partial class UcSystemOps : UserControl
     {

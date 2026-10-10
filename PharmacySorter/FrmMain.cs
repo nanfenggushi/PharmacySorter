@@ -18,7 +18,7 @@ namespace PharmacySorter
         private UserControl ucStationMapping = null;
         // 固定处方维护
         private UserControl ucPrescriptionCatalog = null;
-        // 系统运维（系统日志）
+        // 系统运维（系统日志 / 修改密码两个页签）
         private UserControl ucSystemOps = null;
 
         /// <summary>

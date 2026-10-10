@@ -30,7 +30,9 @@ namespace PharmacySorter
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.pnlHeader = new System.Windows.Forms.Panel();
+            this.btnResetArm = new System.Windows.Forms.Button();
             this.lblSensorStatus = new System.Windows.Forms.Label();
+            this.btnEmergencyStop = new System.Windows.Forms.Button();
             this.lblConnection = new System.Windows.Forms.Label();
             this.btnReconnect = new System.Windows.Forms.Button();
             this.pnlNav = new System.Windows.Forms.Panel();
@@ -44,14 +46,12 @@ namespace PharmacySorter
             this.lblStatDroppedValue = new System.Windows.Forms.Label();
             this.lblStatAbnormal = new System.Windows.Forms.Label();
             this.lblStatAbnormalValue = new System.Windows.Forms.Label();
-            this.btnEmergencyStop = new System.Windows.Forms.Button();
             this.btnSystemOps = new System.Windows.Forms.Button();
             this.btnPrescriptionCatalog = new System.Windows.Forms.Button();
             this.btnStationMapping = new System.Windows.Forms.Button();
             this.btnDrugDictionary = new System.Windows.Forms.Button();
             this.btnDashboard = new System.Windows.Forms.Button();
             this.pnlPageContainer = new System.Windows.Forms.Panel();
-            this.btnResetArm = new System.Windows.Forms.Button();
             this.pnlHeader.SuspendLayout();
             this.pnlNav.SuspendLayout();
             this.grpStats.SuspendLayout();
@@ -68,24 +68,46 @@ namespace PharmacySorter
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlHeader.Location = new System.Drawing.Point(0, 0);
             this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(1439, 57);
+            this.pnlHeader.Size = new System.Drawing.Size(1511, 57);
             this.pnlHeader.TabIndex = 0;
+            // 
+            // btnResetArm
+            // 
+            this.btnResetArm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnResetArm.Location = new System.Drawing.Point(210, 12);
+            this.btnResetArm.Name = "btnResetArm";
+            this.btnResetArm.Size = new System.Drawing.Size(94, 28);
+            this.btnResetArm.TabIndex = 6;
+            this.btnResetArm.Text = "复位";
+            this.btnResetArm.UseVisualStyleBackColor = true;
+            this.btnResetArm.Click += new System.EventHandler(this.BtnResetArm_Click);
             // 
             // lblSensorStatus
             // 
             this.lblSensorStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblSensorStatus.AutoSize = true;
-            this.lblSensorStatus.Location = new System.Drawing.Point(715, 19);
+            this.lblSensorStatus.Location = new System.Drawing.Point(907, 19);
             this.lblSensorStatus.Name = "lblSensorStatus";
             this.lblSensorStatus.Size = new System.Drawing.Size(142, 15);
             this.lblSensorStatus.TabIndex = 4;
             this.lblSensorStatus.Text = "传感器状态：检测中";
             // 
+            // btnEmergencyStop
+            // 
+            this.btnEmergencyStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnEmergencyStop.Location = new System.Drawing.Point(44, 12);
+            this.btnEmergencyStop.Name = "btnEmergencyStop";
+            this.btnEmergencyStop.Size = new System.Drawing.Size(94, 28);
+            this.btnEmergencyStop.TabIndex = 5;
+            this.btnEmergencyStop.Text = "急停";
+            this.btnEmergencyStop.UseVisualStyleBackColor = true;
+            this.btnEmergencyStop.Click += new System.EventHandler(this.BtnEmergencyStop_Click);
+            // 
             // lblConnection
             // 
             this.lblConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblConnection.AutoSize = true;
-            this.lblConnection.Location = new System.Drawing.Point(1249, 19);
+            this.lblConnection.Location = new System.Drawing.Point(1321, 19);
             this.lblConnection.Name = "lblConnection";
             this.lblConnection.Size = new System.Drawing.Size(142, 15);
             this.lblConnection.TabIndex = 3;
@@ -94,7 +116,7 @@ namespace PharmacySorter
             // btnReconnect
             // 
             this.btnReconnect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReconnect.Location = new System.Drawing.Point(399, 12);
+            this.btnReconnect.Location = new System.Drawing.Point(396, 12);
             this.btnReconnect.Name = "btnReconnect";
             this.btnReconnect.Size = new System.Drawing.Size(90, 28);
             this.btnReconnect.TabIndex = 5;
@@ -113,7 +135,7 @@ namespace PharmacySorter
             this.pnlNav.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlNav.Location = new System.Drawing.Point(0, 57);
             this.pnlNav.Name = "pnlNav";
-            this.pnlNav.Size = new System.Drawing.Size(166, 721);
+            this.pnlNav.Size = new System.Drawing.Size(182, 721);
             this.pnlNav.TabIndex = 1;
             // 
             // grpStats
@@ -123,7 +145,7 @@ namespace PharmacySorter
             this.grpStats.Controls.Add(this.tlpStats);
             this.grpStats.Location = new System.Drawing.Point(20, 319);
             this.grpStats.Name = "grpStats";
-            this.grpStats.Size = new System.Drawing.Size(124, 284);
+            this.grpStats.Size = new System.Drawing.Size(142, 284);
             this.grpStats.TabIndex = 8;
             this.grpStats.TabStop = false;
             this.grpStats.Text = "今日统计";
@@ -149,7 +171,7 @@ namespace PharmacySorter
             this.tlpStats.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tlpStats.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tlpStats.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tlpStats.Size = new System.Drawing.Size(118, 260);
+            this.tlpStats.Size = new System.Drawing.Size(136, 260);
             this.tlpStats.TabIndex = 0;
             // 
             // lblStatWaiting
@@ -157,7 +179,7 @@ namespace PharmacySorter
             this.lblStatWaiting.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblStatWaiting.Location = new System.Drawing.Point(3, 0);
             this.lblStatWaiting.Name = "lblStatWaiting";
-            this.lblStatWaiting.Size = new System.Drawing.Size(62, 65);
+            this.lblStatWaiting.Size = new System.Drawing.Size(72, 65);
             this.lblStatWaiting.TabIndex = 0;
             this.lblStatWaiting.Text = "待配任务";
             this.lblStatWaiting.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -167,9 +189,9 @@ namespace PharmacySorter
             this.lblStatWaitingValue.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblStatWaitingValue.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblStatWaitingValue.ForeColor = System.Drawing.Color.DarkOrange;
-            this.lblStatWaitingValue.Location = new System.Drawing.Point(71, 0);
+            this.lblStatWaitingValue.Location = new System.Drawing.Point(81, 0);
             this.lblStatWaitingValue.Name = "lblStatWaitingValue";
-            this.lblStatWaitingValue.Size = new System.Drawing.Size(44, 65);
+            this.lblStatWaitingValue.Size = new System.Drawing.Size(52, 65);
             this.lblStatWaitingValue.TabIndex = 1;
             this.lblStatWaitingValue.Text = "0 单";
             this.lblStatWaitingValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -179,7 +201,7 @@ namespace PharmacySorter
             this.lblStatCompleted.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblStatCompleted.Location = new System.Drawing.Point(3, 65);
             this.lblStatCompleted.Name = "lblStatCompleted";
-            this.lblStatCompleted.Size = new System.Drawing.Size(62, 65);
+            this.lblStatCompleted.Size = new System.Drawing.Size(72, 65);
             this.lblStatCompleted.TabIndex = 2;
             this.lblStatCompleted.Text = "今日完成";
             this.lblStatCompleted.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -189,9 +211,9 @@ namespace PharmacySorter
             this.lblStatCompletedValue.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblStatCompletedValue.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblStatCompletedValue.ForeColor = System.Drawing.Color.SeaGreen;
-            this.lblStatCompletedValue.Location = new System.Drawing.Point(71, 65);
+            this.lblStatCompletedValue.Location = new System.Drawing.Point(81, 65);
             this.lblStatCompletedValue.Name = "lblStatCompletedValue";
-            this.lblStatCompletedValue.Size = new System.Drawing.Size(44, 65);
+            this.lblStatCompletedValue.Size = new System.Drawing.Size(52, 65);
             this.lblStatCompletedValue.TabIndex = 3;
             this.lblStatCompletedValue.Text = "0 单";
             this.lblStatCompletedValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -201,7 +223,7 @@ namespace PharmacySorter
             this.lblStatDropped.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblStatDropped.Location = new System.Drawing.Point(3, 130);
             this.lblStatDropped.Name = "lblStatDropped";
-            this.lblStatDropped.Size = new System.Drawing.Size(62, 65);
+            this.lblStatDropped.Size = new System.Drawing.Size(72, 65);
             this.lblStatDropped.TabIndex = 4;
             this.lblStatDropped.Text = "今日落药";
             this.lblStatDropped.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -211,9 +233,9 @@ namespace PharmacySorter
             this.lblStatDroppedValue.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblStatDroppedValue.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblStatDroppedValue.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.lblStatDroppedValue.Location = new System.Drawing.Point(71, 130);
+            this.lblStatDroppedValue.Location = new System.Drawing.Point(81, 130);
             this.lblStatDroppedValue.Name = "lblStatDroppedValue";
-            this.lblStatDroppedValue.Size = new System.Drawing.Size(44, 65);
+            this.lblStatDroppedValue.Size = new System.Drawing.Size(52, 65);
             this.lblStatDroppedValue.TabIndex = 5;
             this.lblStatDroppedValue.Text = "0 盒";
             this.lblStatDroppedValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -223,7 +245,7 @@ namespace PharmacySorter
             this.lblStatAbnormal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblStatAbnormal.Location = new System.Drawing.Point(3, 195);
             this.lblStatAbnormal.Name = "lblStatAbnormal";
-            this.lblStatAbnormal.Size = new System.Drawing.Size(62, 65);
+            this.lblStatAbnormal.Size = new System.Drawing.Size(72, 65);
             this.lblStatAbnormal.TabIndex = 6;
             this.lblStatAbnormal.Text = "今日异常";
             this.lblStatAbnormal.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -233,37 +255,26 @@ namespace PharmacySorter
             this.lblStatAbnormalValue.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblStatAbnormalValue.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblStatAbnormalValue.ForeColor = System.Drawing.Color.Firebrick;
-            this.lblStatAbnormalValue.Location = new System.Drawing.Point(71, 195);
+            this.lblStatAbnormalValue.Location = new System.Drawing.Point(81, 195);
             this.lblStatAbnormalValue.Name = "lblStatAbnormalValue";
-            this.lblStatAbnormalValue.Size = new System.Drawing.Size(44, 65);
+            this.lblStatAbnormalValue.Size = new System.Drawing.Size(52, 65);
             this.lblStatAbnormalValue.TabIndex = 7;
             this.lblStatAbnormalValue.Text = "0 单";
             this.lblStatAbnormalValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // btnEmergencyStop
-            // 
-            this.btnEmergencyStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnEmergencyStop.Location = new System.Drawing.Point(44, 12);
-            this.btnEmergencyStop.Name = "btnEmergencyStop";
-            this.btnEmergencyStop.Size = new System.Drawing.Size(94, 28);
-            this.btnEmergencyStop.TabIndex = 5;
-            this.btnEmergencyStop.Text = "急停";
-            this.btnEmergencyStop.UseVisualStyleBackColor = true;
-            this.btnEmergencyStop.Click += new System.EventHandler(this.BtnEmergencyStop_Click);
-            // 
             // btnSystemOps
             // 
-            this.btnSystemOps.Location = new System.Drawing.Point(20, 252);
+            this.btnSystemOps.Location = new System.Drawing.Point(30, 252);
             this.btnSystemOps.Name = "btnSystemOps";
             this.btnSystemOps.Size = new System.Drawing.Size(124, 32);
             this.btnSystemOps.TabIndex = 4;
-            this.btnSystemOps.Text = "系统日志";
+            this.btnSystemOps.Text = "系统运维";
             this.btnSystemOps.UseVisualStyleBackColor = true;
             this.btnSystemOps.Click += new System.EventHandler(this.BtnSystemOps_Click);
             // 
             // btnPrescriptionCatalog
             // 
-            this.btnPrescriptionCatalog.Location = new System.Drawing.Point(20, 87);
+            this.btnPrescriptionCatalog.Location = new System.Drawing.Point(30, 87);
             this.btnPrescriptionCatalog.Name = "btnPrescriptionCatalog";
             this.btnPrescriptionCatalog.Size = new System.Drawing.Size(124, 32);
             this.btnPrescriptionCatalog.TabIndex = 7;
@@ -273,7 +284,7 @@ namespace PharmacySorter
             // 
             // btnStationMapping
             // 
-            this.btnStationMapping.Location = new System.Drawing.Point(20, 197);
+            this.btnStationMapping.Location = new System.Drawing.Point(30, 197);
             this.btnStationMapping.Name = "btnStationMapping";
             this.btnStationMapping.Size = new System.Drawing.Size(124, 31);
             this.btnStationMapping.TabIndex = 3;
@@ -283,7 +294,7 @@ namespace PharmacySorter
             // 
             // btnDrugDictionary
             // 
-            this.btnDrugDictionary.Location = new System.Drawing.Point(20, 142);
+            this.btnDrugDictionary.Location = new System.Drawing.Point(30, 142);
             this.btnDrugDictionary.Name = "btnDrugDictionary";
             this.btnDrugDictionary.Size = new System.Drawing.Size(124, 31);
             this.btnDrugDictionary.TabIndex = 2;
@@ -293,7 +304,7 @@ namespace PharmacySorter
             // 
             // btnDashboard
             // 
-            this.btnDashboard.Location = new System.Drawing.Point(20, 33);
+            this.btnDashboard.Location = new System.Drawing.Point(30, 33);
             this.btnDashboard.Name = "btnDashboard";
             this.btnDashboard.Size = new System.Drawing.Size(124, 32);
             this.btnDashboard.TabIndex = 0;
@@ -304,27 +315,16 @@ namespace PharmacySorter
             // pnlPageContainer
             // 
             this.pnlPageContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlPageContainer.Location = new System.Drawing.Point(166, 57);
+            this.pnlPageContainer.Location = new System.Drawing.Point(182, 57);
             this.pnlPageContainer.Name = "pnlPageContainer";
-            this.pnlPageContainer.Size = new System.Drawing.Size(1273, 721);
+            this.pnlPageContainer.Size = new System.Drawing.Size(1329, 721);
             this.pnlPageContainer.TabIndex = 2;
-            //
-            // btnResetArm
-            //
-            this.btnResetArm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnResetArm.Location = new System.Drawing.Point(210, 12);
-            this.btnResetArm.Name = "btnResetArm";
-            this.btnResetArm.Size = new System.Drawing.Size(94, 28);
-            this.btnResetArm.TabIndex = 6;
-            this.btnResetArm.Text = "复位";
-            this.btnResetArm.UseVisualStyleBackColor = true;
-            this.btnResetArm.Click += new System.EventHandler(this.BtnResetArm_Click);
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1439, 778);
+            this.ClientSize = new System.Drawing.Size(1511, 778);
             this.Controls.Add(this.pnlPageContainer);
             this.Controls.Add(this.pnlNav);
             this.Controls.Add(this.pnlHeader);
